@@ -72,13 +72,13 @@ Administrator | A senior IT administrator who has decades of experience managing
 
 
 ## Developers
-> Ian SooHoo
+> Ian SooHoo - @capturetheworld
 
-> Pruthvi Punwar
+> Pruthvi Punwar - @pruth17
 
-> Le Duy Vu
+> Le Duy Vu - @LeDuy-Vu
 
-> Michael Huynh
+> Michael Huynh - @MVHJ
 
 
 
