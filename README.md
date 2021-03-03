@@ -63,12 +63,12 @@ These cards are used to “pay” for a set activity price. The set activity pri
   - [ ] Admin
 
 ## Personas & Scenarios
-Name | Persona | Scenario
--------- | ------------------------------ | ------------------------------
-Peter Parker (Anonymous citizen) | 21-year-old college student who is looking for some activities to do on the weekend. He likes adventurous activities and looks forward to low-cost activities. | One of the weekends, Peter is free as he doesn’t have any assignments due. He looks for low-cost activities to do in the city on the website for himself and his friends. 
-Anthony Edwards (Parent/Citizen) | 38 yr old who has never used an online booking or planning service. Anthony is a moderate user of the internet of things, like mobile devices and web browsing. He has a 12-year-old son that enjoys physical, outdoor activities, such as playing sports. Anthony believes that spending outdoor time with his son will further strengthen their bond between father and son. | Summer is approaching and its weather will present a perfect opportunity for outdoor activities. Anthony and his son want to search for a specific sport to enjoy and in which both the parent and child can participate. Anthony has a moderate budget to spend on a sport’s activity for him and his son.     
-PhysX (Service Provider) | PhysX is a service provider that plans and hosts a variety of events. This organization conducts its operations in multiple parts of the city and throughout the year. Operations include outdoor activities, such as a marathon, and indoor activities, like a technology expo. | The organizers from PhysX would like an organizational tool to plan and execute their events. The tool must have an easy and pleasurable UI; This tool must have various components so each employee can work on their respective tasks. There should be a feature to notify all of their constituents about an upcoming event and its description. Event descriptions such as cost, location, and time.   
-Administrator | A senior IT administrator who has decades of experience managing big data systems for enterprises. He currently leads a small team of administrators for Pastime | A user has been reported to repeatedly register for activities and cancel/refund their appointments at the last minute. The user has been warned by the automatic system which detects this suspicious activity but he/she continues. The administrator has to give out a punishment and applies the feature of banning the violating user for a certain amount of time. After the ban is lifted, he/she will be put on the admin’s watchlist to be monitored for future violations.
+Name | Persona | Scenario | User Stories
+-------- | ------------------------------ | ------------------------------ | ----------------------------------
+Peter Parker (Anonymous citizen) | 21-year-old college student who is looking for some activities to do on the weekend. He likes adventurous activities and looks forward to low-cost activities. | One of the weekends, Peter is free as he doesn’t have any assignments due. He looks for low-cost activities to do in the city on the website for himself and his friends. | 1). Peter booked his weekend marathon activity using his credit card on the website. <br>2). Peter is looking for activities that are close to his location.
+Anthony Edwards (Parent/Citizen) | 38 yr old who has never used an online booking or planning service. Anthony is a moderate user of the internet of things, like mobile devices and web browsing. He has a 12-year-old son that enjoys physical, outdoor activities, such as playing sports. Anthony believes that spending outdoor time with his son will further strengthen their bond between father and son. | Summer is approaching and its weather will present a perfect opportunity for outdoor activities. Anthony and his son want to search for a specific sport to enjoy and in which both the parent and child can participate. Anthony has a moderate budget to spend on a sport’s activity for him and his son. | 1). Anthony is looking for a high rated activity for him and his son. <br>2). Anthony is looking for cheap activities due to money constraints.
+PhysX (Service Provider) | PhysX is a service provider that plans and hosts a variety of events. This organization conducts its operations in multiple parts of the city and throughout the year. Operations include outdoor activities, such as a marathon, and indoor activities, like a technology expo. | PhysX has released an outdoor event of volleyball and card games in the park with an entry fee. PhysX has added a description of the activity on the website with the location and time of the event. | 1). As an event manager, I need a convenient tool to plan and organize an event or multiple events.<br> 2). As an event planner, our organization wants to have a feature that notifies all of our constituents about an upcoming event and updates with regards to that event.     
+Administrator | A senior IT administrator who has decades of experience managing big data systems for enterprises. He currently leads a small team of administrators for Pastime | A user has been reported to repeatedly register for activities and cancel/refund their appointments at the last minute. The user has been warned by the automatic system which detects this suspicious activity but he/she continues. The administrator has to give out a punishment and applies the feature of banning the violating user for a certain amount of time. After the ban is lifted, he/she will be put on the admin’s watchlist to be monitored for future violations. | 1). The administrator wants to remove an account from the website due to policy violations. <br>2). The administrator wants to reset the password of one of the accounts.
 
 
 ## Developers
@@ -84,12 +84,12 @@ Administrator | A senior IT administrator who has decades of experience managing
 
 ## Responsibilities:
 
-1. Front End
-   1. Working on the research of data, pictures, implementing it
-   2. Working on the implementation of different webpages
-   3. Ian SooHoo, Pruthvi Punwar
-   
-2. Back End
-    1. Working on REST APIs, NodeJS
-    2. Working on data and database 
-    3. Le Duy Vu, Michael Huynh
+1. Ian SooHoo (Team Leader)
+   1. UX design and HTML implementation
+2. Michael Huynh
+   1. Database Implementation
+3. Pruthvi Punwar
+   1. CSS, Bootstrap and Research
+4. Le Duy Vu
+   1. REST APIs, NodeJS
+ 
