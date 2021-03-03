@@ -1,0 +1,38 @@
+body {
+  /* filter: blur(1px); */
+}
+
+.body1 {
+  background-image: url("https://codetheweb.blog/assets/img/posts/css-advanced-background-images/mountains.jpg");
+   height: 50rem;
+   width: 100%;
+ background-position: center;
+ background-repeat: no-repeat;
+ background-size: cover;
+
+
+
+}
+
+.login {
+
+
+  padding-bottom: 5%;
+  padding-top: 2%;
+  padding-left: 10%;
+  padding-right: 10%;
+  background-color: #3f72af;
+   display: inline-block;
+   margin-left: 20rem;
+   margin-top: 5rem;
+
+}
+
+.logo{
+  text-align: center;
+        display: block;
+}
+
+img {
+  height: 5rem;
+}
