@@ -1,0 +1,38 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.center-box {
+    position: absolute;
+    left: 50%;
+    top: 42%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+h1, h2, p, a {
+    font-family: 'Helvetica';
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-size: 80px;
+}
+
+h2 {
+    font-size: 50px;
+}
+
+p {
+    font-size: 20px;
+    line-height: 30px;
+}
+
+a { 
+    width: 200px;
+}
+
+.cover-image {
+    width: 100vw;
+}
