@@ -1,3 +1,3 @@
 function soldout() {
-    alert("Macintosh was sold out!");
+    alert("Under Production.");
 }
