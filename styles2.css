@@ -1,0 +1,123 @@
+/* Navigation Bars */
+.apple-logo {
+  font-size: 2rem;
+  color: white;
+}
+
+.navigation {
+  padding-top: 0px;
+  background-color: black !important;
+}
+
+.warning {
+  /* padding-left: 32rem; */
+  color: white;
+  text-align: center;
+
+}
+.covid {
+  padding: 12px 0;
+    /* background: #0071E3; */
+    color: #ffffff;
+    margin-top: 4rem;
+    font-size: 14px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navcolor1{
+  color: white;
+  padding-left: 3.5rem;
+  padding-right: 3rem;
+  padding-top: 5rem;
+}
+
+body {
+  background-color: #393e46;
+}
+
+.vertical1 {
+  size: "2";
+}
+
+.online {
+  text-align: center;
+  background-color: white;
+
+  padding: 12px 0;
+  padding-bottom: 0;
+    /* background: #0071E3; */
+    margin-top: 0;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shopping {
+  color: #393e46;
+
+}
+
+
+
+/* Intro of Page, iPhone-SE section */
+
+.intro {
+  background-color: #161617;
+  text-align: center;
+}
+
+
+.iPhone-SE {
+  padding-top: 5rem;
+  font-size: 4rem;
+  color: white;
+}
+
+.iPhone-SE-description {
+  color: white;
+}
+
+.iPhone-trade {
+  color: grey;
+}
+
+.learn {
+  padding-right: 2rem;
+}
+
+.top-nav {
+  padding-bottom: .5rem;
+}
+
+.learning {
+ color: blue;
+ font-size: 1.3rem;
+}
+.navcolor1{
+  padding-right: 9rem;
+  text-decoration: none;
+}
+
+.navcolor1:hover {
+  text-decoration: none;
+  text-shadow: bold;
+}
+
+.iPhone-SE-image {
+  padding-top: 1rem;
+}
+
+/* iPhone 11 section */
+
+.a11-intro{
+  background-color: white;
+  text-align: center;
+}
+
+.iPhone11-h1 {
+  padding-top: 3rem;
+}
