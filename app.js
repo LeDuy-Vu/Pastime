@@ -2,12 +2,35 @@ const express = require('express');
 const https = require('https');
 const bodyParser = require('body-parser');
 const app = express();
+const router = express.Router();
+router.get('/', (req, res, next) => {
+    res.status(200).json({
+        message: "Here we are handling the get request for the products"
+    });
+});
 
+module.exports = router;
+
+
+app.set("view engine", "ejs");
 app.use(express.static(__dirname + '/public'));
 
 app.use(bodyParser.urlencoded({
   extended:true
 }));
+
+app.get("/about.html", function(req, res){
+  res.sendFile(__dirname + "/about.html");
+});
+
+app.get("/signup.html", (req, res) => {
+  res.sendFile(__dirname + "/signup.html");
+});
+
+app.get("/nextstep.html", function(req, res){
+
+  res.render("profile", {myName: "Pruthvi"});
+});
 
 app.get("/", function(req, res) {
 
