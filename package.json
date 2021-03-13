@@ -1,0 +1,26 @@
+{
+  "name": "160proj",
+  "version": "1.0.0",
+  "description": "**Project Description:** Our goal is to develop a web app for citizens of a “smart city” to find recreational activities for them, their friends, and their families. It will have the ability to filter by age- category (preschool, 10-12, adults, seniors, etc.), type (coding, sports, design, etc.), and proximity (5 miles, 10 miles, 15 miles, etc.). Cost, dates, and times are additional filters that can be added. The web app will allow users to buy points for the activity they are interested in. These points are stored in an electronic card.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/capturetheworld/160proj.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/capturetheworld/160proj/issues"
+  },
+  "homepage": "https://github.com/capturetheworld/160proj#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "bootstrap": "^4.6.0",
+    "express": "^4.17.1",
+    "https": "^1.0.0",
+    "nodemon": "^2.0.7"
+  }
+}
