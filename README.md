@@ -15,6 +15,25 @@ These cards are used to “pay” for a set activity price. The set activity pri
 -  [x] Implement HTML/CSS for homepage
 - [x] Create AWS server and a basic HTML web page in NodeJS and HTML/CSS, upload to git
 
+**Spring 2 RD March 14**
+### Front End:
+- [] Bootstrap header
+- [] NavBar
+- [] More CSS/HTML changes
+- [] Add cards using bootstrap
+- [] Research Activities name and add ratings
+- [] User profile page
+
+### Back End:
+- [] Look at the server configurations
+- [] Connect back end to front end
+- [] Treknicalte.ch
+- [] 2 docker containers (mongoDB Atlas & Phabricator)
+- [] Figure out compilation issue on AWS
+- [] Install and configure NGINX
+- [] Reinstall mongoDB
+- [] Create collections (User Info, Credit Info, Activities) for mongoDB
+
 **Sprint 2 March 21st**
 * TBD
 
