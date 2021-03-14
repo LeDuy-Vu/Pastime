@@ -17,16 +17,16 @@ These cards are used to “pay” for a set activity price. The set activity pri
 
 **Spring 2 RD March 14**
 ### Front End:
-- [ ] Bootstrap header
-- [ ] NavBar
-- [ ] More CSS/HTML changes
-- [ ] Add cards using bootstrap
-- [ ] Research Activities name and add ratings
-- [ ] User profile page
+- [x] Bootstrap header
+- [x] NavBar
+- [x] More CSS/HTML changes
+- [x] Add cards using bootstrap
+- [x] Research Activities name and add ratings
+- [x] User profile page
 
 ### Back End:
 - [ ] Look at the server configurations
-- [ ] Connect back end to front end
+- [x] Connect back end to front end
 - [ ] Treknicalte.ch
 - [ ] 2 docker containers (mongoDB Atlas & Phabricator)
 - [ ] Figure out compilation issue on AWS
