@@ -11,9 +11,28 @@ These cards are used to “pay” for a set activity price. The set activity pri
 -  [x]  Markdown Document (Receivables Analysis Document) which includes Spring beginnings (what), roles, responsibilities 
 
 **Sprint 1 March 7**
--  [ ] Research HTML/CSS
--  [ ] Implement HTML/CSS for homepage
-- [ ] Create AWS server and a basic HTML web page in NodeJS and HTML/CSS, upload to git
+-  [x] Research HTML/CSS
+-  [x] Implement HTML/CSS for homepage
+- [x] Create AWS server and a basic HTML web page in NodeJS and HTML/CSS, upload to git
+
+**Spring 2 RD March 14**
+### Front End:
+- [x] Bootstrap header
+- [x] NavBar
+- [x] More CSS/HTML changes
+- [x] Add cards using bootstrap
+- [x] Research Activities name and add ratings
+- [x] User profile page
+
+### Back End:
+- [ ] Look at the server configurations
+- [x] Connect back end to front end
+- [ ] Treknicalte.ch
+- [ ] 2 docker containers (mongoDB Atlas & Phabricator)
+- [ ] Figure out compilation issue on AWS
+- [ ] Install and configure NGINX
+- [ ] Reinstall mongoDB
+- [ ] Create collections (User Info, Credit Info, Activities) for mongoDB
 
 **Sprint 2 March 21st**
 * TBD
@@ -31,30 +50,30 @@ These cards are used to “pay” for a set activity price. The set activity pri
 
 ## Feature Description
 ### Home Page (What All Users See)
-- [ ] Introduction, About Us
-- [ ] Search bar
-- [ ] Slideshow of Cards, Pictures and Descriptions to grab users' attention
-- [ ] Sign up/Login prompt
+- [x] Introduction, About Us
+- [x] Search bar
+- [x] Slideshow of Cards, Pictures and Descriptions to grab users' attention
+- [x] Sign up/Login prompt
 
 ### Sign Up/Login webpage
-- [ ] Enter username and password; username must be email
+- [x] Enter username and password; username must be email
 - [ ] Different selections for Service Provider, Citizen, Admin
-  - [ ] Different fields for different roles
+- [ ] Different fields for different roles
 
 ### My Account/Dashboard
-- [ ] First name, last name, email address, password
+- [x] First name, last name, email address, password
 - [ ] Wallet, payment methods, add points
 - [ ] Preferences
 - [ ] History of transactions
-- [ ] Sign out
+- [x] Sign out
 - [ ] Admin Roles
   - [ ] User management
   - [ ] Assignment and revocation of roles and rights
   - [ ] User lock
   - [ ] Reset user password
-- [ ] Gallery of activities
-  - [ ] Description of each activity
-  - [ ] Price of the activity
+- [x] Gallery of activities
+  - [x] Description of each activity
+  - [x] Price of the activity
   - [ ] Search bar
 - [ ] The following four user roles will be supported in our system
   - [ ] Anonymous user
