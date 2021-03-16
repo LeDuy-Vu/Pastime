@@ -26,6 +26,14 @@
     align-items: center;
     justify-content: center;
 }
+#cityInput {
+  border-top-style: hidden;
+ border-right-style: hidden;
+ border-left-style: hidden;
+ border-bottom-style: hidden;
+ font-weight: bold;
+ font-size: 20px;
+}
 
 .navcolor1{
   color: white;
