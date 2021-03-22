@@ -7,6 +7,7 @@ const _ = require("lodash");
 const router = express.Router();
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 router.get('/', (req, res, next) => {
     res.status(200).json({
@@ -33,6 +34,9 @@ const itemsSchema = {
 };
 
 const Item = mongoose.model("Item", itemsSchema);
+
+var global = this;
+var currentUser = "global"
 //
 // const item1 = new Item({
 //   FirstName: "Peter",
@@ -69,7 +73,6 @@ const Item = mongoose.model("Item", itemsSchema);
 //
 // const defaultItems = [item1, item2, item3];
 //
-// var currentUser;
 //
 // Item.insertMany(defaultItems, function(err){
 //         if (err) {
@@ -88,11 +91,11 @@ app.get("/about.html", function(req, res){
 });
 
 app.post("/result", function(req, res){
-
   console.log(req.body.City);
 })
 
 app.post("/aftersignup",function(req, res){
+
   const temps = new Item({
     FirstName: req.body.FName,
     LastName: req.body.LName,
@@ -106,13 +109,13 @@ app.post("/aftersignup",function(req, res){
 
   Item.insertMany(temps, function(err){
     if (err) {
-              console.log(err);
-          } else {
-            console.log("Successfully savevd default items to DB.");
-          }
+      console.log(err);
+    }
+    else {
+      console.log("Successfully savevd default items to DB.");
+    }
   });
-
-  res.sendFile(__dirname+"/login.html")
+  res.sendFile(__dirname+ "/login.html")
 });
 
 app.get("/signup.html", (req, res) => {
@@ -120,14 +123,11 @@ app.get("/signup.html", (req, res) => {
 });
 
 app.get("/nextstep.html", function(req, res){
-
-  res.render("profile", {myName: "Pruthvi"});
+  res.render("profile", {myName: currentUser});
 });
 
 app.get("/", function(req, res) {
-
   res.sendFile(__dirname + "/index.html")
-
 });
 
 app.get("/login.html", function(req, res){
@@ -141,7 +141,6 @@ app.get("/index.html", function(req, res){
 
 app.get("/home.html", function(req, res){
   res.sendFile(__dirname + "/home.html");
-  currentUser = ""
 });
 
 app.get("/adminview.html", function(req, res){
@@ -156,38 +155,26 @@ app.get("/tryagain.html", function(req, res){
 app.post("/", function(req, res){
   var emailAddress = req.body.emailID;
   var password = req.body.passWORD;
-  //console.log(emailAddress);
 
+  if (emailAddress === "admin@admin.com" && password == "admin") {
+    console.log("Admin Success");
+    res.redirect('adminview.html');
+  }
 
   Item.findOne({EmailID: emailAddress }, function (err, docs) {
-      if (err){
-          console.log(err)
+      if (docs === null) {
+          res.redirect('tryagain.html');
       }
-      else{
-
-        if(emailAddress === docs.EmailID && password === docs.Password){
-          console.log("Success!");
-          currentUser = emailAddress;
+      else {
+        if(emailAddress === docs.EmailID && password === docs.Password) {
+          currentUser = docs.FirstName;
           res.redirect('home.html');
         }
-        else if (emailAddress === "admin@admin.com" && password == "admin") {
-          console.log("Admin Success");
-          res.redirect('adminview.html');
-
-        }
-
         else {
-
-         res.redirect('tryagain.html');
-       }
-
+          res.redirect('tryagain.html');
+        }
       }
   });
-
-  //
-  //
-  //
-
 });
 
 app.listen(3000, function(){
