@@ -35,7 +35,27 @@ These cards are used to “pay” for a set activity price. The set activity pri
 - [x] Create collections (User Info) for mongoDB
 
 **Sprint 2 March 21st**
-* TBD
+### Front End:
+- [x] Bootstrap header
+- [x] NavBar
+- [x] More CSS/HTML changes
+- [x] Add cards using bootstrap
+- [x] Research Activities name and add ratings
+- [x] User profile page
+
+### Back End:
+- [x] Connect back end to front end
+- [x] Treknicalte.ch
+- [x] 2 docker containers (mongoDB Atlas & Phabricator)
+- [x] Figure out compilation issue on AWS
+- [ ] Install and configure NGINX
+- [x] Reinstall mongoDB
+- [x] Create collections (User Info) for mongoDB
+- [x] Connect mongoDB Atlas to node.js
+- [x] User Authentication
+- [x] User Signup
+- [x] Deploying Heroku 
+- [x] Hosting Mongo on AWS
 
 **Sprint 3 April 18th**
 * TBD
@@ -80,6 +100,10 @@ These cards are used to “pay” for a set activity price. The set activity pri
   - [x] Parent/Citizen
   - [ ] Service provider
   - [x] Admin
+- [x] Connect mongoDB Atlas to node.js
+- [x] User Authentication
+- [x] User Signup
+
 
 ## Personas & Scenarios
 Name | Persona | Scenario | User Stories
