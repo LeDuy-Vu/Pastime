@@ -31,11 +31,31 @@ These cards are used to “pay” for a set activity price. The set activity pri
 - [ ] 2 docker containers (mongoDB Atlas & Phabricator)
 - [ ] Figure out compilation issue on AWS
 - [ ] Install and configure NGINX
-- [ ] Reinstall mongoDB
-- [ ] Create collections (User Info, Credit Info, Activities) for mongoDB
+- [x] Reinstall mongoDB
+- [x] Create collections (User Info) for mongoDB
 
 **Sprint 2 March 21st**
-* TBD
+### Front End:
+- [x] Bootstrap header
+- [x] NavBar
+- [x] More CSS/HTML changes
+- [x] Add cards using bootstrap
+- [x] Research Activities name and add ratings
+- [x] User profile page
+
+### Back End:
+- [x] Connect back end to front end
+- [x] Treknicalte.ch
+- [x] 2 docker containers (mongoDB Atlas & Phabricator)
+- [x] Figure out compilation issue on AWS
+- [ ] Install and configure NGINX
+- [x] Reinstall mongoDB
+- [x] Create collections (User Info) for mongoDB
+- [x] Connect mongoDB Atlas to node.js
+- [x] User Authentication
+- [x] User Signup
+- [x] Deploying Heroku 
+- [x] Hosting Mongo on AWS
 
 **Sprint 3 April 18th**
 * TBD
@@ -66,7 +86,7 @@ These cards are used to “pay” for a set activity price. The set activity pri
 - [ ] Preferences
 - [ ] History of transactions
 - [x] Sign out
-- [ ] Admin Roles
+- [x] Admin Roles
   - [ ] User management
   - [ ] Assignment and revocation of roles and rights
   - [ ] User lock
@@ -77,9 +97,13 @@ These cards are used to “pay” for a set activity price. The set activity pri
   - [ ] Search bar
 - [ ] The following four user roles will be supported in our system
   - [ ] Anonymous user
-  - [ ] Parent/Citizen
+  - [x] Parent/Citizen
   - [ ] Service provider
-  - [ ] Admin
+  - [x] Admin
+- [x] Connect mongoDB Atlas to node.js
+- [x] User Authentication
+- [x] User Signup
+
 
 ## Personas & Scenarios
 Name | Persona | Scenario | User Stories
