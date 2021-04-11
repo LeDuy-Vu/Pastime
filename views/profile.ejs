@@ -5,7 +5,20 @@
     <title>Profile</title>
   </head>
   <body>
-    <h4>efdcc <%= myName %> </h4>
+    <h4>First Name:<%= FName %> </h4>
+    <h4>Last Name:<%= LName %> </h4>
+    <h4>Email Address:<%= EID1 %> </h4>
+    <h4>Address:<%= FAddress %> </h4>
+
+    <form class="" action="/changePass" method="post">
+
+      <h1>Change Password</h1>
+    <input name="oldPassword" placeholder="Old Password">
+    <input name="newPassword1" type="text"  placeholder="New Password">
+    <input type="text" name="newPassword2" placeholder="New Password">
+    <button type="submit">Done</button>
+    </form>
+
 
 
 
