@@ -248,7 +248,13 @@ app.get("/about.html", function(req, res){
 
 app.post("/result", function(req, res){
 
-  console.log(req.body.City);
+  //console.log(req.body.City);
+  
+  Activity.findOne({'Name': req.body.City}, 'Name Description ServiceProvider Rating StartDate EndDate Image Venue Longitude Latitude', function (err, activity) {
+    if (err) return handleError(err);
+    else console.log('Name: %s\n Description: %s\n ServiceProvider: %s\n Rating: %s\n StartDate: %s\n EndDate: %s\n Image: %s\n Venue: %s\n Longitude: %s\n Latitude: %s\n', activity.Name, 
+    activity.Description, activity.ServiceProvider, activity.Rating, activity.StartDate, activity.EndDate, activity.Image, activity.Venue, activity.Longitude, activity.Latitude);
+  });
 })
 
 app.post("/aftersignup",function(req, res){
@@ -348,6 +354,7 @@ app.post("/", function(req, res){
   //
 
 });
+
 
 app.listen(3000, function(){
   console.log("Server is running at port 3000.");
