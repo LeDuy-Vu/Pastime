@@ -4,6 +4,10 @@
   color: white;
 }
 
+.venues {
+  text-align: center;
+}
+
 .navigation {
   padding-top: 0px;
   background-color: black !important;

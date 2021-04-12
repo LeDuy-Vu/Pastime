@@ -142,7 +142,7 @@ app.post("/changePass", function(req, res){
 
   Item.findOne({FirstName: currentUser }, function (err, docs){
     if (docs === null) {
-      res.redirect('home.html');
+      res.render("home", {MyName: currentUser});
     }
     else {
       console.log(docs.Password + req.body.oldPassword + req.body.newPassword1 + req.body.newPassword2);
@@ -155,7 +155,7 @@ app.post("/changePass", function(req, res){
             console.log("Password changed");
         });
       }
-      res.redirect("home.html");
+      res.render("home", {MyName: currentUser});
 
     }
 
@@ -171,10 +171,10 @@ app.get("/nextstep.html", function(req, res){
 
     if (docs === null) {
       console.log(currentUser);
-      res.redirect('home.html');
+      res.render("home", {MyName: currentUser});
     }
     else{
-      res.render("profile", {FName: docs.FirstName, LName: docs.LastName, EID1:docs.EmailID, FAddress: docs.Street});
+      res.render("profile", {FName: docs.FirstName, LName: docs.LastName, EID1:docs.EmailID, FAddress: docs.Street + " " + docs.City +  " " + docs.State + " " +docs.ZipCode});
 
     }
 
@@ -195,7 +195,7 @@ app.get("/index.html", function(req, res){
 });
 
 app.get("/home.html", function(req, res){
-  res.sendFile(__dirname + "/home.html");
+  res.render("home", {MyName: currentUser});
 });
 
 app.get("/adminview.html", function(req, res){
@@ -223,7 +223,10 @@ app.post("/", function(req, res){
       else {
         if(emailAddress === docs.EmailID && password === docs.Password) {
           currentUser = docs.FirstName;
-          res.render("home", {MyName: currentUser});
+
+          Activity.find({}, function(err, foundItems){
+          res.render("home", {MyName: currentUser, newListItems: foundItems});
+        });
         }
         else {
           res.redirect('tryagain.html');
