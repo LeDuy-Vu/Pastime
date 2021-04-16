@@ -194,18 +194,21 @@ app.get("/index.html", function(req, res){
   currentUser = "";
 });
 
-app.get("/home.html", function(req, res){
+app.get("/home", function(req, res){
   res.render("home", {MyName: currentUser});
 });
 
-app.get("/adminview.html", function(req, res){
+app.get("/adminview", function(req, res){
   res.sendFile(__dirname + "/adminview.html")
 });
 
-app.get("/tryagain.html", function(req, res){
+app.get("/tryagain", function(req, res){
   res.sendFile(__dirname + "/tryagain.html")
 });
 
+app.get("/*", function(req, res){
+  res.sendFile(__dirname + "/404.html")
+});
 
 app.post("/", function(req, res){
   var emailAddress = req.body.emailID;

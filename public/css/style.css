@@ -11,6 +11,46 @@
     text-align: center;
 }
 
+.about-box {
+    position: absolute;
+    border-collapse: collapse;
+    border-spacing: 0;
+    top: 20%;
+    
+    height:auto;
+    text-align: center;
+    margin-left:10%;
+    margin-right:10%;
+}
+
+
+.center {
+    position: absolute;
+    text-align: center;
+}
+
+#button-container{
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  
+
+    border: none;
+
+    padding: 15px 50%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    margin-top: 25px;
+
+
+  
+}
+
+
 h1, h2, p, a {
     font-family: 'Helvetica';
     margin-bottom: 15px;
@@ -34,6 +74,15 @@ a {
 }
 
 .cover-image {
-    width: 100vw;
-    height: 840px;
+  min-height: 100%;
+  min-width: 1024px;
+  width: 100%;
+  height: auto;
+	
+
+  position: relative;
+  top: 0;
+  left: 0;
+    
 }
+
