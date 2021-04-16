@@ -1,3 +1,5 @@
+
+
 const express = require('express');
 const https = require('https');
 const bodyParser = require('body-parser');
@@ -5,6 +7,7 @@ const app = express();
 const mongoose = require("mongoose");
 const _ = require("lodash");
 const router = express.Router();
+var desktopIdle = require('desktop-idle');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -36,50 +39,9 @@ const Item = mongoose.model("Item", itemsSchema);
 
 var global = this;
 var currentUser = "global"
-//
-// const item1 = new Item({
-//   FirstName: "Peter",
-//   LastName: "Parker",
-//   EmailID: "parker@gmail.com",
-//   Password: "test",
-//   Street: "1234 roger street",
-//   City: "San Jose",
-//   State: "CA",
-//   ZipCode: "95123",
-// });
-//
-// const item2 = new Item({
-//   FirstName: "Roger",
-//   LastName: "Stones",
-//   EmailID: "rstones@gmail.com",
-//   Password: "test",
-//   Street: "1234 amazing street",
-//   City: "San Jose",
-//   State: "CA",
-//   ZipCode: "95143",
-// });
-//
-// const item3 = new Item({
-//   FirstName: "Vilas",
-//   LastName: "Punwar",
-//   EmailID: "vpuwnar@gmail.com",
-//   Password: "test1",
-//   Street: "2878 Colorado street",
-//   City: "San Jose",
-//   State: "CA",
-//   ZipCode: "95113",
-// });
-//
-// const defaultItems = [item1, item2, item3];
-//
-//
-// Item.insertMany(defaultItems, function(err){
-//         if (err) {
-//           console.log(err);
-//         } else {
-//           console.log("Successfully savevd default items to DB.");
-//         }
-// });
+
+var activityList = new Array();
+
 
 const activitiesSchema = {
   Name: String,
@@ -106,46 +68,66 @@ app.get("/about.html", function(req, res){
 });
 
 app.post("/result", function(req, res){
-  console.log(req.body.City);
   Activity.findOne({'Name': req.body.City}, 'Name Description ServiceProvider Rating StartDate EndDate Image Venue Longitude Latitude', function (err, activity) {
     if (err) return handleError(err);
-    else console.log('Name: %s\n Description: %s\n ServiceProvider: %s\n Rating: %s\n StartDate: %s\n EndDate: %s\n Image: %s\n Venue: %s\n Longitude: %s\n Latitude: %s\n', activity.Name,
-    activity.Description, activity.ServiceProvider, activity.Rating, activity.StartDate, activity.EndDate, activity.Image, activity.Venue, activity.Longitude, activity.Latitude);
+    else {
+      res.render("activities", {name: activity.Name, des:activity.Description});
+    }
   });
 })
 
+app.post("/addActivity", function(req, res){
+  var activtyName = req.body.ActivityToAdd;
+  activityList.push(activtyName);
+
+  activityList.forEach(function(item, index, array){
+    console.log(item, index)
+  });
+  Activity.find({}, function(err, foundItems){
+  res.render("home", {MyName: currentUser, newListItems: foundItems});
+  });
+});
+
 app.post("/aftersignup",function(req, res){
 
-  const temps = new Item({
-    FirstName: req.body.FName,
-    LastName: req.body.LName,
-    EmailID: req.body.Email,
-    Password: req.body.Pass,
-    Street: req.body.Streets,
-    City: req.body.City,
-    State: req.body.state,
-    ZipCode: req.body.zips,
-  });
+  Item.findOne({EmailID:req.body.Email}, function (err, docs){
 
-  Item.insertMany(temps, function(err){
-    if (err) {
-      console.log(err);
+    if(docs === null){
+      const temps = new Item({
+        FirstName: req.body.FName,
+        LastName: req.body.LName,
+        EmailID: req.body.Email,
+        Password: req.body.Pass,
+        Street: req.body.Streets,
+        City: req.body.City,
+        State: req.body.state,
+        ZipCode: req.body.zips,
+      });
+
+      Item.insertMany(temps, function(err){
+        if (err)
+          console.log(err);
+        else
+          console.log("Successfully savevd default items to DB.");
+      });
+      res.sendFile(__dirname+ "/login.html");
     }
-    else {
-      console.log("Successfully savevd default items to DB.");
-    }
+
+    else
+      res.sendFile(__dirname + "tryagain.html");
+
   });
-  res.sendFile(__dirname+ "/login.html")
 });
 
 app.post("/changePass", function(req, res){
 
   Item.findOne({FirstName: currentUser }, function (err, docs){
     if (docs === null) {
-      res.render("home", {MyName: currentUser});
+      Activity.find({}, function(err, foundItems){
+      res.render("home", {MyName: currentUser, newListItems: foundItems});
+    });
     }
     else {
-      console.log(docs.Password + req.body.oldPassword + req.body.newPassword1 + req.body.newPassword2);
       if((docs.Password === req.body.oldPassword) && (req.body.newPassword1 === req.body.newPassword2)){
         console.log("some");
         Item.updateOne({FirstName: currentUser}, {$set:{Password:req.body.newPassword1}}, function(err, result){
@@ -155,7 +137,9 @@ app.post("/changePass", function(req, res){
             console.log("Password changed");
         });
       }
-      res.render("home", {MyName: currentUser});
+      Activity.find({}, function(err, foundItems){
+      res.render("home", {MyName: currentUser, newListItems: foundItems});
+    });
 
     }
 
@@ -171,7 +155,9 @@ app.get("/nextstep.html", function(req, res){
 
     if (docs === null) {
       console.log(currentUser);
-      res.render("home", {MyName: currentUser});
+      Activity.find({}, function(err, foundItems){
+      res.render("home", {MyName: currentUser, newListItems: foundItems});
+    });
     }
     else{
       res.render("profile", {FName: docs.FirstName, LName: docs.LastName, EID1:docs.EmailID, FAddress: docs.Street + " " + docs.City +  " " + docs.State + " " +docs.ZipCode});
@@ -192,17 +178,20 @@ app.get("/login.html", function(req, res){
 app.get("/index.html", function(req, res){
   res.sendFile(__dirname + "/index.html")
   currentUser = "";
+  activityList = [];
 });
 
-app.get("/home", function(req, res){
-  res.render("home", {MyName: currentUser});
+app.get("/home.html", function(req, res){
+  Activity.find({}, function(err, foundItems){
+  res.render("home", {MyName: currentUser, newListItems: foundItems});
+});
 });
 
-app.get("/adminview", function(req, res){
+app.get("/adminview.html", function(req, res){
   res.sendFile(__dirname + "/adminview.html")
 });
 
-app.get("/tryagain", function(req, res){
+app.get("/tryagain.html", function(req, res){
   res.sendFile(__dirname + "/tryagain.html")
 });
 
@@ -226,6 +215,9 @@ app.post("/", function(req, res){
       else {
         if(emailAddress === docs.EmailID && password === docs.Password) {
           currentUser = docs.FirstName;
+          if(desktopIdle.getIdleTime() > 10){
+            res.sendFile(__dirname + "/tryagain.html");
+          }
 
           Activity.find({}, function(err, foundItems){
           res.render("home", {MyName: currentUser, newListItems: foundItems});
