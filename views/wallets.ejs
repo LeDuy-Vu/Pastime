@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h4>You have this in your wallet</h4>
+  <%  newListItems.forEach(function(item){ %>
+    <p><%=item%></p>
+    <%  }) %>
+
+    <form class="" action="/afterCheckOut" method="post">
+      <p>Wanna checkout?</p>
+      <button class="btn btn-sm btn-outline-secondary" type="submit">CheckOut</button>
+    </form>
+  </body>
+</html>

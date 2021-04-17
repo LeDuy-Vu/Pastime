@@ -1,5 +1,3 @@
-
-
 const express = require('express');
 const https = require('https');
 const bodyParser = require('body-parser');
@@ -21,8 +19,13 @@ router.get('/', (req, res, next) => {
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + '/public'));
 
-mongoose.connect("mongodb+srv://pruthvi:cs160team3@cluster0.h0d8v.mongodb.net/myFirstDatabase?retryWrites=true&w=majoritytodolistDB", {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect("mongodb+srv://pruthvi:cs160team3@cluster0.h0d8v.mongodb.net/myFirstDatabase?retryWrites=true", {useNewUrlParser: true, useUnifiedTopology: true});
 module.exports = router;
+
+const globVars = {
+  CurrentUser: String,
+  isLoggedIn: Boolean,
+}
 
 const itemsSchema = {
   FirstName: String,
@@ -35,13 +38,23 @@ const itemsSchema = {
   ZipCode: String,
 };
 
+const userWallet = {
+  emailID: String,
+  currentActivity:[{
+    type: String
+  }],
+  completedActivity:[{
+    type: String
+  }],
+}
+
+const globalDB = mongoose.model("globalDB", globVars);
+const Wallet = mongoose.model("Wallet", userWallet);
+
 const Item = mongoose.model("Item", itemsSchema);
 
 var global = this;
 var currentUser = "global"
-
-var activityList = new Array();
-
 
 const activitiesSchema = {
   Name: String,
@@ -58,6 +71,13 @@ const activitiesSchema = {
 
 const Activity = mongoose.model("Activity", activitiesSchema);
 
+globalDB.findOneAndUpdate({_id: "607a9b0e4ad3126658c05db0"}, {$set: {CurrentUser: "", isLoggedIn: false}}, function(error, success){
+  if(error)
+    console.log("**************");
+  else
+    console.log("ADDDDDDDAAA");
+});
+
 
 app.use(bodyParser.urlencoded({
   extended:true
@@ -71,21 +91,38 @@ app.post("/result", function(req, res){
   Activity.findOne({'Name': req.body.City}, 'Name Description ServiceProvider Rating StartDate EndDate Image Venue Longitude Latitude', function (err, activity) {
     if (err) return handleError(err);
     else {
-      res.render("activities", {name: activity.Name, des:activity.Description, provider: activity.ServiceProvider, rating: activity.Rating, startDate: activity.StartDate, 
+      res.render("activities", {name: activity.Name, des:activity.Description, provider: activity.ServiceProvider, rating: activity.Rating, startDate: activity.StartDate,
         endDate: activity.EndDate, image: activity.Image, venue: activity.Venue, longitude: activity.Longitude, latitude: activity.Latitude});
     }
   });
 })
 
 app.post("/addActivity", function(req, res){
-  var activtyName = req.body.ActivityToAdd;
-  activityList.push(activtyName);
 
-  activityList.forEach(function(item, index, array){
-    console.log(item, index)
-  });
-  Activity.find({}, function(err, foundItems){
-  res.render("home", {MyName: currentUser, newListItems: foundItems});
+  Item.findOne({FirstName: currentUser }, function (err, docs){
+    if (docs === null) {
+      console.log("in null");
+      Activity.find({}, function(err, foundItems){
+      res.render("home", {MyName: currentUser, newListItems: foundItems});
+    });
+    }
+    else {
+      Wallet.findOneAndUpdate({emailID: docs.EmailID}, {$push: {currentActivity: req.body.ActivityToAdd}}, function (error, success) {
+        if(error) {
+          console.log("!!!!!!!!!!!!!!!!!!!!!!!!");
+            console.log(error);
+        } else {
+          console.log("ADDDDDDD");
+            console.log(success);
+        }
+
+      });
+      console.log("Updating " +docs.EmailID + " with " + req.body.ActivityToAdd);
+      Activity.find({}, function(err, foundItems){
+      res.render("home", {MyName: currentUser, newListItems: foundItems});
+      });
+    }
+
   });
 });
 
@@ -105,6 +142,15 @@ app.post("/aftersignup",function(req, res){
         ZipCode: req.body.zips,
       });
 
+
+
+      Wallet.insertMany({emailID: req.body.Email}, function(err){
+        if (err)
+          console.log(err);
+        else
+          console.log("Successfully savevd default items to DB.");
+      });
+
       Item.insertMany(temps, function(err){
         if (err)
           console.log(err);
@@ -115,7 +161,7 @@ app.post("/aftersignup",function(req, res){
     }
 
     else
-      res.sendFile(__dirname + "tryagain.html");
+      res.sendFile(__dirname + "/tryagain.html");
 
   });
 });
@@ -151,7 +197,34 @@ app.get("/signup.html", (req, res) => {
   res.sendFile(__dirname + "/signup.html");
 });
 
+app.get("/Wallet.html", function(req, res){
+
+  Item.findOne({FirstName: currentUser}, function(err, docs){
+
+    if (docs === null) {
+      console.log(currentUser);
+      Activity.find({}, function(err, foundItems){
+        res.render("home", {MyName: currentUser, newListItems: foundItems});
+      });
+    }
+    else {
+      Wallet.findOne({emailID: docs.EmailID}, function(err, document){
+        if(docs === null)
+          console.log("EEEEEEEE");
+        else{
+          res.render("wallets", {newListItems: document.currentActivity })
+        }
+      });
+    }
+
+  });
+});
+
 app.get("/nextstep.html", function(req, res){
+  console.log("HHHHHH");
+});
+
+app.get("/checkout.html", function(req, res){
   Item.findOne({FirstName: currentUser }, function (err, docs){
 
     if (docs === null) {
@@ -168,6 +241,64 @@ app.get("/nextstep.html", function(req, res){
   });
 });
 
+app.post("/afterCheckOut", function(req, res){
+  Item.findOne({FirstName: currentUser}, function(err, docs){
+    if (docs === null) {
+      console.log(currentUser);
+      Activity.find({}, function(err, foundItems){
+        res.render("home", {MyName: currentUser, newListItems: foundItems});
+      });
+    }
+    else {
+      Wallet.findOne({emailID: docs.EmailID}, function(err, document){
+        if(docs === null)
+          console.log("EEEEEEEE");
+        else{
+          document.currentActivity.forEach(function(item, index, array){
+            Wallet.findOneAndUpdate({emailID: docs.EmailID}, {$push: {completedActivity: item}}, function (error, success) {
+              if(error)
+                console.log("!!!!!!!!!!!!!!!!!!!!!!!!");
+              else
+                console.log("ADDDDDDD");
+              });
+          });
+        }
+      });
+      Wallet.findOneAndUpdate({emailID: docs.EmailID}, {$set: {currentActivity: []}}, function(error, success){
+        if(error)
+          console.log("**************");
+        else
+          console.log("ADDDDDDDAAA");
+      });
+      Activity.find({}, function(err, foundItems){
+        res.render("home", {MyName: currentUser, newListItems: foundItems});
+      });
+    }
+  });
+});
+
+app.get("/previousActivities", function(req, res){
+  Item.findOne({FirstName: currentUser}, function(err, docs){
+    if (docs === null) {
+      console.log(currentUser);
+      Activity.find({}, function(err, foundItems){
+        res.render("home", {MyName: currentUser, newListItems: foundItems});
+      });
+    }
+    else {
+      Wallet.findOne({emailID: docs.EmailID}, function(err, document){
+        if(docs === null)
+          console.log("EEEEEEEE");
+        else{
+          document.completedActivity.forEach(function(item, index, array){
+            console.log(item);
+          });
+        }
+      });
+    }
+  });
+});
+
 app.get("/", function(req, res) {
   res.sendFile(__dirname + "/index.html")
 });
@@ -178,6 +309,12 @@ app.get("/login.html", function(req, res){
 
 app.get("/index.html", function(req, res){
   res.sendFile(__dirname + "/index.html")
+  globalDB.findOneAndUpdate({_id: "607a9b0e4ad3126658c05db0"}, {$set: {CurrentUser: "", isLoggedIn: false}}, function(error, success){
+    if(error)
+      console.log("**************");
+    else
+      console.log("ADDDDDDDAAA");
+  });
   currentUser = "";
   activityList = [];
 });
@@ -216,6 +353,13 @@ app.post("/", function(req, res){
       else {
         if(emailAddress === docs.EmailID && password === docs.Password) {
           currentUser = docs.FirstName;
+
+          globalDB.findOneAndUpdate({_id: "607a9b0e4ad3126658c05db0"}, {$set: {CurrentUser: docs.EmailID, isLoggedIn: true}}, function(error, success){
+            if(error)
+              console.log("**************");
+            else
+              console.log("ADDDDDDDAAA");
+          });
           if(desktopIdle.getIdleTime() > 10){
             res.sendFile(__dirname + "/tryagain.html");
           }
