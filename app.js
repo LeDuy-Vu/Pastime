@@ -71,7 +71,8 @@ app.post("/result", function(req, res){
   Activity.findOne({'Name': req.body.City}, 'Name Description ServiceProvider Rating StartDate EndDate Image Venue Longitude Latitude', function (err, activity) {
     if (err) return handleError(err);
     else {
-      res.render("activities", {name: activity.Name, des:activity.Description});
+      res.render("activities", {name: activity.Name, des:activity.Description, provider: activity.ServiceProvider, rating: activity.Rating, startDate: activity.StartDate, 
+        endDate: activity.EndDate, image: activity.Image, venue: activity.Venue, longitude: activity.Longitude, latitude: activity.Latitude});
     }
   });
 })
