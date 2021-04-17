@@ -15,14 +15,14 @@
   <body>
 
   <form class="" action="/addActivity" method="post">
-  <input id="cityInput" readonly type="text" name="ActivityToAdd" value="<%= name %>">
+  <input style="background: transparent; border: none;"id="cityInput" readonly type="text" name="ActivityToAdd" value="<%= name %>">
   <img src="<%= image %>">
   <p>Location: <%= venue %></p>
   <p>About: <%= des %></p>
   <p>Rating: <%= rating %></p>
   <p>Start Date: <%= startDate %></p>
   <p>End Date: <%= endDate %></p>
-  
+
   <button class="btn" type="submit">Submit</button>
     </form>
 
@@ -46,7 +46,7 @@
         map:map,
         icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
       });
-      
+
     }
   </script>
   <script async defer
