@@ -19,13 +19,13 @@
 
 </div>
 <div id="button-container">
-  
+
   <input type="text" class="form-control col-lg-1" placeholder="Search">
   <button type="button" class="btn btn-primary btn-lg">
   <i class="fa fa-search" aria-hidden="true"></i> Search User</button></i>
 
 </div>
-
+<%  newListItems.forEach(function(item){ %>
 <table class="user-list">
   <thead>
     <tr>
@@ -37,13 +37,15 @@
   </thead>
   <tbody>
     <tr>
-      <td>Ian</td>
-      <td>ian@iansoohoo.me</td>
+      <td><%=item.FirstName%> <%=item.LastName%></td>
+      <td><%=item.EmailID%></td>
       <td></i><a type="button" class="btn btn-dark" href="#"> <i class="fas fa-pencil-alt"></i> Edit </a></td>
       <td></i><a type="button" class="btn btn-dark" id="red" href="#"> <i class="fas fa-trash"></i> Delete </a></td>
     </tr>
   </tbody>
 </table>
+
+<%  }) %>
     </body>
 
     </html>

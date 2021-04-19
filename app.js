@@ -343,7 +343,7 @@ app.post("/", function(req, res){
 
   if (emailAddress === "admin@admin.com" && password == "admin") {
     console.log("Admin Success");
-    res.redirect('adminview.html');
+
     Item.find({}, function(err, foundItems){
     res.render("adminview", {newListItems: foundItems});
   });
