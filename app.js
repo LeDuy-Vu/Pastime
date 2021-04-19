@@ -344,7 +344,11 @@ app.post("/", function(req, res){
   if (emailAddress === "admin@admin.com" && password == "admin") {
     console.log("Admin Success");
     res.redirect('adminview.html');
+    Item.find({}, function(err, foundItems){
+    res.render("adminview", {newListItems: foundItems});
+  });
   }
+  else {
 
   Item.findOne({EmailID: emailAddress }, function (err, docs) {
       if (docs === null) {
@@ -374,6 +378,7 @@ app.post("/", function(req, res){
         }
       }
   });
+}
 });
 
 let port = process.env.PORT;
