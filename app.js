@@ -71,14 +71,6 @@ const activitiesSchema = {
 
 const Activity = mongoose.model("Activity", activitiesSchema);
 
-globalDB.findOneAndUpdate({_id: "607a9b0e4ad3126658c05db0"}, {$set: {CurrentUser: "", isLoggedIn: false}}, function(error, success){
-  if(error)
-    console.log("**************");
-  else
-    console.log("Added to DB");
-});
-
-
 app.use(bodyParser.urlencoded({
   extended:true
 }));
@@ -335,6 +327,21 @@ app.get("/tryagain.html", function(req, res){
 
 app.get("/*", function(req, res){
   res.sendFile(__dirname + "/404.html")
+});
+
+app.post("/editUser", function(req, res){
+  console.log(req.body.userEditEmail);
+  console.log(req.body.vote);
+
+  if(req.body.vote === "Edit"){
+    res.sendFile(__dirname + "edit.html")
+  }
+  else {
+    res.sendFile(__dirname + "delete.html")
+  }
+
+
+
 });
 
 app.post("/", function(req, res){
