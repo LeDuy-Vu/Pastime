@@ -54,7 +54,7 @@ const Wallet = mongoose.model("Wallet", userWallet);
 const Item = mongoose.model("Item", itemsSchema);
 
 var global = this;
-var currentUser = "global"
+global.currentUser = "global"
 
 const activitiesSchema = {
   Name: String,
@@ -75,7 +75,7 @@ globalDB.findOneAndUpdate({_id: "607a9b0e4ad3126658c05db0"}, {$set: {CurrentUser
   if(error)
     console.log("**************");
   else
-    console.log("ADDDDDDDAAA");
+    console.log("Added to DB");
 });
 
 
@@ -112,7 +112,7 @@ app.post("/addActivity", function(req, res){
           console.log("!!!!!!!!!!!!!!!!!!!!!!!!");
             console.log(error);
         } else {
-          console.log("ADDDDDDD");
+          console.log("Added to DB");
             console.log(success);
         }
 
@@ -259,7 +259,7 @@ app.post("/afterCheckOut", function(req, res){
               if(error)
                 console.log("!!!!!!!!!!!!!!!!!!!!!!!!");
               else
-                console.log("ADDDDDDD");
+                console.log("Added to DB");
               });
           });
         }
@@ -268,7 +268,7 @@ app.post("/afterCheckOut", function(req, res){
         if(error)
           console.log("**************");
         else
-          console.log("ADDDDDDDAAA");
+          console.log("Added to DB");
       });
       Activity.find({}, function(err, foundItems){
         res.render("home", {MyName: currentUser, newListItems: foundItems});
@@ -313,7 +313,7 @@ app.get("/index.html", function(req, res){
     if(error)
       console.log("**************");
     else
-      console.log("ADDDDDDDAAA");
+      console.log("Added to DB");
   });
   currentUser = "";
   activityList = [];
@@ -358,8 +358,9 @@ app.post("/", function(req, res){
             if(error)
               console.log("**************");
             else
-              console.log("ADDDDDDDAAA");
+              console.log("Added to DB");
           });
+
           if(desktopIdle.getIdleTime() > 10000){
             res.sendFile(__dirname + "/tryagain.html");
           }
