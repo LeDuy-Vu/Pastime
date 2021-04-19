@@ -339,10 +339,10 @@ app.post("/editUser", function(req, res){
   console.log(req.body.vote);
 
   if(req.body.vote === "Edit"){
-    res.sendFile(__dirname + "edit.html")
+    res.sendFile(__dirname + "/edit.html")
   }
   else {
-    res.sendFile(__dirname + "delete.html")
+    res.sendFile(__dirname + "/delete.html")
   }
 
 

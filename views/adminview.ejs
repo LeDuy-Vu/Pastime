@@ -23,9 +23,11 @@
   <input type="text" class="form-control col-lg-1" placeholder="Search">
   <button type="button" class="btn btn-primary btn-lg">
   <i class="fa fa-search" aria-hidden="true"></i> Search User</button></i>
+  <br/>
+  <br />
 
 </div>
-
+<%  newListItems.forEach(function(item){ %>
 <table class="user-list">
   <thead>
     <tr>
@@ -33,15 +35,17 @@
       <th>Email</th>
       <th>Edit</th>
       <th>Delete</th>
+      <th>Lock</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <form class="" action="/editUser" method="post">
       <td><%=item.FirstName%> <%=item.LastName%></td>
-      <input id="userEmail" readonly type="text" name="userEditEmail" value="<%=item.EmailID%>">
-      <input class="btn btn-sm btn-outline-secondary" type="submit" name="vote" value="Edit">
-      <input class="btn btn-sm btn-outline-secondary" type="submit" name="vote" value="Delete">
+      <td><input id="userEmail" readonly type="text" name="userEditEmail" value="<%=item.EmailID%>"></td>
+      <td><input class="btn btn-sm btn-outline-secondary" type="submit" name="vote" value="Edit"></td>
+      <td><input class="btn btn-sm btn-outline-secondary" type="submit" name="vote" value="Delete"></td>
+      <td><input class="btn btn-sm btn-outline-secondary" type="submit" name="vote" value="Lock"></td>
       <!-- <td></i><a type="button" class="btn btn-dark" href="#"> <i class="fas fa-pencil-alt"></i> Edit </a></td>
       <td></i><a type="button" class="btn btn-dark" id="red" href="#"> <i class="fas fa-trash"></i> Delete </a></td> -->
     </form>
@@ -50,6 +54,7 @@
 </table>
 
 <%  }) %>
+
 
     </body>
 
