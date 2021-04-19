@@ -53,7 +53,7 @@ const Wallet = mongoose.model("Wallet", userWallet);
 
 const Item = mongoose.model("Item", itemsSchema);
 
-var global = this;
+let global = this;
 global.currentUser = "global"
 
 const activitiesSchema = {
@@ -216,6 +216,7 @@ app.get("/nextstep.html", function(req, res){
   console.log("HHHHHH");
 });
 
+
 app.get("/checkout.html", function(req, res){
   Item.findOne({FirstName: currentUser }, function (err, docs){
 
@@ -319,6 +320,10 @@ app.get("/home.html", function(req, res){
 
 app.get("/adminview.html", function(req, res){
   res.sendFile(__dirname + "/adminview.html")
+});
+
+app.get("/edit.html", function(req, res){
+  res.sendFile(__dirname + "/edit.html")
 });
 
 app.get("/tryagain.html", function(req, res){

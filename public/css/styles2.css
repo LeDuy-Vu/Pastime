@@ -134,7 +134,19 @@ body {
   padding-top: 3rem;
 }
 
-#red {
-  background-color: red;
+#settings-button{
+  background-color: black;
+  border: 0px;
+  height: 38px;
+
+}
+
+#settings-button-red {
+  background-color: #ff3224;
+  
+  border: 0px;
+  height: 38px;
+  
+
 }
 
