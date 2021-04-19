@@ -360,7 +360,7 @@ app.post("/", function(req, res){
             else
               console.log("ADDDDDDDAAA");
           });
-          if(desktopIdle.getIdleTime() > 10){
+          if(desktopIdle.getIdleTime() > 10000){
             res.sendFile(__dirname + "/tryagain.html");
           }
 
