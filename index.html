@@ -13,7 +13,7 @@
 </head>
 <body>
 
-    <img class="cover-image" src="assets/images/NY-skyline.jpg" alt="Picture of the New York street, golden hour"> 
+    <img class="cover-image" id="cover" src="assets/images/NY-skyline.jpg" alt="Picture of the New York street, golden hour"> 
 
     <div class="center-box">
         <h1> PASTIME </h1>
@@ -24,5 +24,7 @@
         <a class="btn btn-dark" href="login.html">Sign In</a>
     </div>
 </body>
-<script src="script.js"></script>
+
+<script> document.getElementById('cover').setAttribute('draggable', false); </script>
+
 </html>

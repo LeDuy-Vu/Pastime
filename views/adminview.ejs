@@ -1,61 +1,76 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="css/styles2.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <title>Admin</title>
+   <head>
+      <meta charset="utf-8">
+      <link rel="stylesheet" href="css/styles2.css">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+      <title>Admin</title>
+      </script>
+      <script src="https://kit.fontawesome.com/3ac2a27d06.js" crossorigin="anonymous"></script>
+   </head>
+   <body>
+      User List
+      <div id="button-container">
+      </div>
+      <div id="button-container">
+         <input type="text" class="form-control col-lg-1" placeholder="Search">
+         <button type="button" class="btn btn-primary btn-lg">
+         <i class="fa fa-search" aria-hidden="true"></i> Search User</button></i>
+         <br/>
+         <br />
+      </div>
+      <%  newListItems.forEach(function(item){ %>
+      <table class="user-list">
+         <thead>
+            <tr>
+               <th>Name</th>
+               <th>Email</th>
+               <th>Edit</th>
+               <th>Delete</th>
+               <th>Lock</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td><%=item.FirstName%> <%=item.LastName%></td>
+               <td><input id="userEmail" readonly type="text" name="userEditEmail" value="<%=item.EmailID%>"></td>
+               <form class="" action="/editUser" method="post">
+                  <td><button class="btn btn-dark" onsubmit="return false" type="submit" name="vote" value="Edit"> <i class="fas fa-pencil-alt"></i> Edit</button></td>
+               </form>
+               <td><button class="btn btn-dark" type="submit" name="vote" value="Lock"> <i class="fas fa-lock"></i> Lock</button></td>
+               <td>
+              
+                    <button class="btn btn-dark" id="settings-button-red" onclick="makePopup()" type="submit" name="vote" value="Delete" > <i class="fas fa-trash"></i> Delete 
+                      
+                      
+                      <div data-role="popup" data-arrow="true" id="arrow-popup">
+                        <p>This is a popup containing several paragraphs of text.</p>
+                        <p>The first paragraph is the one above. This is the second.</p>
+                        <p>And here's another paragraph to help the popup achieve a decent height.</p>
+                    </div>
 
-  </script>
-  <script src="https://kit.fontawesome.com/3ac2a27d06.js" crossorigin="anonymous"></script>
+                      
+                    
+                  
+                  </button>
 
-  </head>
-  <body>
-
-    User List
-
-    <div id="button-container">
-
-
-</div>
-<div id="button-container">
-
-  <input type="text" class="form-control col-lg-1" placeholder="Search">
-  <button type="button" class="btn btn-primary btn-lg">
-  <i class="fa fa-search" aria-hidden="true"></i> Search User</button></i>
-  <br/>
-  <br />
-
-</div>
-<%  newListItems.forEach(function(item){ %>
-<table class="user-list">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Edit</th>
-      <th>Delete</th>
-      <th>Lock</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <form class="" action="/editUser" method="post">
-      <td><%=item.FirstName%> <%=item.LastName%></td>
-      <td><input id="userEmail" readonly type="text" name="userEditEmail" value="<%=item.EmailID%>"></td>
-      <td><input class="btn btn-sm btn-outline-secondary" type="submit" name="vote" value="Edit"></td>
-      <td><input class="btn btn-sm btn-outline-secondary" type="submit" name="vote" value="Delete"></td>
-      <td><input class="btn btn-sm btn-outline-secondary" type="submit" name="vote" value="Lock"></td>
-      <!-- <td></i><a type="button" class="btn btn-dark" href="#"> <i class="fas fa-pencil-alt"></i> Edit </a></td>
-      <td></i><a type="button" class="btn btn-dark" id="red" href="#"> <i class="fas fa-trash"></i> Delete </a></td> -->
-    </form>
-    </tr>
-  </tbody>
-</table>
-
-<%  }) %>
-
-
-    </body>
-
-    </html>
+                    
+                      
+                 
+                  </div>
+               </td>
+               <!-- <td></i><a type="button" class="btn btn-dark" href="#"> <i class="fas fa-pencil-alt"></i> Edit </a></td>
+                  <td></i><a type="button" class="btn btn-dark" id="red" href="#"> <i class="fas fa-trash"></i> Delete </a></td> -->
+            </tr>
+         </tbody>
+      </table>
+      <%  }) %>
+   </body>
+   <script>
+    // When the user clicks on div, open the popup
+    function makePopup()  {
+      var popup = document.getElementById("myPopup");
+      popup.classList.toggle("show");
+    }
+    </script>
+</html>

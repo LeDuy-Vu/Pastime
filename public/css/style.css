@@ -1,7 +1,18 @@
+body, html {height:100%;}
+
+div.wrap {height:100%; overflow:hidden;}
+
+
+body {overflow: hidden; }
+
+
 * {
     padding: 0;
     margin: 0;
 }
+
+
+
 
 .center-box {
     position: absolute;
@@ -75,14 +86,14 @@ a {
 
 .cover-image {
   min-height: 100%;
-  min-width: 1024px;
-  width: 100%;
-  height: auto;
-	
-
-  position: relative;
+  min-width: 100%;
+  /* max-height: 100%; */
+  overflow: hidden;
+  position: absolute;
   top: 0;
   left: 0;
+
+  background-size: cover;
     
 }
 

@@ -341,9 +341,12 @@ app.post("/editUser", function(req, res){
   if(req.body.vote === "Edit"){
     res.sendFile(__dirname + "/edit.html")
   }
-  else {
-    res.sendFile(__dirname + "/delete.html")
+  else{
+    return null;
   }
+  // else {
+  //   res.sendFile(__dirname + "/assets")
+  // }
 
 
 
