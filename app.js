@@ -3,12 +3,35 @@ const https = require('https');
 const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require("mongoose");
+const crypto = require('crypto');
 const _ = require("lodash");
 const router = express.Router();
-//var desktopIdle = require('desktop-idle');
+var desktopIdle = require('desktop-idle');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+
+/**
+ * Generates random hex string of length 16 as salt
+ * @function
+ */
+ var getSalt = function(){
+  return crypto.randomBytes(Math.ceil(8)).toString('hex').slice(0,16);
+};
+
+/**
+* Hash sensitive information with ripemd160.
+* @function
+* @param {string} phase - Phase needed to be hashed.
+* @param {string} salt - Data to be validated.
+*/
+var hash = function(phase, salt){
+  var hash = crypto.createHmac('ripemd160', salt); // Hashing algorithm ripemd160
+  hash.update(phase);
+  return hash.digest('hex');
+};
+
 
 router.get('/', (req, res, next) => {
     res.status(200).json({
@@ -29,13 +52,21 @@ const globVars = {
 
 const itemsSchema = {
   FirstName: String,
-  LastName: String,
-  EmailID: String,
-  Password: String,
-  Street: String,
-  City: String,
-  State: String,
-  ZipCode: String,
+    LastName: String,
+    EmailID: String,
+    Salt: String,
+    Password: String,
+    Street: String,
+    City: String,
+    State: String,
+    ZipCode: String,
+    CredCardName: String,
+    CredCardNumb: String,
+    Last4Digits: String,
+    CVC: String,
+    ExpireDate: String,
+    Points: Number,
+    isLocked: Boolean
 };
 
 const userWallet = {
@@ -121,36 +152,46 @@ app.post("/addActivity", function(req, res){
   });
 });
 
+// Push the new user account into the DB
 app.post("/aftersignup",function(req, res){
 
   Item.findOne({EmailID:req.body.Email}, function (err, docs){
 
     if(docs === null){
+      salt = getSalt();
+      pass = req.body.Pass;
+
       const temps = new Item({
         FirstName: req.body.FName,
         LastName: req.body.LName,
         EmailID: req.body.Email,
-        Password: req.body.Pass,
+        Salt: salt,
+        Password: hash(pass, salt),
         Street: req.body.Streets,
         City: req.body.City,
         State: req.body.state,
         ZipCode: req.body.zips,
+        CredCardName: "",
+        CredCardNumb: "",
+        Last4Digits: "",
+        CVC: "",
+        Expiry: "",
+        Points: 0,
+        isLocked: false
       });
-
-
 
       Wallet.insertMany({emailID: req.body.Email}, function(err){
         if (err)
           console.log(err);
         else
-          console.log("Successfully savevd default items to DB.");
+          console.log("Successfully saved default items to DB.");
       });
 
       Item.insertMany(temps, function(err){
         if (err)
           console.log(err);
         else
-          console.log("Successfully savevd default items to DB.");
+          console.log("Successfully saved default items to DB.");
       });
       res.sendFile(__dirname+ "/login.html");
     }
@@ -161,6 +202,7 @@ app.post("/aftersignup",function(req, res){
   });
 });
 
+// Change Password logic
 app.post("/changePass", function(req, res){
 
   Item.findOne({FirstName: currentUser }, function (err, docs){
@@ -170,9 +212,9 @@ app.post("/changePass", function(req, res){
     });
     }
     else {
-      if((docs.Password === req.body.oldPassword) && (req.body.newPassword1 === req.body.newPassword2)){
+      if((docs.Password === hash(req.body.oldPassword, docs.Salt)) && (req.body.newPassword1 === req.body.newPassword2)){
         console.log("some");
-        Item.updateOne({FirstName: currentUser}, {$set:{Password:req.body.newPassword1}}, function(err, result){
+        Item.updateOne({FirstName: currentUser}, {$set:{Password: hash(req.body.newPassword1, docs.Salt)}}, function(err, result){
           if(result === null)
             console.log("can't change password");
           else
@@ -355,6 +397,7 @@ app.post("/editUser", function(req, res){
 
 });
 
+// Login logic
 app.post("/", function(req, res){
   var emailAddress = req.body.emailID;
   var password = req.body.passWORD;
@@ -368,12 +411,12 @@ app.post("/", function(req, res){
   }
   else {
 
-  Item.findOne({EmailID: emailAddress }, function (err, docs) {
+  Item.findOne({EmailID: emailAddress}, function (err, docs) {
       if (docs === null) {
           res.redirect('tryagain.html');
       }
       else {
-        if(emailAddress === docs.EmailID && password === docs.Password) {
+        if(emailAddress === docs.EmailID && hash(password, docs.Salt) === docs.Password) {
           currentUser = docs.FirstName;
 
           globalDB.findOneAndUpdate({_id: "607a9b0e4ad3126658c05db0"}, {$set: {CurrentUser: docs.EmailID, isLoggedIn: true}}, function(error, success){
@@ -383,9 +426,9 @@ app.post("/", function(req, res){
               console.log("Added to DB");
           });
 
-          // if(desktopIdle.getIdleTime() > 10000){
-          //   res.sendFile(__dirname + "/tryagain.html");
-          // }
+          if(desktopIdle.getIdleTime() > 10000){
+            res.sendFile(__dirname + "/tryagain.html");
+          }
 
           Activity.find({}, function(err, foundItems){
           res.render("home", {MyName: currentUser, newListItems: foundItems});
