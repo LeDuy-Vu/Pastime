@@ -5,7 +5,7 @@ const app = express();
 const mongoose = require("mongoose");
 const _ = require("lodash");
 const router = express.Router();
-var desktopIdle = require('desktop-idle');
+//var desktopIdle = require('desktop-idle');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -61,12 +61,14 @@ const activitiesSchema = {
   ServiceProvider: String,
   Description: String,
   Rating: String,
-  StartDate: String,
-  EndDate: String,
+  Date: String,
+  Time: String,
   Image: String,
   Venue: String,
   Longitude: String,
   Latitude: String,
+  Price: Number, 
+  Tags: Array,
 };
 
 const Activity = mongoose.model("Activity", activitiesSchema);
@@ -80,11 +82,12 @@ app.get("/about.html", function(req, res){
 });
 
 app.post("/result", function(req, res){
-  Activity.findOne({'Name': req.body.City}, 'Name Description ServiceProvider Rating StartDate EndDate Image Venue Longitude Latitude', function (err, activity) {
+  Activity.findOne({'Name': req.body.City}, 'Name Description ServiceProvider Rating Date Time Image Venue Longitude Latitude Price Tags', function (err, activity) {
     if (err) return handleError(err);
     else {
-      res.render("activities", {name: activity.Name, des:activity.Description, provider: activity.ServiceProvider, rating: activity.Rating, startDate: activity.StartDate,
-        endDate: activity.EndDate, image: activity.Image, venue: activity.Venue, longitude: activity.Longitude, latitude: activity.Latitude});
+      res.render("activities", {name: activity.Name, des:activity.Description, provider: activity.ServiceProvider, rating: activity.Rating, date: activity.Date,
+        time: activity.Time, image: activity.Image, venue: activity.Venue, longitude: activity.Longitude, latitude: activity.Latitude, price: activity.Price, 
+      tags: activity.Tags});
     }
   });
 })
@@ -380,9 +383,9 @@ app.post("/", function(req, res){
               console.log("Added to DB");
           });
 
-          if(desktopIdle.getIdleTime() > 10000){
-            res.sendFile(__dirname + "/tryagain.html");
-          }
+          // if(desktopIdle.getIdleTime() > 10000){
+          //   res.sendFile(__dirname + "/tryagain.html");
+          // }
 
           Activity.find({}, function(err, foundItems){
           res.render("home", {MyName: currentUser, newListItems: foundItems});
