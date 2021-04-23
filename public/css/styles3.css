@@ -15,6 +15,13 @@ body {
 
 }
 
+
+.company{
+  font-weight: bold;
+  font-size: 40px;
+}
+
+
 .btn1 {
   margin-top: 10px;
 }

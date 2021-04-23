@@ -255,7 +255,17 @@ app.get("/Wallet.html", function(req, res){
         if(docs === null)
           console.log("EEEEEEEE");
         else{
-          res.render("wallets", {newListItems: document.currentActivity })
+          Activity.find({Name: document.currentActivity}, function(err, docs1){
+            if(err)
+              console.log("llol");
+              else{
+                var total = 0;
+                docs1.forEach(function(item){
+                  total += item.Price;
+                })
+                res.render("wallets", {numActivity: document.currentActivity.length, newListItems: docs1, TotalPrice: total})
+              }
+          });
         }
       });
     }
