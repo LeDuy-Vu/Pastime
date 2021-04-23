@@ -1,36 +1,52 @@
-/* Navigation Bars */
-.apple-logo {
-  font-size: 2rem;
-  color: white;
+.topnav {
+  overflow: hidden;
+  background-color: #222831;
+  position:fixed;
+   top:0;
+   width:100%;
+   z-index:100;
 }
 
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #222831;
+  color: white;
+}
 .venues {
   text-align: center;
 }
 
-.navigation {
-  padding-top: 0px;
-  background-color: black !important;
+.ser {
+  margin-top: 1rem;
 }
 
-.warning {
-  /* padding-left: 32rem; */
-  color: white;
-  text-align: center;
+.indu {
+  padding-right: 100px;
+}
 
-}
-.covid {
-  padding: 12px 0;
-    /* background: #0071E3; */
-    color: #ffffff;
-    margin-top: 4rem;
-    font-size: 14px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 #cityInput {
+  border-top-style: hidden;
+ border-right-style: hidden;
+ border-left-style: hidden;
+ border-bottom-style: hidden;
+ font-weight: bold;
+ font-size: 20px;
+}
+
+#cityInput1 {
   border-top-style: hidden;
  border-right-style: hidden;
  border-left-style: hidden;
@@ -41,16 +57,30 @@
 
 .navcolor1{
   color: white;
-  padding-left: 3.5rem;
-  padding-right: 3rem;
+  padding-left: 1rem;
+  padding-right: 16rem;
   padding-top: 5rem;
+  text-decoration: none;
 }
 
-body {
+.navcolor12{
+  color: white;
+  padding-left: 2rem;
+  padding-right: 10rem;
+}
+
+.navcolor13{
+  color: white;
+  padding-right: 0rem;
+  padding-left: 20rem;
+
+}
+
+/* body {
   background-color: #393e46;
-}
+} */
 
-.vertical1 {
+/* .vertical1 {
   size: "2";
 }
 
@@ -60,7 +90,7 @@ body {
 
   padding: 12px 0;
   padding-bottom: 0;
-    /* background: #0071E3; */
+
     margin-top: 0;
     font-size: 14px;
     display: flex;
@@ -71,41 +101,27 @@ body {
 .shopping {
   color: #393e46;
 
-}
+} */
 
 
 
 /* Intro of Page, iPhone-SE section */
 
-.intro {
+/* .intro {
   background-color: #161617;
   text-align: center;
-}
+} */
 
-
-.iPhone-SE {
-  padding-top: 5rem;
-  font-size: 4rem;
-  color: white;
-}
-
-.iPhone-SE-description {
-  color: white;
-}
-
-.iPhone-trade {
-  color: grey;
-}
-
+/*
 .learn {
   padding-right: 2rem;
 }
 
 .top-nav {
   padding-bottom: .5rem;
-}
+} */
 
-.learning {
+/* .learning {
  color: blue;
  font-size: 1.3rem;
 }
@@ -117,38 +133,24 @@ body {
 .navcolor1:hover {
   text-decoration: none;
   text-shadow: bold;
-}
+} */
 
-.iPhone-SE-image {
-  padding-top: 1rem;
-}
 
-/* iPhone 11 section */
-
-.a11-intro{
-  background-color: white;
-  text-align: center;
-}
-
-.iPhone11-h1 {
-  padding-top: 3rem;
-}
-
-#settings-button{
+/* #settings-button{
   background-color: black;
   border: 0px;
   height: 38px;
 
-}
+} */
 
-#settings-button-red {
+/* #settings-button-red {
   background-color: #ff3224;
   border: 0px;
-  
-}
+
+} */
 
 /* taken from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_popup */
-.popup {
+/* .popup {
   position: relative;
   display: inline-block;
   cursor: pointer;
@@ -159,7 +161,7 @@ body {
 }
 
 /* The actual popup */
-.popup .popuptext {
+/* .popup .popuptext {
   visibility: hidden;
   width: 160px;
   background-color: #555;
@@ -172,10 +174,10 @@ body {
   bottom: 125%;
   left: 50%;
   margin-left: -80px;
-}
+} */
 
 /* Popup arrow */
-.popup .popuptext::after {
+/* .popup .popuptext::after {
   content: "";
   position: absolute;
   top: 100%;
@@ -184,22 +186,22 @@ body {
   border-width: 5px;
   border-style: solid;
   border-color: #555 transparent transparent transparent;
-}
+} */
 
 /* Toggle this class - hide and show the popup */
-.popup .show {
+/* .popup .show {
   visibility: visible;
   -webkit-animation: fadeIn 1s;
   animation: fadeIn 1s;
-}
+} */
 
 /* Add animation (fade in the popup) */
-@-webkit-keyframes fadeIn {
-  from {opacity: 0;} 
+/* @-webkit-keyframes fadeIn {
+  from {opacity: 0;}
   to {opacity: 1;}
-}
+} */
 
-@keyframes fadeIn {
+/* @keyframes fadeIn {
   from {opacity: 0;}
   to {opacity:1 ;}
-}
+} */
