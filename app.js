@@ -173,10 +173,10 @@ app.post("/aftersignup",function(req, res){
         EmailID: req.body.Email,
         Salt: salt,
         Password: hash(pass, salt),
-        Street: req.body.Streets,
-        City: req.body.City,
-        State: req.body.state,
-        ZipCode: req.body.zips,
+        Street: "",
+        City: "",
+        State: "",
+        ZipCode: "",
         CredCardName: "",
         CredCardNumb: "",
         Last4Digits: "",
@@ -449,6 +449,7 @@ app.post("/", function(req, res){
 });
 
 let port = process.env.PORT;
+
 if (port == null || port == "") {
   port = 3000;
 }

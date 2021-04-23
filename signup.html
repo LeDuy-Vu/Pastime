@@ -21,66 +21,71 @@
   <link rel="manifest" href="favicon/site.webmanifest">
 </head>
 
-<body>
-<form class="" action="/aftersignup" method="post">
-  <div class="container-fluid body1">
-    <div class="login">
-      <div class="logo">
-        <img class ="tent-image"src="assets/images/tent.png" alt width="90" height="72">
-        <h3 class="company">PASTIME</h4>
-      </div>
-      <form>
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <label >First Name</label>
-            <input  required="required" name="FName"class="form-control"  placeholder="John">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Last Name</label>
-            <input required="required" name="LName" class="form-control"  placeholder="Appleseed">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="inputEmail4">Email</label>
-            <input required="required" type="email" name="Email" class="form-control" id="inputEmail4" placeholder="Email">
-          </div>
-          <div class="form-group col-md-6">
-            <label>Password</label>
-            <input required="required" type="password" name="Pass" class="form-control" id="inputPassword4" placeholder="Password">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="inputAddress">Street</label>
-          <input required="required" type="text" name="Streets"class="form-control" id="inputAddress" placeholder="1234 Main St">
-        </div>
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <label for="inputCity">City</label>
-            <input required="required" type="text" name="City" class="form-control" id="inputCity" placeholder="City">
-          </div>
-          <div class="form-group col-md-4">
-            <label for="inputState">State</label>
-            <select required="required" name="state" id="inputState" class="form-control">
-              <option selected>Choose...</option>
-              <option>CA</option>
-              <option>WA</option>
-              <option>TX</option>
-            </select>
-          </div>
-          <div class="form-group col-md-2">
-            <label for="inputZip">Zip</label>
-            <input required="required" name="zips" type="text" class="form-control" id="inputZip" placeholder="12345">
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Sign Up</button>
-      </form>
-      <p class="mt-5 mb-3 text-muted maru">© 2021</p>
+<body class="bg-light">
 
+<div class="container">
+  <main>
+    <form class="" action="/aftersignup" method="post">
+    <div class="py-5 text-center">
+      <img class="d-block mx-auto mb-4" src="assets/images/tent.png" alt="" width="72" height="57">
+      <h2>Sign Up</h2>
     </div>
+    <div class="row g-5">
+      <div class="col-md-6 col-lg-12">
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label >First Name</label>
+            <input  required="required" name="FName"class="form-control"  placeholder="John">
+              <div class="invalid-feedback">
+                Valid first name is required.
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <label for="">Last Name</label>
+            <input required="required" name="LName" class="form-control"  placeholder="Appleseed">
+              <div class="invalid-feedback">
+                Valid last name is required.
+              </div>
+            </div>
+            <div class="col-6">
+              <label for="inputEmail4">Email</label>
+           <input required="required" type="email" name="Email" class="form-control" id="inputEmail4" placeholder="Email">
+              <div class="invalid-feedback">
+                Please enter a valid email address for shipping updates.
+              </div>
+            </div>
+
+            <div class="col-6">
+              <label>Password</label>
+            <input required="required" type="password" name="Pass" class="form-control" id="inputPassword4" placeholder="Password">
+            </div>
+            <div class="btn1 col-6">
+             <button type="submit" class="btn btn-primary">Sign Up</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="mt-5 mb-3 text-muted maru">© 2021</p>
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="#">Privacy</a></li>
+      <li class="list-inline-item"><a href="#">Terms</a></li>
+      <li class="list-inline-item"><a href="#">Support</a></li>
+    </ul>
+  </footer>
+</div>
 
 
-  </div>
-  </form>
+    <script src="/docs/5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 
-</body>
+      <script src="form-validation.js"></script>
+  </body>
+
+
+
+
+
 
 </html>
