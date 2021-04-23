@@ -54,9 +54,11 @@
             <h1 class="fw-light">Welcome, <%= MyName %></h1>
             <p class="lead text-muted">Some description of what we do and what we have to offer.</p>
             <div class="form-control col-lg-8">
-              <input type="text" class="form-control col-lg-1" placeholder="Search">
-              <button type="button" class="btn btn-primary btn-lg">
-              <i class="fa fa-search" aria-hidden="true"></i> Search</button>
+              <form class="" action="/searchActivity" method="post">
+              <input type="text" name = "activityTag" class="form-control col-lg-1" placeholder="Search">
+              <button class="btn btn-primary btn-lg" type = "submit">
+              <i class="fa fa-search" aria-hidden="true" ></i> Search</button>
+              </form>
           </div>
           </div>
         </div>

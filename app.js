@@ -98,7 +98,7 @@ const activitiesSchema = {
   Venue: String,
   Longitude: String,
   Latitude: String,
-  Price: Number, 
+  Price: Number,
   Tags: Array,
 };
 
@@ -112,12 +112,18 @@ app.get("/about.html", function(req, res){
   res.sendFile(__dirname + "/about.html");
 });
 
+
+// Searhcing Activity Function
+app.post("/searchActivity", function(req, res){
+  console.log(req.body.activityTag);
+})
+
 app.post("/result", function(req, res){
   Activity.findOne({'Name': req.body.City}, 'Name Description ServiceProvider Rating Date Time Image Venue Longitude Latitude Price Tags', function (err, activity) {
     if (err) return handleError(err);
     else {
       res.render("activities", {name: activity.Name, des:activity.Description, provider: activity.ServiceProvider, rating: activity.Rating, date: activity.Date,
-        time: activity.Time, image: activity.Image, venue: activity.Venue, longitude: activity.Longitude, latitude: activity.Latitude, price: activity.Price, 
+        time: activity.Time, image: activity.Image, venue: activity.Venue, longitude: activity.Longitude, latitude: activity.Latitude, price: activity.Price,
       tags: activity.Tags});
     }
   });
