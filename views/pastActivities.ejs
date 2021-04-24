@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/checkout/">
+
+
+
+  <!-- Bootstrap script -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+   <!--CSS script-->
+   <link rel="stylesheet" href="css/styles3.css">
+   <!--Font Awesome script -->
+   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+   <!--JS script-->
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+   <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+   <link rel="manifest" href="favicon/site.webmanifest">
+    <title>My Activity</title>
+  </head>
+  <body>
+
+    <h2>My Activities</h2>
+    <%  newListItems.forEach(function(item){ %>
+      <li class="list-group-item d-flex justify-content-between lh-sm">
+        <div>
+          <h6 class="my-0"><%= item.Name%></h6>
+          <small class="text-muted"><%= item.Date%></small>
+        </div>
+        <span class="text-muted">$<%= item.Price %></span>
+      </li>
+     <%  }) %>
+
+
+  </body>
+</html>

@@ -344,14 +344,20 @@ app.get("/previousActivities", function(req, res){
         if(docs === null)
           console.log("EEEEEEEE");
         else{
-          document.completedActivity.forEach(function(item, index, array){
-            console.log(item);
+          Activity.find({Name: document.completedActivity}, function(err, docs1){
+            if(err)
+              console.log("llol");
+              else {
+                res.render("pastActivities", {newListItems: docs1})
+              }
           });
+          
         }
       });
     }
   });
 });
+
 
 app.get("/", function(req, res) {
   res.sendFile(__dirname + "/index.html")
