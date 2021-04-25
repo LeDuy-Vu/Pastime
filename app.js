@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const _ = require("lodash");
 const router = express.Router();
 var desktopIdle = require('desktop-idle');
+var validator = require("email-validator");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -113,10 +114,12 @@ app.get("/about.html", function(req, res){
 });
 
 
-// Searhcing Activity Function
+// Searching Activity Function
 app.post("/searchActivity", function(req, res){
-  console.log(req.body.activityTag);
-})
+    Activity.find({"Tags": { $in: req.body.activityTag.split(", ") }}, function(err, foundItems){
+      res.render("home", {MyName: currentUser, newListItems: foundItems});
+    });
+});
 
 app.post("/result", function(req, res){
   Activity.findOne({'Name': req.body.City}, 'Name Description ServiceProvider Rating Date Time Image Venue Longitude Latitude Price Tags', function (err, activity) {
@@ -160,52 +163,61 @@ app.post("/addActivity", function(req, res){
 
 // Push the new user account into the DB
 app.post("/aftersignup",function(req, res){
+  email = req.body.Email.trim()     // trim whitespaces
+  if (validator.validate(email))    // validate email
+  {
+    Item.findOne({EmailID:email}, function (err, docs){
 
-  Item.findOne({EmailID:req.body.Email}, function (err, docs){
-
-    if(docs === null){
-      salt = getSalt();
-      pass = req.body.Pass;
-
-      const temps = new Item({
-        FirstName: req.body.FName,
-        LastName: req.body.LName,
-        EmailID: req.body.Email,
-        Salt: salt,
-        Password: hash(pass, salt),
-        Street: "",
-        City: "",
-        State: "",
-        ZipCode: "",
-        CredCardName: "",
-        CredCardNumb: "",
-        Last4Digits: "",
-        CVC: "",
-        Expiry: "",
-        Points: 0,
-        isLocked: false
-      });
-
-      Wallet.insertMany({emailID: req.body.Email}, function(err){
-        if (err)
-          console.log(err);
-        else
-          console.log("Successfully saved default items to DB.");
-      });
-
-      Item.insertMany(temps, function(err){
-        if (err)
-          console.log(err);
-        else
-          console.log("Successfully saved default items to DB.");
-      });
-      res.sendFile(__dirname+ "/login.html");
-    }
-
-    else
-      res.sendFile(__dirname + "/tryagain.html");
-
-  });
+      if(docs === null){  // if no such email in the DB yet
+        salt = getSalt();
+  
+        const temps = new Item({
+          FirstName: req.body.FName,
+          LastName: req.body.LName,
+          EmailID: email,
+          Salt: salt,
+          Password: hash(req.body.Pass, salt),
+          Street: "",
+          City: "",
+          State: "",
+          ZipCode: "",
+          CredCardName: "",
+          CredCardNumb: "",
+          Last4Digits: "",
+          CVC: "",
+          Expiry: "",
+          Points: 0,
+          isLocked: false
+        });
+  
+        Wallet.insertMany({emailID: email}, function(err){
+          if (err)
+            console.log(err);
+          else
+            console.log("Successfully saved default items to DB.");
+        });
+  
+        Item.insertMany(temps, function(err){
+          if (err)
+            console.log(err);
+          else
+            console.log("Successfully saved default items to DB.");
+        });
+        res.sendFile(__dirname+ "/login.html");
+      }
+  
+      else  // if this email already exists in the DB
+      {
+        console.log("Email already existed.")
+        res.sendFile(__dirname + "/tryagain.html");
+      }
+    });
+  }
+  else
+  {
+    console.log("Wrong email format")
+    res.sendFile(__dirname + "/tryagain.html");
+  }
 });
 
 // Change Password logic
@@ -421,21 +433,23 @@ app.post("/editUser", function(req, res){
 
 // Login logic
 app.post("/", function(req, res){
-  var emailAddress = req.body.emailID;
+  var emailAddress = req.body.emailID.trim();
   var password = req.body.passWORD;
 
   if (emailAddress === "admin@admin.com" && password == "admin") {
     console.log("Admin Success");
 
     Item.find({}, function(err, foundItems){
-    res.render("adminview", {newListItems: foundItems});
-  });
+      res.render("adminview", {newListItems: foundItems});
+    });
   }
-  else {
-
-  Item.findOne({EmailID: emailAddress}, function (err, docs) {
-      if (docs === null) {
-          res.redirect('tryagain.html');
+  else if (validator.validate(emailAddress))
+  {
+    Item.findOne({EmailID: emailAddress}, function (err, docs) {
+      if (docs === null)
+      {
+        console.log("Email not existed")  
+        res.redirect('tryagain.html');
       }
       else {
         if(emailAddress === docs.EmailID && hash(password, docs.Salt) === docs.Password) {
@@ -453,15 +467,22 @@ app.post("/", function(req, res){
           }
 
           Activity.find({}, function(err, foundItems){
-          res.render("home", {MyName: currentUser, newListItems: foundItems});
-        });
+            res.render("home", {MyName: currentUser, newListItems: foundItems});
+          });
         }
-        else {
+        else
+        {
+          console.log("Wrong password");
           res.redirect('tryagain.html');
         }
       }
-  });
-}
+    });
+  }
+  else
+  {
+    console.log("Wrong email format");
+    res.redirect('tryagain.html');
+  }
 });
 
 let port = process.env.PORT;
