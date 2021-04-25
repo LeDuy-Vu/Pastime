@@ -116,7 +116,11 @@ app.get("/about.html", function(req, res){
 
 // Searching Activity Function
 app.post("/searchActivity", function(req, res){
-    Activity.find({"Tags": { $in: req.body.activityTag.split(", ") }}, function(err, foundItems){
+  var searchAct = req.body.activityTag.split(", ");
+  for (let i = 0; i < searchAct.length; i++) {
+      searchAct[i] = searchAct[i].toLowerCase();
+  }
+    Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
       res.render("home", {MyName: currentUser, newListItems: foundItems});
     });
 });
@@ -170,7 +174,7 @@ app.post("/aftersignup",function(req, res){
 
       if(docs === null){  // if no such email in the DB yet
         salt = getSalt();
-  
+
         const temps = new Item({
           FirstName: req.body.FName,
           LastName: req.body.LName,
@@ -189,34 +193,35 @@ app.post("/aftersignup",function(req, res){
           Points: 0,
           isLocked: false
         });
-  
+
         Wallet.insertMany({emailID: email}, function(err){
           if (err)
             console.log(err);
           else
             console.log("Successfully saved default items to DB.");
         });
-  
+
         Item.insertMany(temps, function(err){
           if (err)
             console.log(err);
           else
             console.log("Successfully saved default items to DB.");
         });
-        res.sendFile(__dirname+ "/login.html");
+        res.render("login", {inputcolor: "black", FirstLine: "", SecondLine:""});
       }
-  
+
       else  // if this email already exists in the DB
       {
         console.log("Email already existed.")
         res.sendFile(__dirname + "/tryagain.html");
+        res.render("login", {inputcolor: "red", FirstLine: "Wrong Credentials", SecondLine:"Try Again!"});
       }
     });
   }
   else
   {
     console.log("Wrong email format")
-    res.sendFile(__dirname + "/tryagain.html");
+    res.render("login", {inputcolor: "red", FirstLine: "Wrong Credentials", SecondLine:"Try Again!"});
   }
 });
 
@@ -363,7 +368,7 @@ app.get("/previousActivities", function(req, res){
                 res.render("pastActivities", {newListItems: docs1})
               }
           });
-          
+
         }
       });
     }
@@ -376,7 +381,7 @@ app.get("/", function(req, res) {
 });
 
 app.get("/login.html", function(req, res){
-  res.sendFile(__dirname+"/login.html")
+  res.render("login", {inputcolor: "black", FirstLine: "", SecondLine:""});
 });
 
 app.get("/index.html", function(req, res){
@@ -406,7 +411,7 @@ app.get("/edit.html", function(req, res){
 });
 
 app.get("/tryagain.html", function(req, res){
-  res.sendFile(__dirname + "/tryagain.html")
+  res.render("login", {inputcolor: "red", FirstLine: "Wrong Credentials", SecondLine:"Try Again!"});
 });
 
 app.get("/*", function(req, res){
@@ -431,6 +436,11 @@ app.post("/editUser", function(req, res){
 
 });
 
+app.get("/home", function(req, res){
+    Activity.find({}, function(err, foundItems){
+    res.render("home", {MyName: currentUser, newListItems: foundItems});
+  });
+})
 // Login logic
 app.post("/", function(req, res){
   var emailAddress = req.body.emailID.trim();
@@ -448,8 +458,8 @@ app.post("/", function(req, res){
     Item.findOne({EmailID: emailAddress}, function (err, docs) {
       if (docs === null)
       {
-        console.log("Email not existed")  
-        res.redirect('tryagain.html');
+        console.log("Email not existed")
+        res.render("login", {inputcolor: "red", FirstLine: "Wrong Credentials", SecondLine:"Try Again!"});
       }
       else {
         if(emailAddress === docs.EmailID && hash(password, docs.Salt) === docs.Password) {
@@ -463,7 +473,7 @@ app.post("/", function(req, res){
           });
 
           if(desktopIdle.getIdleTime() > 10000){
-            res.sendFile(__dirname + "/tryagain.html");
+            res.render("login", {inputcolor: "red", FirstLine: "Session Expired", SecondLine:"Try Again!"});
           }
 
           Activity.find({}, function(err, foundItems){
@@ -473,7 +483,7 @@ app.post("/", function(req, res){
         else
         {
           console.log("Wrong password");
-          res.redirect('tryagain.html');
+          res.render("login", {inputcolor: "red", FirstLine: "Wrong Password", SecondLine:"Try Again!"});
         }
       }
     });
@@ -481,7 +491,7 @@ app.post("/", function(req, res){
   else
   {
     console.log("Wrong email format");
-    res.redirect('tryagain.html');
+    res.render("login", {inputcolor: "red", FirstLine: "Wrong email format", SecondLine:"Try Again!"});
   }
 });
 
