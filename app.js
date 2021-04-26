@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 /**
  * Generates random hex string of length 16 as salt
- * @function
+ * @function nothing
  */
  var getSalt = function(){
   return crypto.randomBytes(Math.ceil(8)).toString('hex').slice(0,16);
