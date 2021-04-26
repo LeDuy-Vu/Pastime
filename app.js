@@ -6,7 +6,6 @@ const mongoose = require("mongoose");
 const crypto = require('crypto');
 const _ = require("lodash");
 const router = express.Router();
-var desktopIdle = require('desktop-idle');
 var validator = require("email-validator");
 
 app.use(bodyParser.json());
@@ -490,10 +489,6 @@ app.post("/home", function(req, res){
             else
               console.log("Added to DB");
           });
-
-          if(desktopIdle.getIdleTime() > 10000){
-            res.render("login", {inputcolor: "red", FirstLine: "Session Expired", SecondLine:"Try Again!"});
-          }
 
           Activity.find({}, function(err, foundItems){
             res.render("home", {MyName: currentUser, newListItems: foundItems});
