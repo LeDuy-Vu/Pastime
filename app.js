@@ -114,6 +114,16 @@ app.get("/about.html", function(req, res){
 });
 
 
+app.get("/searchActivity", function(req, res){
+  const { activityTag } = req.query;
+  var searchAct = activityTag.split(", ");
+  for (let i = 0; i < searchAct.length; i++) {
+      searchAct[i] = searchAct[i].toLowerCase();
+  }
+    Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
+      res.render("home", {MyName: currentUser, newListItems: foundItems});
+    });
+});
 // Searching Activity Function
 app.post("/searchActivity", function(req, res){
   var searchAct = req.body.activityTag.split(", ");
@@ -123,6 +133,17 @@ app.post("/searchActivity", function(req, res){
     Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
       res.render("home", {MyName: currentUser, newListItems: foundItems});
     });
+});
+
+app.get("/activities/:id", function(req, res){
+  Activity.findOne({'Name': req.params.id}, 'Name Description ServiceProvider Rating Date Time Image Venue Longitude Latitude Price Tags', function (err, activity) {
+    if (err) return handleError(err);
+    else {
+      res.render("activities", {name: activity.Name, des:activity.Description, provider: activity.ServiceProvider, rating: activity.Rating, date: activity.Date,
+        time: activity.Time, image: activity.Image, venue: activity.Venue, longitude: activity.Longitude, latitude: activity.Latitude, price: activity.Price,
+      tags: activity.Tags});
+    }
+  });
 });
 
 app.post("/result", function(req, res){

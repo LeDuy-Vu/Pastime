@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="css/styles1.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body class="text-center">
+    <main class="form-signin">
+      <form class="" action="/" method="post">
+        <div class="">
+        <img class ="tent-image"src="assets/images/tent.png" alt width="90" height="72">
+        <h4 class="company">PASTIME</h4>
+        <h1 class="h3 mb-3 fw-normal"> Sign in</h1>
+        <h4 class="h3 fw-normal" style="color: red"> Wrong Credentials<br /> Try Again! </h4>
+        <label for="inputEmail" class="virtually-hidden"></label>
+        <input id="inputEmail" name="emailID" class="form-control" placeholder="Email address" required="" autofocus="">
+        <label for="inputPassword" class="visually-hidden">Password</label>
+        <input type="password" name="passWORD" id="inputPassword" class="form-control" placeholder="Password" required="">
+        <div class="checkbox mb-3">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button type="submit">Submit</button>
+        <p class="mt-5 mb-3 text-muted">© 2021</p>
+
+      </form>
+
+    </main>
+
+    <div id="ext_session_alive_reload_prompt" style="display: none;">
+      <div>
+        <div>To Keep Your Session Active<br>page will reload in
+          <span id="session_live_reloader_countdown">30</span> seconds<br>
+          <a id="ext_session_alive_reload_rule_id" href="chrome-extension://lhobbakbeomfcgjallalccfhfcgleinm/settings.html" target="_rule_settings">Edit Rule<br>
+          </a></div><div><button type="button" id="ext_session_alive_reload_cancel">Wait 1 minute
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

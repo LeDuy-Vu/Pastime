@@ -27,7 +27,7 @@
             <h1 class="fw-light">Welcome, <%= MyName %></h1>
             <p class="lead text-muted">Some description of what we do and what we have to offer.</p>
             <div id="cityInput1" class="form-control col-lg-8">
-              <form class="" action="/searchActivity" method="post">
+              <form class="" action="/searchActivity" method="GET">
               <input type="text" name = "activityTag" class="form-control col-lg-1" placeholder="Camping, Outdoors">
               <button class=" ser btn btn-primary btn-lg" type = "submit">
               <i class="fa fa-search" aria-hidden="true" ></i> Search</button>
@@ -40,12 +40,13 @@
         <div class="container">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             <%  newListItems.forEach(function(item){ %>
-              <form class="" action="/result" method="post">
+              <!-- <form class="" action="/result" method="post"> -->
               <div class="col">
                 <div class="card shadow-sm">
                     <img src="<%=item.Image%>" alt="" height="225px" width="100%">
                       <div class="card-body">
-                        <input id="cityInput" readonly type="text" name="City" value="<%=item.Name%>">
+                        <a href="activities/<%=item.Name%>"> <%=item.Name%> </a>
+                        <!-- <input id="cityInput" readonly type="text" name="City" value="<%=item.Name%>"> -->
                         <p class="card-text"><%=item.Description%></p>
                         <div class="d-flex justify-content-between align-items-center">
                           <div class="btn-group">
@@ -57,7 +58,7 @@
                       </div>
                     </div>
                   </div>
-              </form>
+              <!-- </form> -->
             <%  }) %>
           </div>
         </div>
