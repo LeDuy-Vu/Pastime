@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
  * @function nothing
  */
  var getSalt = function(){
+   console.log("Happy");
   return crypto.randomBytes(Math.ceil(8)).toString('hex').slice(0,16);
 };
 
