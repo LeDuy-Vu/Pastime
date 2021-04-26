@@ -124,17 +124,10 @@ app.get("/searchActivity", function(req, res){
       res.render("home", {MyName: currentUser, newListItems: foundItems});
     });
 });
-// Searching Activity Function
-app.post("/searchActivity", function(req, res){
-  var searchAct = req.body.activityTag.split(", ");
-  for (let i = 0; i < searchAct.length; i++) {
-      searchAct[i] = searchAct[i].toLowerCase();
-  }
-    Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
-      res.render("home", {MyName: currentUser, newListItems: foundItems});
-    });
-});
 
+
+
+// Each clickable activity card
 app.get("/activities/:id", function(req, res){
   Activity.findOne({'Name': req.params.id}, 'Name Description ServiceProvider Rating Date Time Image Venue Longitude Latitude Price Tags', function (err, activity) {
     if (err) return handleError(err);
@@ -234,8 +227,7 @@ app.post("/aftersignup",function(req, res){
       else  // if this email already exists in the DB
       {
         console.log("Email already existed.")
-        res.sendFile(__dirname + "/tryagain.html");
-        res.render("login", {inputcolor: "red", FirstLine: "Wrong Credentials", SecondLine:"Try Again!"});
+        res.render("login", {inputcolor: "red", FirstLine: "Email Already exists", SecondLine:"Try Again!"});
       }
     });
   }
@@ -379,12 +371,12 @@ app.get("/previousActivities", function(req, res){
     }
     else {
       Wallet.findOne({emailID: docs.EmailID}, function(err, document){
-        if(docs === null)
+        if(document === null)
           console.log("EEEEEEEE");
         else{
           Activity.find({Name: document.completedActivity}, function(err, docs1){
             if(err)
-              console.log("llol");
+              console.log(err);
               else {
                 res.render("pastActivities", {newListItems: docs1})
               }
@@ -402,17 +394,17 @@ app.get("/", function(req, res) {
 });
 
 app.get("/login.html", function(req, res){
-  res.render("login", {inputcolor: "black", FirstLine: "", SecondLine:""});
+  res.render("login", {inputcolor: "black", FirstLine: "lllll", SecondLine:""});
+});
+
+app.get("/mainpage.html", function(req, res){
+  Activity.find({}, function(err, foundItems){
+  res.render("home", {MyName: "anonymous", newListItems: foundItems});
+});
 });
 
 app.get("/index.html", function(req, res){
-  res.sendFile(__dirname + "/index.html")
-  globalDB.findOneAndUpdate({_id: "607a9b0e4ad3126658c05db0"}, {$set: {CurrentUser: "", isLoggedIn: false}}, function(error, success){
-    if(error)
-      console.log("**************");
-    else
-      console.log("Added to DB");
-  });
+  res.sendFile(__dirname + "/index.html");
   currentUser = "";
   activityList = [];
 });
@@ -430,9 +422,9 @@ app.get("/tryagain.html", function(req, res){
   res.render("login", {inputcolor: "red", FirstLine: "Wrong Credentials", SecondLine:"Try Again!"});
 });
 
-app.get("/*", function(req, res){
-  res.sendFile(__dirname + "/404.html")
-});
+// app.get("/*", function(req, res){
+//   res.sendFile(__dirname + "/404.html")
+// });
 
 app.post("/editUser", function(req, res){
   console.log(req.body.userEditEmail);
@@ -444,20 +436,7 @@ app.post("/editUser", function(req, res){
   else{
     return null;
   }
-  // else {
-  //   res.sendFile(__dirname + "/assets")
-  // }
-
-
-
 });
-
-app.get("/home", function(req, res){
-  console.log("gomeeee");
-    Activity.find({}, function(err, foundItems){
-    res.render("home", {MyName: currentUser, newListItems: foundItems});
-  });
-})
 
 
 // Login logic
@@ -472,43 +451,50 @@ app.post("/home", function(req, res){
       res.render("adminview", {newListItems: foundItems});
     });
   }
-  else if (validator.validate(emailAddress))
-  {
+  else if (validator.validate(emailAddress))  {
     Item.findOne({EmailID: emailAddress}, function (err, docs) {
-      if (docs === null)
-      {
+      if (docs === null) {
         console.log("Email not existed")
         res.render("login", {inputcolor: "red", FirstLine: "Wrong Credentials", SecondLine:"Try Again!"});
       }
       else {
         if(emailAddress === docs.EmailID && hash(password, docs.Salt) === docs.Password) {
           currentUser = docs.FirstName;
-
-          globalDB.findOneAndUpdate({_id: "607a9b0e4ad3126658c05db0"}, {$set: {CurrentUser: docs.EmailID, isLoggedIn: true}}, function(error, success){
-            if(error)
-              console.log("**************");
-            else
-              console.log("Added to DB");
-          });
-
-          Activity.find({}, function(err, foundItems){
-            res.render("home", {MyName: currentUser, newListItems: foundItems});
-          });
+          console.log("Ah shit, here we go again11");
+        res.redirect("dashboard");
+        //   Activity.find({}, function(err, foundItems){
+        //   res.render("home", {MyName: currentUser, newListItems: foundItems});
+        // });
+        console.log("ttt");
         }
-        else
-        {
+        else {
+          console.log("ppp");
           console.log("Wrong password");
           res.render("login", {inputcolor: "red", FirstLine: "Wrong Password", SecondLine:"Try Again!"});
         }
       }
     });
   }
-  else
-  {
+  else  {
+    console.log("kkk");
     console.log("Wrong email format");
     res.render("login", {inputcolor: "red", FirstLine: "Wrong email format", SecondLine:"Try Again!"});
   }
 });
+
+app.get("/dashboard", function(req, res){
+
+  console.log("whereee");
+      Activity.find({}, function(err, foundItems){
+      res.render("home", {MyName: currentUser, newListItems: foundItems});
+    });
+});
+// app.get("/dashboard.html", (req, res)=>{
+//   console.log("Ah shit, here we go again");
+//     Activity.find({}, function(err, foundItems){
+//     res.render("home", {MyName: currentUser, newListItems: foundItems});
+//   });
+// });
 
 let port = process.env.PORT;
 

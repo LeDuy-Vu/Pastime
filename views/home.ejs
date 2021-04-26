@@ -14,7 +14,7 @@
     <div class="topnav">
       <a class="active" href="#top">Home</a>
       <a href="checkout.html">Profile</a>
-      <a  href="previousActivities">PastActivities</a>
+      <a href="previousActivities">PastActivities</a>
       <a href="wallet.html">Wallet</a>
       <a style="float:right;" href="index.html">Logout</a>
     </div>
@@ -44,12 +44,12 @@
                 <div class="card shadow-sm">
                     <img src="<%=item.Image%>" alt="" height="225px" width="100%">
                       <div class="card-body">
-                        <a href="activities/<%=item.Name%>"> <%=item.Name%> </a>
+                        <a class="link"href="activities/<%=item.Name%>"><b><%=item.Name%> </b></a>
                         <!-- <input id="cityInput" readonly type="text" name="City" value="<%=item.Name%>"> -->
                         <p class="card-text"><%=item.Description%></p>
                         <div class="d-flex justify-content-between align-items-center">
                           <small class="text-muted venues"><%=item.Venue%></small>
-                          <small class="text-muted"><%=item.Rating%></small>
+                          <small class="text-muted">$<%=item.Price%></small>
                         </div>
                       </div>
                     </div>
