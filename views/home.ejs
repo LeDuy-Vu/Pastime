@@ -40,7 +40,6 @@
         <div class="container">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             <%  newListItems.forEach(function(item){ %>
-              <!-- <form class="" action="/result" method="post"> -->
               <div class="col">
                 <div class="card shadow-sm">
                     <img src="<%=item.Image%>" alt="" height="225px" width="100%">
@@ -49,16 +48,12 @@
                         <!-- <input id="cityInput" readonly type="text" name="City" value="<%=item.Name%>"> -->
                         <p class="card-text"><%=item.Description%></p>
                         <div class="d-flex justify-content-between align-items-center">
-                          <div class="btn-group">
-                            <button class="btn btn-sm btn-outline-secondary" type="submit">View</button>
-                          </div>
                           <small class="text-muted venues"><%=item.Venue%></small>
                           <small class="text-muted"><%=item.Rating%></small>
                         </div>
                       </div>
                     </div>
                   </div>
-              <!-- </form> -->
             <%  }) %>
           </div>
         </div>
@@ -67,7 +62,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="script.js" charset="utf-8"></script>
     <script>
-    function disableF5(e) { if ((e.which || e.keyCode) == 116) e.preventDefault(); };
 </script>
   </body>
 </html>

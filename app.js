@@ -417,11 +417,6 @@ app.get("/index.html", function(req, res){
   activityList = [];
 });
 
-app.get("/home.html", function(req, res){
-  Activity.find({}, function(err, foundItems){
-  res.render("home", {MyName: currentUser, newListItems: foundItems});
-});
-});
 
 app.get("/adminview.html", function(req, res){
   res.sendFile(__dirname + "/adminview.html")
@@ -458,12 +453,15 @@ app.post("/editUser", function(req, res){
 });
 
 app.get("/home", function(req, res){
+  console.log("gomeeee");
     Activity.find({}, function(err, foundItems){
     res.render("home", {MyName: currentUser, newListItems: foundItems});
   });
 })
+
+
 // Login logic
-app.post("/", function(req, res){
+app.post("/home", function(req, res){
   var emailAddress = req.body.emailID.trim();
   var password = req.body.passWORD;
 
