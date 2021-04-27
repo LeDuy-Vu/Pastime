@@ -128,7 +128,7 @@ app.get("/searchActivity", function(req, res){
   }
   else{
     Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
-      res.render("home", {MyName: "Anonymous", newListItems: foundItems});
+      res.render("home", {MyName: "guest", newListItems: foundItems});
     });
   }
 });
@@ -149,15 +149,9 @@ app.get("/activities/:id", function(req, res){
     });
   }
   else {
-    console.log("boii");
     res.redirect("../pleaselogin");
-    console.log("111");
   }
 
-});
-
-app.get("/activities/pleaselogin", function(req, res){
-  res.render("login", {inputcolor: "black", FirstLine: "You need to log in to proceed", SecondLine:""});
 });
 
 app.post("/result", function(req, res){
@@ -354,7 +348,7 @@ app.get("/checkout.html", function(req, res){
       }
     });
   }
-  else res.render("login", {inputcolor: "black", FirstLine: "You need to log in to proceed", SecondLine:""}) ;
+  else res.redirect("pleaselogin");
 });
 
 app.post("/afterCheckOut", function(req, res){
@@ -422,7 +416,7 @@ app.get("/previousActivities", function(req, res){
       }
     });
   }
-  else res.render("login", {inputcolor: "black", FirstLine: "You need to log in to proceed", SecondLine:""});
+  else res.redirect("pleaselogin");
 });
 
 
@@ -436,7 +430,7 @@ app.get("/login.html", function(req, res){
 
 app.get("/mainpage.html", function(req, res){
   Activity.find({}, function(err, foundItems){
-  res.render("home", {MyName: "anonymous", newListItems: foundItems});
+  res.render("home", {MyName: "guest", newListItems: foundItems});
 });
 });
 
