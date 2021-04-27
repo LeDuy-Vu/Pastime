@@ -50,6 +50,7 @@ const globVars = {
   CurrentUser: String,
   isLoggedIn: Boolean,
 }
+var isLoggedIn = false;
 
 const itemsSchema = {
   FirstName: String,
@@ -86,7 +87,7 @@ const Wallet = mongoose.model("Wallet", userWallet);
 const Item = mongoose.model("Item", itemsSchema);
 
 let global = this;
-global.currentUser = "global"
+global.currentUser = "global";
 
 const activitiesSchema = {
   Name: String,
@@ -113,7 +114,7 @@ app.get("/about.html", function(req, res){
   res.sendFile(__dirname + "/about.html");
 });
 
-
+// Search bar logic
 app.get("/searchActivity", function(req, res){
   const { activityTag } = req.query;
   var searchAct = activityTag.split(", ");
@@ -129,14 +130,19 @@ app.get("/searchActivity", function(req, res){
 
 // Each clickable activity card
 app.get("/activities/:id", function(req, res){
-  Activity.findOne({'Name': req.params.id}, 'Name Description ServiceProvider Rating Date Time Image Venue Longitude Latitude Price Tags', function (err, activity) {
-    if (err) return handleError(err);
-    else {
-      res.render("activities", {name: activity.Name, des:activity.Description, provider: activity.ServiceProvider, rating: activity.Rating, date: activity.Date,
-        time: activity.Time, image: activity.Image, venue: activity.Venue, longitude: activity.Longitude, latitude: activity.Latitude, price: activity.Price,
-      tags: activity.Tags});
-    }
-  });
+  if (isLoggedIn)
+  {
+    Activity.findOne({'Name': req.params.id}, 'Name Description ServiceProvider Rating Date Time Image Venue Longitude Latitude Price Tags', function (err, activity) {
+      if (err) return handleError(err);
+      else {
+        res.render("activities", {name: activity.Name, des:activity.Description, provider: activity.ServiceProvider, rating: activity.Rating, date: activity.Date,
+          time: activity.Time, image: activity.Image, venue: activity.Venue, longitude: activity.Longitude, latitude: activity.Latitude, price: activity.Price,
+        tags: activity.Tags});
+      }
+    });
+  }
+  else res.render("login", {inputcolor: "black", FirstLine: "You need to log in to proceed", SecondLine:""}) ;
+  
 });
 
 app.post("/result", function(req, res){
@@ -271,36 +277,39 @@ app.get("/signup.html", (req, res) => {
 });
 
 app.get("/Wallet.html", function(req, res){
+  if (isLoggedIn) // if user is logged in
+  {
+    Item.findOne({FirstName: currentUser}, function(err, docs){
 
-  Item.findOne({FirstName: currentUser}, function(err, docs){
+      if (docs === null) {
+        console.log(currentUser);
+        Activity.find({}, function(err, foundItems){
+          res.render("home", {MyName: currentUser, newListItems: foundItems});
+        });
+      }
+      else {
+        Wallet.findOne({emailID: docs.EmailID}, function(err, document){
+          if(docs === null)
+            console.log("EEEEEEEE");
+          else{
+            Activity.find({Name: document.currentActivity}, function(err, docs1){
+              if(err)
+                console.log("llol");
+                else{
+                  var total = 0;
+                  docs1.forEach(function(item){
+                    total += item.Price;
+                  })
+                  res.render("wallets", {numActivity: document.currentActivity.length, newListItems: docs1, TotalPrice: total})
+                }
+            });
+          }
+        });
+      }
 
-    if (docs === null) {
-      console.log(currentUser);
-      Activity.find({}, function(err, foundItems){
-        res.render("home", {MyName: currentUser, newListItems: foundItems});
-      });
-    }
-    else {
-      Wallet.findOne({emailID: docs.EmailID}, function(err, document){
-        if(docs === null)
-          console.log("EEEEEEEE");
-        else{
-          Activity.find({Name: document.currentActivity}, function(err, docs1){
-            if(err)
-              console.log("llol");
-              else{
-                var total = 0;
-                docs1.forEach(function(item){
-                  total += item.Price;
-                })
-                res.render("wallets", {numActivity: document.currentActivity.length, newListItems: docs1, TotalPrice: total})
-              }
-          });
-        }
-      });
-    }
-
-  });
+    });
+  }
+  else res.render("login", {inputcolor: "black", FirstLine: "You need to log in to proceed", SecondLine:""});
 });
 
 app.get("/nextstep.html", function(req, res){
@@ -309,20 +318,22 @@ app.get("/nextstep.html", function(req, res){
 
 
 app.get("/checkout.html", function(req, res){
-  Item.findOne({FirstName: currentUser }, function (err, docs){
-
-    if (docs === null) {
-      console.log(currentUser);
-      Activity.find({}, function(err, foundItems){
-      res.render("home", {MyName: currentUser, newListItems: foundItems});
+  if (isLoggedIn) // if user is logged in
+  {
+    Item.findOne({FirstName: currentUser }, function (err, docs)
+    {
+      if (docs === null) {
+        console.log(currentUser);
+        Activity.find({}, function(err, foundItems){
+        res.render("home", {MyName: currentUser, newListItems: foundItems});
+      });
+      }
+      else{
+        res.render("profile", {FName: docs.FirstName, LName: docs.LastName, EID1: docs.EmailID, FAddress: docs.Street + ", " + docs.City +  ", " + docs.State + " " + docs.ZipCode});
+      }
     });
-    }
-    else{
-      res.render("profile", {FName: docs.FirstName, LName: docs.LastName, EID1:docs.EmailID, FAddress: docs.Street + " " + docs.City +  " " + docs.State + " " +docs.ZipCode});
-
-    }
-
-  });
+  }
+  else res.render("login", {inputcolor: "black", FirstLine: "You need to log in to proceed", SecondLine:""}) ;
 });
 
 app.post("/afterCheckOut", function(req, res){
@@ -362,30 +373,35 @@ app.post("/afterCheckOut", function(req, res){
 });
 
 app.get("/previousActivities", function(req, res){
-  Item.findOne({FirstName: currentUser}, function(err, docs){
-    if (docs === null) {
-      console.log(currentUser);
-      Activity.find({}, function(err, foundItems){
-        res.render("home", {MyName: currentUser, newListItems: foundItems});
-      });
-    }
-    else {
-      Wallet.findOne({emailID: docs.EmailID}, function(err, document){
-        if(document === null)
-          console.log("EEEEEEEE");
-        else{
-          Activity.find({Name: document.completedActivity}, function(err, docs1){
-            if(err)
-              console.log(err);
-              else {
-                res.render("pastActivities", {newListItems: docs1})
-              }
-          });
 
-        }
-      });
-    }
-  });
+  if (isLoggedIn) // if user is logged in
+  {
+    Item.findOne({FirstName: currentUser}, function(err, docs){
+      if (docs === null) {
+        console.log(currentUser);
+        Activity.find({}, function(err, foundItems){
+          res.render("home", {MyName: currentUser, newListItems: foundItems});
+        });
+      }
+      else {
+        Wallet.findOne({emailID: docs.EmailID}, function(err, document){
+          if(document === null)
+            console.log("EEEEEEEE");
+          else{
+            Activity.find({Name: document.completedActivity}, function(err, docs1){
+              if(err)
+                console.log(err);
+                else {
+                  res.render("pastActivities", {newListItems: docs1})
+                }
+            });
+
+          }
+        });
+      }
+    });
+  }
+  else res.render("login", {inputcolor: "black", FirstLine: "You need to log in to proceed", SecondLine:""});
 });
 
 
@@ -406,6 +422,7 @@ app.get("/mainpage.html", function(req, res){
 app.get("/index.html", function(req, res){
   res.sendFile(__dirname + "/index.html");
   currentUser = "";
+  isLoggedIn = false ;
   activityList = [];
 });
 
@@ -446,28 +463,29 @@ app.post("/home", function(req, res){
 
   if (emailAddress === "admin@admin.com" && password == "admin") {
     console.log("Admin Success");
-
+    isLoggedIn = true ;
     Item.find({}, function(err, foundItems){
       res.render("adminview", {newListItems: foundItems});
     });
   }
   else if (validator.validate(emailAddress))  {
     Item.findOne({EmailID: emailAddress}, function (err, docs) {
-      if (docs === null) {
+      if (docs === null) {  // can't find email in the DB
         console.log("Email not existed")
         res.render("login", {inputcolor: "red", FirstLine: "Wrong Credentials", SecondLine:"Try Again!"});
       }
       else {
-        if(emailAddress === docs.EmailID && hash(password, docs.Salt) === docs.Password) {
+        if(emailAddress === docs.EmailID && hash(password, docs.Salt) === docs.Password) {  // login sucessfully
           currentUser = docs.FirstName;
           console.log("Ah shit, here we go again11");
-        res.redirect("dashboard");
-        //   Activity.find({}, function(err, foundItems){
-        //   res.render("home", {MyName: currentUser, newListItems: foundItems});
-        // });
-        console.log("ttt");
+          res.redirect("dashboard");
+          isLoggedIn = true ;
+          //   Activity.find({}, function(err, foundItems){
+          //   res.render("home", {MyName: currentUser, newListItems: foundItems});
+          // });
+          console.log("ttt");
         }
-        else {
+        else {  // user input password doesn't match password in DB
           console.log("ppp");
           console.log("Wrong password");
           res.render("login", {inputcolor: "red", FirstLine: "Wrong Password", SecondLine:"Try Again!"});
