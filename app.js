@@ -121,9 +121,16 @@ app.get("/searchActivity", function(req, res){
   for (let i = 0; i < searchAct.length; i++) {
       searchAct[i] = searchAct[i].toLowerCase();
   }
+  if(isLoggedIn){
     Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
       res.render("home", {MyName: currentUser, newListItems: foundItems});
     });
+  }
+  else{
+    Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
+      res.render("home", {MyName: "Anonymous", newListItems: foundItems});
+    });
+  }
 });
 
 
@@ -142,7 +149,7 @@ app.get("/activities/:id", function(req, res){
     });
   }
   else res.render("login", {inputcolor: "black", FirstLine: "You need to log in to proceed", SecondLine:""}) ;
-  
+
 });
 
 app.post("/result", function(req, res){
