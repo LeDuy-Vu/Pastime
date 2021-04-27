@@ -148,8 +148,16 @@ app.get("/activities/:id", function(req, res){
       }
     });
   }
-  else res.render("login", {inputcolor: "black", FirstLine: "You need to log in to proceed", SecondLine:""}) ;
+  else {
+    console.log("boii");
+    res.redirect("../pleaselogin");
+    console.log("111");
+  }
 
+});
+
+app.get("/activities/pleaselogin", function(req, res){
+  res.render("login", {inputcolor: "black", FirstLine: "You need to log in to proceed", SecondLine:""});
 });
 
 app.post("/result", function(req, res){
@@ -520,12 +528,6 @@ app.get("/dashboard", function(req, res){
       res.render("home", {MyName: currentUser, newListItems: foundItems});
     });
 });
-// app.get("/dashboard.html", (req, res)=>{
-//   console.log("Ah shit, here we go again");
-//     Activity.find({}, function(err, foundItems){
-//     res.render("home", {MyName: currentUser, newListItems: foundItems});
-//   });
-// });
 
 let port = process.env.PORT;
 
