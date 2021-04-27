@@ -316,7 +316,13 @@ app.get("/Wallet.html", function(req, res){
 
     });
   }
-  else res.render("login", {inputcolor: "black", FirstLine: "You need to log in to proceed", SecondLine:""});
+  else {
+    res.redirect("pleaselogin");
+  }
+});
+
+app.get("/pleaselogin", function(req, res){
+  res.render("login", {inputcolor: "black", FirstLine: "You need to log in to proceed", SecondLine:""});
 });
 
 app.get("/nextstep.html", function(req, res){
