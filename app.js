@@ -239,18 +239,10 @@ app.post("/aftersignup",function(req, res){
         res.render("login", {inputcolor: "black", FirstLine: "", SecondLine:""});
       }
 
-      else  // if this email already exists in the DB
-      {
-        console.log("Email already existed.")
-        res.render("login", {inputcolor: "red", FirstLine: "Email Already exists", SecondLine:"Try Again!"});
-      }
+      else res.render("login", {inputcolor: "red", FirstLine: "Email already in use", SecondLine:"Try Again!"});  // if this email already exists in the DB
     });
   }
-  else
-  {
-    console.log("Wrong email format")
-    res.render("login", {inputcolor: "red", FirstLine: "Wrong Credentials", SecondLine:"Try Again!"});
-  }
+  else res.render("login", {inputcolor: "red", FirstLine: "Invalid email format", SecondLine:"Try Again!"}); // wrong email format
 });
 
 // Change Password logic
@@ -486,8 +478,8 @@ app.post("/home", function(req, res){
   else if (validator.validate(emailAddress))  {
     Item.findOne({EmailID: emailAddress}, function (err, docs) {
       if (docs === null) {  // can't find email in the DB
-        console.log("Email not existed")
-        res.render("login", {inputcolor: "red", FirstLine: "Wrong Credentials", SecondLine:"Try Again!"});
+        console.log("Email not existed") ;
+        res.render("login", {inputcolor: "red", FirstLine: "Wrong Username/Password", SecondLine:"Try Again!"});
       }
       else {
         if(emailAddress === docs.EmailID && hash(password, docs.Salt) === docs.Password) {  // login sucessfully
@@ -501,15 +493,13 @@ app.post("/home", function(req, res){
           console.log("ttt");
         }
         else {  // user input password doesn't match password in DB
-          console.log("ppp");
           console.log("Wrong password");
-          res.render("login", {inputcolor: "red", FirstLine: "Wrong Password", SecondLine:"Try Again!"});
+          res.render("login", {inputcolor: "red", FirstLine: "Wrong Username/Password", SecondLine:"Try Again!"});
         }
       }
     });
   }
   else  {
-    console.log("kkk");
     console.log("Wrong email format");
     res.render("login", {inputcolor: "red", FirstLine: "Wrong email format", SecondLine:"Try Again!"});
   }
