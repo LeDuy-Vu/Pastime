@@ -52,6 +52,12 @@ const globVars = {
 }
 var isLoggedIn = false;
 
+const serviceProvidersSchema = {
+  Name: String,
+  Email: String,
+  Password: String
+}
+
 const itemsSchema = {
   FirstName: String,
     LastName: String,
@@ -89,6 +95,8 @@ const Item = mongoose.model("Item", itemsSchema);
 let global = this;
 global.currentUser = "global";
 
+var currentServiceProvider = "";
+
 const activitiesSchema = {
   Name: String,
   ServiceProvider: String,
@@ -103,6 +111,8 @@ const activitiesSchema = {
   Price: Number,
   Tags: Array,
 };
+
+const ServiceProvider = mongoose.model("ServiceProvider", serviceProvidersSchema);
 
 const Activity = mongoose.model("Activity", activitiesSchema);
 
@@ -194,6 +204,36 @@ app.post("/addActivity", function(req, res){
   });
 });
 
+app.get("/servicel", function(req, res){
+  res.render("servicelogin", {inputcolor: "black", FirstLine: "Service Provider", SecondLine:""});
+});
+
+app.get("/servicesp", function(req, res){
+  res.render("servicesignup",{});
+});
+
+
+app.post("/serviceSignUp", function(req, res){
+  console.log(req.body.spName + " " + req.body.spEmail + " " + req.body.spPassword);
+  ServiceProvider.findOne({Email: req.body.spEmail}, function(err, docs){
+    if(docs === null){
+      const temp = new ServiceProvider({
+        Name: req.body.spName,
+        Email: req.body.spEmail,
+        Password: req.body.spPassword
+      });
+
+      ServiceProvider.insertMany(temp, function(err){
+        if(err)
+          console.log(err);
+      });
+      res.redirect("servicel");
+    }
+    else{
+      res.redirect("/");
+    }
+  });
+});
 // Push the new user account into the DB
 app.post("/aftersignup",function(req, res){
   email = req.body.Email.trim()     // trim whitespaces
@@ -462,6 +502,31 @@ app.post("/editUser", function(req, res){
   }
 });
 
+app.post("/serviceHome", function(req, res){
+  var emailAddress = req.body.serviceEmail.trim();
+  var password = req.body.servicePassword;
+
+  if(validator.validate(emailAddress)){
+    ServiceProvider.findOne({Email: emailAddress}, function(err, docs){
+      if(docs === null){
+        res.redirect("servicel");
+      }
+      else {
+        if(emailAddress === docs.Email && password === docs.Password){
+          currentServiceProvider = emailAddress;
+          res.redirect("serviceDashboard");
+        }
+        else {
+          console.log("Incorrect password");
+          res.redirect("servicel");
+        }
+      }
+    });
+  }
+  else{
+    res.redirect("servicel")
+  }
+});
 
 // Login logic
 app.post("/home", function(req, res){
@@ -484,13 +549,8 @@ app.post("/home", function(req, res){
       else {
         if(emailAddress === docs.EmailID && hash(password, docs.Salt) === docs.Password) {  // login sucessfully
           currentUser = docs.FirstName;
-          console.log("Ah shit, here we go again11");
           res.redirect("dashboard");
           isLoggedIn = true ;
-          //   Activity.find({}, function(err, foundItems){
-          //   res.render("home", {MyName: currentUser, newListItems: foundItems});
-          // });
-          console.log("ttt");
         }
         else {  // user input password doesn't match password in DB
           console.log("Wrong password");
@@ -505,12 +565,52 @@ app.post("/home", function(req, res){
   }
 });
 
-app.get("/dashboard", function(req, res){
+app.get("/serviceDashboard", function(req, res){
+  Activity.find({ServiceProvider: currentServiceProvider}, function(err, foundItems){
+  res.render("servicehome", {MyName: "Service Provider", newListItems: foundItems});
+  });
+});
 
-  console.log("whereee");
+app.post("/ActivityAdded", function(req, res){
+var searchAct = req.body.ActivityTags.split(", ");
+for (let i = 0; i < searchAct.length; i++) {
+    searchAct[i] = searchAct[i].toLowerCase();
+}
+
+
+  const temps = new Activity({
+    Name: req.body.ActivityName,
+    ServiceProvider: req.body.ActivityEmail,
+    Description: req.body.ActivityDescription,
+    Date: req.body.ActivityDate,
+    Time: req.body.ActivityTime,
+    Image: req.body.ActivityURL,
+    Venue: req.body.ActivityVenue,
+    Longitude: req.body.ActivityLongitude,
+    Latitude: req.body.ActivityLatitude,
+    Price: req.body.ActivityPrice,
+    Tags: searchAct,
+  });
+  Activity.insertMany(temps, function(err){
+    if (err)
+      console.log(err);
+    else
+      console.log("Successfully saved default items to DB.");
+  });
+
+  res.redirect("serviceDashboard");
+
+
+});
+
+app.get("/dashboard", function(req, res){
       Activity.find({}, function(err, foundItems){
       res.render("home", {MyName: currentUser, newListItems: foundItems});
     });
+});
+
+app.get("/NewActivity", function(req, res){
+  res.sendFile(__dirname + "/ActivityInfo.html")
 });
 
 let port = process.env.PORT;
