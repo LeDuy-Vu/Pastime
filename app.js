@@ -124,6 +124,15 @@ app.get("/about.html", function(req, res){
   res.sendFile(__dirname + "/about.html");
 });
 
+//Searching User in AdminView
+app.get("/searchUser", function(req, res){
+  const{ sUser} = req.query;
+  Item.find({EmailID: sUser}, function(err, foundItems){
+    res.render("adminview", {newListItems: foundItems});
+  });
+
+});
+
 // Search bar logic
 app.get("/searchActivity", function(req, res){
   const { activityTag } = req.query;
