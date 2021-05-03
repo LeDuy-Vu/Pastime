@@ -40,14 +40,28 @@
         <div class="container">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             <% if (newListItems.length == 0){ %>
-              <h3>No activities are found. Try another keyword or back to the homepage to see all activities.</h3>
+              <h3>No activities are found. Please add activites to see them here</h3>
+              <div class="col">
+                <div class="card shadow-sm">
+                    <img src="" alt="Image Preview" height="225px" width="100%">
+                      <div class="card-body">
+                        <p>Activity Name</p>
+                        <p class="card-text">Activity Description</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                          <small class="text-muted venues">Activity Venue</small>
+                          <small class="text-muted">Activity Price</small>
+                          <a class="btn btn-dark" href="NewActivity">Add new Activity</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
             <% } else{ %>
               <%  newListItems.forEach(function(item){ %>
                 <div class="col">
                   <div class="card shadow-sm">
                       <img src="<%=item.Image%>" alt="" height="225px" width="100%">
                         <div class="card-body">
-                          <a class="link"href="activities/<%=item.Name%>"><b><%=item.Name%> </b></a>
+                          <a class="link"href="EditActivities/<%=item.Name%>"><b><%=item.Name%> </b></a>
                           <p class="card-text"><%=item.Description%></p>
                           <div class="d-flex justify-content-between align-items-center">
                             <small class="text-muted venues"><%=item.Venue%></small>

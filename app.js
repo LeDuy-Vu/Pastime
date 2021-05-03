@@ -152,8 +152,10 @@ app.get("/searchActivity", function(req, res){
   }
 });
 
-
-
+// To Edit Activites by the Service Provider
+app.get("/EditActivities/:id", function(req, res){
+  console.log(req.params.id);
+});
 // Each clickable activity card
 app.get("/activities/:id", function(req, res){
   if (isLoggedIn)
@@ -513,19 +515,37 @@ app.post("/editUser", function(req, res){
 });
 
 app.get("/LockUser", function(req, res){
-  Item.findOneAndUpdate({EmailID: req.query.uEmail}, {$set: {isLocked: true}}, function(error, success){
-        if(error)
-          console.log("**************");
-        else
-          console.log("locked");
-      });
-      Item.find({}, function(err, foundItems){
-        res.render("adminview", {newListItems: foundItems});
-      });
 
+  Item.findOne({EmailID: req.query.uEmail}, function(err, docs){
+    if(docs.isLocked){
+      res.render("userUnlock", {UserName: docs.EmailID, todo: "Locked", todo1: "Unlock" });
+    }
+    else
+      res.render("userUnlock", {UserName: docs.EmailID, todo: "Unlocked", todo1: "Lock" });
 
-
+  });
 });
+
+  app.get("/UserLocking", function(req, res){
+    const{ userEmail1 } = req.query;
+    Item.findOne({EmailID: userEmail1}, function(err, docs){
+      if(docs.isLocked){
+        Item.findOneAndUpdate({EmailID: userEmail1}, {$set: {isLocked: false}}, function(error, success){});
+        console.log(userEmail1 + " set to false");
+      }
+      else{
+        Item.findOneAndUpdate({EmailID: userEmail1}, {$set: {isLocked: true}}, function(error, success){});
+        console.log(userEmail1 + " set to true");
+      }
+
+    });
+
+  Item.find({}, function(err, foundItems){
+    res.render("adminview", {newListItems: foundItems});
+  });
+    });
+
+
 
 app.get("/editU", function(req, res){
   Item.findOne({EmailID: req.query.uEmail}, function (err, docs) {
@@ -552,6 +572,7 @@ app.post("/serviceHome", function(req, res){
       }
       else {
         if(emailAddress === docs.Email && password === docs.Password){
+          isLoggedIn = true;
           currentServiceProvider = emailAddress;
           res.redirect("serviceDashboard");
         }
