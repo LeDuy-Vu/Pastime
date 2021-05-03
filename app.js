@@ -672,6 +672,7 @@ for (let i = 0; i < searchAct.length; i++) {
 
 });
 
+// LE -- HASHING
 app.post("/afterEditUser", function(req, res){
   console.log(req.body.EditedFName + " " + req.body.EditedLName + " " + req.body.EditedEmail + " " + req.body.EditedPass);
 });
