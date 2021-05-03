@@ -36,7 +36,7 @@ var hash = function(phase, salt){
 
 router.get('/', (req, res, next) => {
     res.status(200).json({
-        message: "Here we are handling the get request for the products"
+        message: "Here we are handeling the get request for the products"
     });
 });
 
@@ -495,11 +495,41 @@ app.post("/editUser", function(req, res){
   console.log(req.body.vote);
 
   if(req.body.vote === "Edit"){
-    res.sendFile(__dirname + "/edit.html")
+    res.redirect("editU/?uEmail=" + req.body.userEditEmail);
+    // res.sendFile(__dirname + "/edit.html")
   }
-  else{
-    return null;
+  else if(req.body.vote === "Lock"){
+    res.redirect("LockUser/?uEmail=" + req.body.userEditEmail)
   }
+});
+
+app.get("/LockUser", function(req, res){
+  Item.findOneAndUpdate({EmailID: req.query.uEmail}, {$set: {isLocked: true}}, function(error, success){
+        if(error)
+          console.log("**************");
+        else
+          console.log("locked");
+      });
+      Item.find({}, function(err, foundItems){
+        res.render("adminview", {newListItems: foundItems});
+      });
+
+
+
+});
+
+app.get("/editU", function(req, res){
+  Item.findOne({EmailID: req.query.uEmail}, function (err, docs) {
+    if (docs === null) {  // can't find email in the DB
+      Item.find({}, function(err, foundItems){
+        res.render("adminview", {newListItems: foundItems});
+      });
+    }
+    else {
+      res.render("userEditTemplate", {item: docs})
+
+    }
+  });
 });
 
 app.post("/serviceHome", function(req, res){
@@ -528,17 +558,20 @@ app.post("/serviceHome", function(req, res){
   }
 });
 
+app.get("/adminDashboard", function(req, res){
+  Item.find({}, function(err, foundItems){
+    res.render("adminview", {newListItems: foundItems});
+  });
+});
+
 // Login logic
 app.post("/home", function(req, res){
   var emailAddress = req.body.emailID.trim();
   var password = req.body.passWORD;
 
   if (emailAddress === "admin@admin.com" && password == "admin") {
-    console.log("Admin Success");
     isLoggedIn = true ;
-    Item.find({}, function(err, foundItems){
-      res.render("adminview", {newListItems: foundItems});
-    });
+    res.redirect("adminDashboard");
   }
   else if (validator.validate(emailAddress))  {
     Item.findOne({EmailID: emailAddress}, function (err, docs) {
@@ -567,7 +600,13 @@ app.post("/home", function(req, res){
 
 app.get("/serviceDashboard", function(req, res){
   Activity.find({ServiceProvider: currentServiceProvider}, function(err, foundItems){
-  res.render("servicehome", {MyName: "Service Provider", newListItems: foundItems});
+  res.render("servicehome", {alert: "",MyName: "Service Provider", newListItems: foundItems});
+  });
+});
+
+app.get("/serviceDashboard1", function(req, res){
+  Activity.find({ServiceProvider: currentServiceProvider}, function(err, foundItems){
+  res.render("servicehome", {alert: "Activity Added",MyName: "Service Provider", newListItems: foundItems});
   });
 });
 
@@ -580,7 +619,7 @@ for (let i = 0; i < searchAct.length; i++) {
 
   const temps = new Activity({
     Name: req.body.ActivityName,
-    ServiceProvider: req.body.ActivityEmail,
+    ServiceProvider: currentServiceProvider,
     Description: req.body.ActivityDescription,
     Date: req.body.ActivityDate,
     Time: req.body.ActivityTime,
@@ -598,9 +637,13 @@ for (let i = 0; i < searchAct.length; i++) {
       console.log("Successfully saved default items to DB.");
   });
 
-  res.redirect("serviceDashboard");
+  res.redirect("serviceDashboard1");
 
 
+});
+
+app.post("/afterEditUser", function(req, res){
+  console.log(req.body.EditedFName + " " + req.body.EditedLName + " " + req.body.EditedEmail + " " + req.body.EditedPass);
 });
 
 app.get("/dashboard", function(req, res){

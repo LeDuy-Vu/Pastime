@@ -25,32 +25,32 @@
 
 <div class="container">
   <main>
-    <form class="" action="/aftersignup" method="post">
+    <form class="" action="/afterEditUser" method="post">
     <div class="py-5 text-center">
       <img class="d-block mx-auto mb-4" src="assets/images/tent.png" alt="" width="72" height="57">
       <h4 style="text-align:center;"class="company">PASTIME</h4>
-      <h1 style="padding-left: 3rem;"class="h3 mb-3 fw-normal"> Sign up</h1>
+      <h1 style="padding-left: 3rem;"class="h3 mb-3 fw-normal"> Edit User</h1>
     </div>
     <div class="row g-5">
       <div class="col-md-6 col-lg-12">
           <div class="row g-3">
             <div class="col-sm-6">
               <label>First Name</label>
-            <input  required="required" name="FName"class="form-control"  placeholder="John">
+            <input  required="required" name="EditedFName"class="form-control"  value="<%=item.FirstName%>">
               <div class="invalid-feedback">
                 Valid first name is required.
               </div>
             </div>
             <div class="col-sm-6">
               <label for="">Last Name</label>
-            <input required="required" name="LName" class="form-control"  placeholder="Appleseed">
+            <input required="required" name="EditedLName" class="form-control"  value="<%=item.LastName%>">
               <div class="invalid-feedback">
                 Valid last name is required.
               </div>
             </div>
             <div class="col-6">
               <label for="inputEmail4">Email</label>
-           <input required="required" type="email" name="Email" class="form-control" id="inputEmail4" placeholder="Email">
+           <input required="required" type="email" name="EditedEmail" class="form-control" id="inputEmail4" value="<%=item.EmailID%>">
               <div class="invalid-feedback">
                 Please enter a valid email address for shipping updates.
               </div>
@@ -58,10 +58,10 @@
 
             <div class="col-6">
               <label>Password</label>
-            <input required="required" type="password" name="Pass" class="form-control" id="inputPassword4" placeholder="Password">
+            <input required="required" name="EditedPass" class="form-control" id="inputPassword4" value="<%=item.Password%>">
             </div>
             <div class="btn1 col-6">
-             <button type="submit" class="btn btn-primary">Sign Up</button>
+             <button type="submit" class="btn btn-primary">Done</button>
             </div>
         </form>
       </div>

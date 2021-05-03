@@ -33,30 +33,31 @@
          <tbody>
             <tr>
                <td><%=item.FirstName%> <%=item.LastName%></td>
-               <td><input id="userEmail" readonly type="text" name="userEditEmail" value="<%=item.EmailID%>"></td>
+
                <form class="" action="/editUser" method="post">
+                  <td><input id="userEmail" readonly type="text" name="userEditEmail" value="<%=item.EmailID%>"></td>
                   <td><button class="btn btn-dark" onsubmit="return false" type="submit" name="vote" value="Edit"> <i class="fas fa-pencil-alt"></i> Edit</button></td>
-               </form>
+
                <td><button class="btn btn-dark" type="submit" name="vote" value="Lock"> <i class="fas fa-lock"></i> Lock</button></td>
                <td>
-              
-                    <button class="btn btn-dark" id="settings-button-red" onclick="makePopup()" type="submit" name="vote" value="Delete" > <i class="fas fa-trash"></i> Delete 
-                      
-                      
+
+                    <button class="btn btn-dark" id="settings-button-red" onclick="makePopup()" type="submit" name="vote" value="Delete" > <i class="fas fa-trash"></i> Delete
+
+</form>
                       <div data-role="popup" data-arrow="true" id="arrow-popup">
                         <p>This is a popup containing several paragraphs of text.</p>
                         <p>The first paragraph is the one above. This is the second.</p>
                         <p>And here's another paragraph to help the popup achieve a decent height.</p>
                     </div>
 
-                      
-                    
-                  
+
+
+
                   </button>
 
-                    
-                      
-                 
+
+
+
                   </div>
                </td>
                <!-- <td></i><a type="button" class="btn btn-dark" href="#"> <i class="fas fa-pencil-alt"></i> Edit </a></td>
