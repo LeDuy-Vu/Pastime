@@ -152,9 +152,30 @@ app.get("/searchActivity", function(req, res){
   }
 });
 
+app.get("/searchActivityService", function(req, res){
+  const { activityTag } = req.query;
+  var searchAct = activityTag.split(", ");
+  for (let i = 0; i < searchAct.length; i++) {
+      searchAct[i] = searchAct[i].toLowerCase();
+  }
+  if(isLoggedIn){
+    Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
+      res.render("servicehome", {color1: "",alert: "",MyName: "Service Provider", newListItems: foundItems});
+    });
+  }
+  else{
+    Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
+      res.render("servicehome", {color1: "",alert: "",MyName: "Service Provider", newListItems: foundItems});
+    });
+  }
+});
+
 // To Edit Activites by the Service Provider
 app.get("/EditActivities/:id", function(req, res){
   console.log(req.params.id);
+  Activity.findOne({Name: req.params.id}, function(err, docs){
+    res.render("editActivityTemplate", {item: docs});
+  });
 });
 
 // To delete Activities from Wallet by the user
@@ -198,6 +219,23 @@ app.get("/activities/:id", function(req, res){
     res.redirect("../pleaselogin");
   }
 
+});
+
+app.post("/afterEditActivity", function(req, res){
+    if(req.body.vote === "Done"){
+  console.log(req.body.EditedName);
+  Activity.findOneAndUpdate({Name: req.body.EditedName}, {$set:{Description: req.body.EditedDescription, Date: req.body.EditedDate, Time: req.body.EditedTime, Image: req.body.EditedImage, Venue: req.body.EditedVenue, Longitude: req.body.EditedLongitude, Latitude: req.body.EditedLatitude, Price: req.body.EditedPrice}}, function(err, docs){
+    if(err)
+      console.log(err);
+  });
+}
+else{
+  Activity.findOneAndDelete({Name: req.body.EditedName}, function(err, docs1){
+    if(err)
+      console.log("SSSSSSSSSS"+err);
+  });
+}
+  res.redirect("serviceDashboard");
 });
 
 app.post("/result", function(req, res){
@@ -639,9 +677,14 @@ app.post("/home", function(req, res){
       }
       else {
         if(emailAddress === docs.EmailID && hash(password, docs.Salt) === docs.Password) {  // login sucessfully
+          if(!docs.isLocked){
           currentUser = docs.FirstName;
           res.redirect("dashboard");
           isLoggedIn = true ;
+        }
+        else{
+          res.redirect("AccountLocked");
+        }
         }
         else {  // user input password doesn't match password in DB
           console.log("Wrong password");
@@ -654,6 +697,10 @@ app.post("/home", function(req, res){
     console.log("Wrong email format");
     res.render("login", {inputcolor: "red", FirstLine: "Wrong email format", SecondLine:"Try Again!"});
   }
+});
+
+app.get("/AccountLocked", function(req, res){
+  res.render("login", {inputcolor: "red", FirstLine: "Account Locked", SecondLine:"Contact Admin for Clarification"});
 });
 
 app.get("/serviceDashboard", function(req, res){
@@ -674,7 +721,7 @@ for (let i = 0; i < searchAct.length; i++) {
     searchAct[i] = searchAct[i].toLowerCase();
 }
 
-
+console.log("activiti is " + req.body.ActivityName);
   const temps = new Activity({
     Name: req.body.ActivityName,
     ServiceProvider: currentServiceProvider,
@@ -722,6 +769,12 @@ app.get("/dashboard", function(req, res){
       Activity.find({}, function(err, foundItems){
       res.render("home", {MyName: currentUser, newListItems: foundItems});
     });
+});
+
+app.get("/AllUsers", function(req,res){
+  Item.find({}, function(err, foundItems){
+    res.render("adminview", {newListItems: foundItems});
+  });
 });
 
 app.get("/NewActivity", function(req, res){

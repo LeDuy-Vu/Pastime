@@ -14,8 +14,8 @@
     <div class="topnav">
       <!-- <a class="active" href="#top">Home</a>
       <a href="checkout.html">Profile</a>
-      <a href="previousActivities">PastActivities</a>
-      <a href="wallet.html">Wallet</a> -->
+      <a href="previousActivities">PastActivities</a>-->
+      <a href="serviceDashboard">Main Page</a>
       <a style="float:right;" href="index.html">Logout</a>
     </div>
 
@@ -27,7 +27,7 @@
             <h1 class="fw-light">Welcome, <%= MyName %></h1>
             <h4 class="h3 fw-normal" style="color: <%= color1 %>"><%= alert %></h4>
             <div id="cityInput1" class="form-control col-lg-8">
-              <form class="" action="/searchActivity" method="GET">
+              <form class="" action="/searchActivityService" method="GET">
               <input type="text" name = "activityTag" class="form-control col-lg-1" placeholder="Camping, Outdoors">
               <button class=" ser btn btn-primary btn-lg" type = "submit">
               <i class="fa fa-search" aria-hidden="true" ></i> Search</button>

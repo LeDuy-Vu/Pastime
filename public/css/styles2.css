@@ -7,6 +7,10 @@
    z-index:100;
 }
 
+.top-search{
+  padding-top: 100px;
+}
+
 .link:hover{
   text-decoration: none;
   color: black;
