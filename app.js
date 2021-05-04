@@ -156,6 +156,31 @@ app.get("/searchActivity", function(req, res){
 app.get("/EditActivities/:id", function(req, res){
   console.log(req.params.id);
 });
+
+// To delete Activities from Wallet by the user
+app.get("/DeleteActivities/:id", function(req, res){
+  Item.findOne({FirstName: currentUser}, function(err, docs){
+    if (docs === null) {
+      console.log(currentUser);
+      Activity.find({}, function(err, foundItems){
+        res.render("home", {MyName: currentUser, newListItems: foundItems});
+      });
+    }
+    else {
+      Wallet.findOneAndUpdate({emailID: docs.EmailID},{$pull: {currentActivity: req.params.id}}, function(err, document){
+        if(docs === null)
+          console.log("EEEEEEEE");
+      });
+      // Activity.find({}, function(err, foundItems){
+      //   res.render("home", {MyName: currentUser, newListItems: foundItems});
+      // });
+      res.redirect("../mainpage.html")
+    }
+
+  });
+
+});
+
 // Each clickable activity card
 app.get("/activities/:id", function(req, res){
   if (isLoggedIn)
@@ -344,7 +369,7 @@ app.get("/Wallet.html", function(req, res){
           if(docs === null)
             console.log("EEEEEEEE");
           else{
-            Activity.find({Name: document.currentActivity}, function(err, docs1){
+            Activity.find({Name: {$in: document.currentActivity}}, function(err, docs1){
               if(err)
                 console.log("llol");
                 else{
@@ -352,7 +377,8 @@ app.get("/Wallet.html", function(req, res){
                   docs1.forEach(function(item){
                     total += item.Price;
                   })
-                  res.render("wallets", {numActivity: document.currentActivity.length, newListItems: docs1, TotalPrice: total})
+                  var totalP = total.toFixed(2);
+                  res.render("wallets", {numActivity: document.currentActivity.length, newListItems: docs1, TotalPrice: totalP})
                 }
             });
           }
@@ -432,34 +458,34 @@ app.post("/afterCheckOut", function(req, res){
 
 app.get("/previousActivities", function(req, res){
 
-  if (isLoggedIn) // if user is logged in
-  {
-    Item.findOne({FirstName: currentUser}, function(err, docs){
-      if (docs === null) {
-        console.log(currentUser);
-        Activity.find({}, function(err, foundItems){
-          res.render("home", {MyName: currentUser, newListItems: foundItems});
-        });
-      }
-      else {
-        Wallet.findOne({emailID: docs.EmailID}, function(err, document){
-          if(document === null)
-            console.log("EEEEEEEE");
-          else{
-            Activity.find({Name: document.completedActivity}, function(err, docs1){
-              if(err)
-                console.log(err);
-                else {
-                  res.render("pastActivities", {newListItems: docs1})
-                }
-            });
+    if (isLoggedIn) // if user is logged in
+    {
+      Item.findOne({FirstName: currentUser}, function(err, docs){
+        if (docs === null) {
+          console.log(currentUser);
+          Activity.find({}, function(err, foundItems){
+            res.render("home", {MyName: currentUser, newListItems: foundItems});
+          });
+        }
+        else {
+          Wallet.findOne({emailID: docs.EmailID}, function(err, document){
+            if(document === null)
+              console.log("EEEEEEEE");
+            else{
+              Activity.find({Name: {$in: document.completedActivity}}, function(err, docs1){
+                if(err)
+                  console.log(err);
+                  else {
+                    res.render("pastActivities", {newListItems: docs1})
+                  }
+              });
 
-          }
-        });
-      }
-    });
-  }
-  else res.redirect("pleaselogin");
+            }
+          });
+        }
+      });
+    }
+    else res.redirect("pleaselogin");
 });
 
 
@@ -473,7 +499,7 @@ app.get("/login.html", function(req, res){
 
 app.get("/mainpage.html", function(req, res){
   Activity.find({}, function(err, foundItems){
-  res.render("home", {MyName: "guest", newListItems: foundItems});
+  res.render("home", {MyName: currentUser, newListItems: foundItems});
 });
 });
 
@@ -630,13 +656,13 @@ app.post("/home", function(req, res){
 
 app.get("/serviceDashboard", function(req, res){
   Activity.find({ServiceProvider: currentServiceProvider}, function(err, foundItems){
-  res.render("servicehome", {alert: "",MyName: "Service Provider", newListItems: foundItems});
+  res.render("servicehome", {color1: "",alert: "",MyName: "Service Provider", newListItems: foundItems});
   });
 });
 
 app.get("/serviceDashboard1", function(req, res){
   Activity.find({ServiceProvider: currentServiceProvider}, function(err, foundItems){
-  res.render("servicehome", {alert: "Activity Added",MyName: "Service Provider", newListItems: foundItems});
+  res.render("servicehome", {color1: "",alert: "Activity Added",MyName: "Service Provider", newListItems: foundItems});
   });
 });
 
@@ -660,16 +686,29 @@ for (let i = 0; i < searchAct.length; i++) {
     Price: req.body.ActivityPrice,
     Tags: searchAct,
   });
-  Activity.insertMany(temps, function(err){
-    if (err)
-      console.log(err);
-    else
-      console.log("Successfully saved default items to DB.");
+  Activity.find({Name: req.body.ActivityName}, function(err, docss1){
+      if(docss1 === null)
+      {
+        Activity.insertMany(temps, function(err){
+          if (err)
+            console.log(err);
+          else
+            console.log("Successfully saved default items to DB.");
+        });
+
+        res.redirect("serviceDashboard1");
+
+      }
+      else {
+        res.redirect("ServiceProviderDash");
+      }
   });
+});
 
-  res.redirect("serviceDashboard1");
-
-
+app.get("/ServiceProviderDash", function(req, res){
+  Activity.find({ServiceProvider: currentServiceProvider}, function(err, foundItems){
+  res.render("servicehome", {color1: "red", alert: "Can't add the activity, Another activity has same name",MyName: "Service Provider", newListItems: foundItems});
+  });
 });
 
 // LE -- HASHING
