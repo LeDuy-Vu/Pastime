@@ -70,8 +70,11 @@
            <div>
              <h6 class="my-0"><%= item.Name%></h6>
              <small class="text-muted"><%= item.Date%></small>
+             <a style="color: red; padding-left: 4rem;" href="DeleteActivities/<%=item.Name%>">Delete</a>
            </div>
            <span class="text-muted">$<%= item.Price %></span>
+
+
          </li>
         <%  }) %>
         <li class="list-group-item d-flex justify-content-between lh-sm">
