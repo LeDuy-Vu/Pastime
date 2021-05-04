@@ -174,7 +174,7 @@ app.get("/DeleteActivities/:id", function(req, res){
       // Activity.find({}, function(err, foundItems){
       //   res.render("home", {MyName: currentUser, newListItems: foundItems});
       // });
-      res.redirect("../mainpage.html")
+      res.redirect("../dashboard")
     }
 
   });
@@ -501,7 +501,7 @@ app.get("/login.html", function(req, res){
 
 app.get("/mainpage.html", function(req, res){
   Activity.find({}, function(err, foundItems){
-  res.render("home", {MyName: currentUser, newListItems: foundItems});
+  res.render("home", {MyName: "guest", newListItems: foundItems});
 });
 });
 
