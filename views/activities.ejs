@@ -24,36 +24,22 @@
 
 <body>
 
-  <div class="topnav">
-    <a href="../serviceHome">Home</a>
-    <a href="../checkout.html">Profile</a>
-    <a href="../previousActivities">PastActivities</a>
-    <a href="../wallet.html">Wallet</a>
-    <a style="float:right;" href="../index.html">Logout</a>
-  </div>
-
-
-
-  
-  
-
-
-
   <div class="grid-container">
     <div class="content1">
-     <h1> <%= name %> </h1>   
+     <h1> <%= name %> </h1>
 
     </div>
 
 
 
-    
+
     <div class="content2"><img src="<%= image %>"></div>
     <div class="content3">
       <form class="" action="/addActivity" method="post">
-        <!-- <input style="background: transparent; border: none;" id="cityInput" readonly type="text" name="ActivityToAdd"
-          value="<%= name %>"> -->
-          <h2>Details</h2>
+        <h2>Details</h2>
+        <input style="background: transparent; border: none;" id="cityInput" readonly type="text" name="ActivityToAdd"
+          value="<%= name %>">
+
         <p>Location: <%= venue %>
         </p>
         <p>About: <%= des %>
@@ -69,7 +55,7 @@
         <p>Tags: <%= tags %>
         </p>
 
-       
+
         <button  class="btn btn-dark" type="submit"><i class="fa fa-shopping-cart"></i> Add to cart</button>
       </form>
     </div>
@@ -89,7 +75,7 @@
         zoom: 14,
         center: { lat:<%= latitude %>, lng:<%= longitude %>}
       }
-    
+
 
     // New map
     var map = new google.maps.Map(document.getElementById('map'), options);
