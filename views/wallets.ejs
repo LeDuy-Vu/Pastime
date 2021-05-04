@@ -81,8 +81,27 @@
         <div>
           <h6 class="my-0">Total Price</h6>
         </div>
-        <span class="text-muted">$<%= TotalPrice %></span>
+        <span name = "TotalPrice"class="text-muted">$<%= TotalPrice %></span>
         </li>
+        <li class="list-group-item d-flex justify-content-between lh-sm">
+        <div>
+          <p class="my-0">Points</p>
+        </div>
+        <span class="text-muted">You have <%= TotalPoints %> points</span>
+        </li>
+        <% if (TotalPoints == "0"){ %>
+        <% } else{ %>
+          <li class="list-group-item d-flex justify-content-between lh-sm">
+            <input type="checkbox" name="checkbox" value="">Use Points</input>
+            <br>
+            <% if (DiscountedPrice < "0"){ %>
+              <label name = "DiscountedPrice" > Discounted Price: $0</label><br>
+              <% } else{ %>
+            <label name = "DiscountedPrice" > Discounted Price: $<%= DiscountedPrice %></label><br>
+            <%  }%>
+            </li>
+        <%  }%>
+
    </div>
    <div class="col-md-7 col-lg-8">
      <h4 class="mb-3">Billing address</h4>

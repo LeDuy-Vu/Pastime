@@ -378,7 +378,9 @@ app.get("/Wallet.html", function(req, res){
                     total += item.Price;
                   })
                   var totalP = total.toFixed(2);
-                  res.render("wallets", {numActivity: document.currentActivity.length, newListItems: docs1, TotalPrice: totalP})
+                  var discount = totalP - (docs.Points * 0.2);
+                  console.log("points is" + docs.Points);
+                  res.render("wallets", {numActivity: document.currentActivity.length, newListItems: docs1, TotalPrice: totalP, TotalPoints: docs.Points, DiscountedPrice: discount})
                 }
             });
           }
