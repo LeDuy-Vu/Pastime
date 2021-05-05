@@ -1,155 +1,136 @@
  /* Background Styles Only */
-  
-  @import url('https://fonts.googleapis.com/css?family=Raleway');
-  
-  * {
-      font-family: Raleway;
-  }
-  
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
-  
-  html, body {
-    background-color: white;
-    height: 100%;
-    padding-top: 25px; 
-    margin: 0;
-  }
-
-  h1{
-    color: #ECEFF4;
-  }
-
-  h2{
-    color: #ECEFF4;
-  }
-
-  
-
-  
-  p{
-    color: #ECEFF4;
-  }
-  
-  
-  
-  .side-links {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-  }
-  
-  .side-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    margin-bottom: 10px;
-    color: white;
-    width: 180px;
-    padding: 10px 0;
-    border-radius: 10px;
-  }
-  
-  .side-link-youtube {
-    background-color: red;
-  }
-  
-  .side-link-twitter {
-    background-color: #1DA1F2;
-  }
-  
-  .side-link-github {
-    background-color: #6e5494;
-  }
-  
-  .side-link-text {
-    margin-left: 10px;
-    font-size: 18px;
-  }
-  
-  .side-link-icon {
-    color: white;
-    font-size: 30px;
-  }
-
-  #map{
-    height:400px;
-    width:100%;
-  }
-
-
-  .grid-container {
-    width: 100%;
-    /* border-bottom: 1000000px;
+ 
+ @import url('https://fonts.googleapis.com/css?family=Raleway');
+ * {
+     font-family: Raleway;
+ }
+ 
+ *,
+ *::before,
+ *::after {
+     box-sizing: border-box;
+ }
+ 
+ html,
+ body {
+     background-color: white;
+     height: 100%;
+     padding-top: 25px;
+     margin: 0;
+ }
+ 
+ h1 {
+     color: #ECEFF4;
+ }
+ 
+ h2 {
+     color: #ECEFF4;
+ }
+ 
+ p {
+     color: #ECEFF4;
+ }
+ 
+ .side-links {
+     position: absolute;
+     top: 15px;
+     right: 15px;
+ }
+ 
+ .side-link {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     text-decoration: none;
+     margin-bottom: 10px;
+     color: white;
+     width: 180px;
+     padding: 10px 0;
+     border-radius: 10px;
+ }
+ 
+ .side-link-youtube {
+     background-color: red;
+ }
+ 
+ .side-link-twitter {
+     background-color: #1DA1F2;
+ }
+ 
+ .side-link-github {
+     background-color: #6e5494;
+ }
+ 
+ .side-link-text {
+     margin-left: 10px;
+     font-size: 18px;
+ }
+ 
+ .side-link-icon {
+     color: white;
+     font-size: 30px;
+ }
+ 
+ #map {
+     height: 400px;
+     width: 100%;
+ }
+ 
+ .grid-container {
+     width: 100%;
+     /* border-bottom: 1000000px;
     border-color: white; */
-    display: grid;
-    height: 100vh;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 0.2fr 1.5fr 1fr;
-    grid-template-areas:
-    "name name"
-    "image details"
-    "map map";
-  }
-
-  .content1 {
-    grid-area: name;
-   background-color: #88C0D0;
-   padding: 2em;
-   
-  }
-
-.content2 {
-  background-color: #16c9c9;
-  grid-area: image;
-  }
-
-  .content2 img {
-    max-width: 100%;
-    min-height: 100%;
-    /* height: auto; */
-    
-    /* min-height: 100%; */
-    /* width: 25em;  */
-    vertical-align: middle;
-    text-align: center;
-
-    }
-
-
-  .content3 {
-  background-color: #434C5E;
-  grid-area: details;
-  padding: 3em;
-  }
-  .content4 {
-  background-color: #2E3440;
-  padding: 2em;
-  grid-area: map;
-  
-  }
-
-
-  .content5 {
-  background-color: #2E3440;
-
-  }
-  
-
-  @media only screen and (max-width: 800px){
-    .grid-container {
-      width: 100%;
-      display: grid;
-      height: 100vh;
-      grid-template-columns: 1fr;
-      grid-template-rows: 0.2fr auto 1.5fr 1fr;
-      grid-template-areas:
-      "name"
-      "image"
-      "details"
-      "map";
-    }
-  }
-  
+     display: grid;
+     height: 100vh;
+     grid-template-columns: 1fr 1fr;
+     grid-template-rows: 0.2fr 1.5fr 1fr;
+     grid-template-areas: "name name" "image details" "map map";
+ }
+ 
+ .content1 {
+     grid-area: name;
+     background-color: #88C0D0;
+     padding: 2em;
+ }
+ 
+ .content2 {
+     background-color: #16c9c9;
+     grid-area: image;
+ }
+ 
+ .content2 img {
+     max-width: 100%;
+     min-height: 100%;
+     /* height: auto; */
+     /* min-height: 100%; */
+     /* width: 25em;  */
+     vertical-align: middle;
+     text-align: center;
+ }
+ 
+ .content3 {
+     background-color: #434C5E;
+     grid-area: details;
+     padding: 3em;
+ }
+ 
+ .content4 {
+     background-color: #2E3440;
+     padding: 2em;
+     grid-area: map;
+ }
+ 
+ .content5 {
+     background-color: #2E3440;
+ }
+ 
+ @media only screen and (max-width: 800px) {
+     .grid-container {
+         width: 100%;
+         display: grid;
+         height: 100vh;
+         grid-template-columns: 1fr;
+         grid-template-rows: 0.2fr auto 1.5fr 1fr;
+         grid-template-areas: "name" "image" "details" "map";
+     }
+ }

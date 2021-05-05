@@ -1,63 +1,54 @@
 body {
-  /* filter: blur(1px); */
+    /* filter: blur(1px); */
 }
-
 
 .body1 {
-  background-image: url("https://codetheweb.blog/assets/img/posts/css-advanced-background-images/mountains.jpg");
-   height: 50rem;
-   width: 100%;
- background-position: center;
- background-repeat: no-repeat;
- background-size: cover;
-
-
-
+    background-image: url("https://codetheweb.blog/assets/img/posts/css-advanced-background-images/mountains.jpg");
+    height: 50rem;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
-
-.company{
-  font-weight: bold;
-  font-size: 40px;
+.company {
+    font-weight: bold;
+    font-size: 40px;
 }
-
 
 .btn1 {
-  margin-top: 10px;
+    margin-top: 10px;
 }
 
 .maru {
-  text-align: center;
+    text-align: center;
 }
 
 .login {
-
-
-  padding-bottom: 0%;
-  padding-top: 2%;
-  padding-left: 2%;
-  padding-right: 2%;
-  background-color: #f6f6f6;
-   display: inline-block;
-   margin-left: 20rem;
-   margin-top: 5rem;
-
+    padding-bottom: 0%;
+    padding-top: 2%;
+    padding-left: 2%;
+    padding-right: 2%;
+    background-color: #f6f6f6;
+    display: inline-block;
+    margin-left: 20rem;
+    margin-top: 5rem;
 }
 
-.logo{
-  text-align: center;
+.logo {
+    text-align: center;
     display: block;
     padding-bottom: 5%;
     text-align: center;
-
 }
+
 .company {
-  padding-top: 2%;
-  font-weight: bold;
-  font-size: 40px;
-  padding-left: 6%;
+    padding-top: 2%;
+    font-weight: bold;
+    font-size: 40px;
+    padding-left: 6%;
 }
 
 img {
-  height: 5rem;
+    height: 5rem;
 }
