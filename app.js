@@ -417,8 +417,7 @@ app.get("/Wallet.html", function(req, res){
                   })
                   var totalP = total.toFixed(2);
                   var discount = totalP - (docs.Points * 0.2);
-                  console.log("points is" + docs.Points);
-                  res.render("wallets", {numActivity: document.currentActivity.length, newListItems: docs1, TotalPrice: totalP, TotalPoints: docs.Points, DiscountedPrice: discount})
+                  res.render("wallets", {numActivity: document.currentActivity.length, newListItems: docs1, TotalPrice: totalP, TotalPoints: docs.Points.toFixed(2), DiscountedPrice: discount.toFixed(2)})
                 }
             });
           }
@@ -461,39 +460,71 @@ app.get("/checkout.html", function(req, res){
 });
 
 app.post("/afterCheckOut", function(req, res){
+  console.log(req.body.DiscountedPrice);
+  console.log(req.body.TotalPrice);
+  console.log(req.body.Pointscheckbox);
   Item.findOne({FirstName: currentUser}, function(err, docs){
-    if (docs === null) {
-      console.log(currentUser);
-      Activity.find({}, function(err, foundItems){
-        res.render("home", {MyName: currentUser, newListItems: foundItems});
+  if(req.body.Pointscheckbox){
+    var newPoints = req.body.TotalPrice * 0.1;
+    if(req.body.TotalPrice ===  0.00){
+      var newPs = docs.Points + (req.body.TotalPrice * 0.1);
+      Item.findOneAndUpdate({FirstName: currentUser}, {$set: {Points: newPs}}, function(err, dos1){
+        if(err)
+          console.log(err);
       });
     }
     else {
-      Wallet.findOne({emailID: docs.EmailID}, function(err, document){
-        if(docs === null)
-          console.log("EEEEEEEE");
-        else{
-          document.currentActivity.forEach(function(item, index, array){
-            Wallet.findOneAndUpdate({emailID: docs.EmailID}, {$push: {completedActivity: item}}, function (error, success) {
-              if(error)
-                console.log("!!!!!!!!!!!!!!!!!!!!!!!!");
-              else
-                console.log("Added to DB");
-              });
-          });
-        }
-      });
-      Wallet.findOneAndUpdate({emailID: docs.EmailID}, {$set: {currentActivity: []}}, function(error, success){
-        if(error)
-          console.log("**************");
-        else
-          console.log("Added to DB");
-      });
-      Activity.find({}, function(err, foundItems){
-        res.render("home", {MyName: currentUser, newListItems: foundItems});
-      });
+    Item.findOneAndUpdate({FirstName: currentUser}, {$set: {Points: newPoints}}, function(err, dos1){
+      if(err)
+        console.log(err);
+    });
+      console.log("INNN TRUEEE");
     }
+
+  }
+  else {
+    var newPs = docs.Points + (req.body.TotalPrice * 0.1);
+    Item.findOneAndUpdate({FirstName: currentUser}, {$set: {Points: newPs}}, function(err, dos1){
+      if(err)
+        console.log(err);
+    });
+
+  }
+    if (docs === null) {
+        console.log(currentUser);
+        Activity.find({}, function(err, foundItems){
+          res.render("home", {MyName: currentUser, newListItems: foundItems});
+        });
+      }
+      else {
+        Wallet.findOne({emailID: docs.EmailID}, function(err, document){
+          if(docs === null)
+            console.log("EEEEEEEE");
+          else{
+            document.currentActivity.forEach(function(item, index, array){
+              Wallet.findOneAndUpdate({emailID: docs.EmailID}, {$push: {completedActivity: item}}, function (error, success) {
+                if(error)
+                  console.log("!!!!!!!!!!!!!!!!!!!!!!!!");
+                else
+                  console.log("Added to DB");
+                });
+            });
+          }
+        });
+        Wallet.findOneAndUpdate({emailID: docs.EmailID}, {$set: {currentActivity: []}}, function(error, success){
+          if(error)
+            console.log("**************");
+          else
+            console.log("Added to DB");
+        });
+        Activity.find({}, function(err, foundItems){
+          res.render("home", {MyName: currentUser, newListItems: foundItems});
+        });
+      }
+
+
   });
+
 });
 
 app.get("/previousActivities", function(req, res){
