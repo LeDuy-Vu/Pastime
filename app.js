@@ -374,8 +374,9 @@ app.post("/changePass", function(req, res){
         Item.updateOne({FirstName: currentUser}, {$set:{Password: hash(req.body.newPassword1, docs.Salt)}}, function(err, result){
           if(result === null)
             console.log("can't change password");
-          else
+          else{
             console.log("Password changed");
+          }
         });
       }
       Activity.find({}, function(err, foundItems){
@@ -452,7 +453,7 @@ app.get("/checkout.html", function(req, res){
       });
       }
       else{
-        res.render("profile", {FName: docs.FirstName, LName: docs.LastName, EID1: docs.EmailID, FAddress: docs.Street + ", " + docs.City +  ", " + docs.State + " " + docs.ZipCode});
+        res.render("profile", {FName: docs.FirstName, LName: docs.LastName, EID1: docs.EmailID, FAddress: docs.Street, FCity: docs.City, FState: docs.State, fZIP: docs.ZipCode, CreditNum: docs.CredCardNumb, cvc: docs.CVC, Fpoints: docs.Points});
       }
     });
   }
@@ -789,6 +790,14 @@ app.get("/ServiceProviderDash", function(req, res){
   Activity.find({ServiceProvider: currentServiceProvider}, function(err, foundItems){
   res.render("servicehome", {color1: "red", alert: "Can't add the activity, Another activity has same name",MyName: "Service Provider", newListItems: foundItems});
   });
+});
+
+app.post("/afterUser", function(req, res){
+  Item.findOneAndUpdate({EmailID: req.body.EditedEMD},{$set: {FirstName: req.body.EditedFName, LastName: req.body.EditedLName, Street: req.body.EditedFAdress, City: req.body.EditedCity, ZipCode: req.body.EditedFZIP, CredCardNumb: req.body.EditedCreditNum, CVC: req.body.EditedCVC }}, function(err, docs){
+    if(err)
+      console.log(err);
+  });
+  res.redirect("dashboard");
 });
 
 // LE -- HASHING
