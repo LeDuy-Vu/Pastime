@@ -11,6 +11,10 @@ body {
     background-size: cover;
 }
 
+.row {
+    justify-content: center;
+}
+
 .company {
     font-weight: bold;
     font-size: 40px;
@@ -51,4 +55,8 @@ body {
 
 img {
     height: 5rem;
+}
+
+.top-buffer {
+    margin-top: 20px;
 }
