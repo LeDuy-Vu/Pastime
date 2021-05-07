@@ -192,3 +192,48 @@ Test.insertMany(testCases, function(err){
 // if (hash(test1, salt) === res)
 //     console.log("True")
 // console.log("Login:  " + hash(test1, salt))
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// ADDING SERVICE PROVIDER INTO DB
+// for service provider
+salt1 = getSalt()
+pass1 = "pass"
+const testServiceProvider1 = new ServiceProvider({
+    Name: "Tinder",
+    Email: "Tinder@tinder.com",
+    Salt: salt1,
+    Password: hash(pass1, salt1),
+    isLocked: false
+});
+
+// for service provider
+salt2 = getSalt()
+pass2 = "pass"
+const testServiceProvider2 = new ServiceProvider({
+    Name: "City of San Jose",
+    Email: "sanjose@gmail.com",
+    Salt: salt2,
+    Password: hash(pass2, salt2),
+    isLocked: false
+});
+
+salt3 = getSalt()
+pass3 = "pass"
+const testServiceProvider3 = new ServiceProvider({
+    Name: "PhysX",
+    Email: "admin@physx.com",
+    Salt: salt3,
+    Password: hash(pass3, salt3),
+    isLocked: false
+});
+
+const testCases = [testServiceProvider1, testServiceProvider2, testServiceProvider3];
+
+ServiceProvider.insertMany(testCases, function(err){
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Successfully saved default items to DB.");
+        }
+});

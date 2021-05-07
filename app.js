@@ -16,8 +16,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
  * Generates random hex string of length 16 as salt
  * @function nothing
  */
- var getSalt = function(){
-   console.log("Happy");
+var getSalt = function()
+{
   return crypto.randomBytes(Math.ceil(8)).toString('hex').slice(0,16);
 };
 
@@ -57,26 +57,28 @@ var isServiceLoggedIn = false;
 const serviceProvidersSchema = {
   Name: String,
   Email: String,
+  Salt: String,
   Password: String
 }
 
+// User schema
 const itemsSchema = {
   FirstName: String,
-    LastName: String,
-    EmailID: String,
-    Salt: String,
-    Password: String,
-    Street: String,
-    City: String,
-    State: String,
-    ZipCode: String,
-    CredCardName: String,
-    CredCardNumb: String,
-    Last4Digits: String,
-    CVC: String,
-    ExpireDate: String,
-    Points: Number,
-    isLocked: Boolean
+  LastName: String,
+  EmailID: String,
+  Salt: String,
+  Password: String,
+  Street: String,
+  City: String,
+  State: String,
+  ZipCode: String,
+  CredCardName: String,
+  CredCardNumb: String,
+  Last4Digits: String,
+  CVC: String,
+  ExpireDate: String,
+  Points: Number,
+  isLocked: Boolean
 };
 
 const userWallet = {
@@ -289,43 +291,52 @@ app.get("/servicel", function(req, res){
 });
 
 app.get("/servicesp", function(req, res){
-  res.render("servicesignup",{});
+  res.render("servicesignup",{inputcolor: "black", FirstLine: "Welcome!", SecondLine:""});
 });
 
-
-app.post("/serviceSignUp", function(req, res){
-  ServiceProvider.findOne({Email: req.body.spEmail}, function(err, docs){
-    if(docs === null){
-      const temp = new ServiceProvider({
-        Name: req.body.spName,
-        Email: req.body.spEmail,
-        Password: req.body.spPassword
-      });
-
-      ServiceProvider.insertMany(temp, function(err){
-        if(err)
-          console.log(err);
-      });
-      res.redirect("servicel");
-    }
-    else{
-      res.redirect("/");
-    }
-  });
+// Logic to sign up new service provider account
+app.post("/serviceSignUp", function(req, res)
+{
+  email = req.body.spEmail.trim();  // trim whitespaces
+  if (validator.validate(email))  // validate email
+  {
+    ServiceProvider.findOne({Email: email}, function(err, docs)
+    {
+      if(docs === null) // if fresh aka valid email to sign up
+      {
+        salt = getSalt();
+        const temp = new ServiceProvider
+        ({
+          Name: req.body.spName.trim(),
+          Email: email,
+          Password: hash(req.body.spPassword, salt)
+        });
+  
+        ServiceProvider.insertMany(temp, function(err){
+          if(err)
+            console.log(err);
+        });
+        res.redirect("servicel");
+      }
+      else res.render("servicesignup", {inputcolor: "red", FirstLine: "Email already in use", SecondLine:"Try a Different One!"});  // if this email already exists in the DB
+    });
+  }
+  else res.render("servicesignup", {inputcolor: "red", FirstLine: "Invalid email format", SecondLine:"Try Again!"}); // wrong email format
 });
-// Push the new user account into the DB
+
+// Push the new normal user account into the DB
 app.post("/aftersignup",function(req, res){
-  email = req.body.Email.trim()     // trim whitespaces
+  email = req.body.Email.trim();     // trim whitespaces
   if (validator.validate(email))    // validate email
   {
-    Item.findOne({EmailID:email}, function (err, docs){
-
-      if(docs === null){  // if no such email in the DB yet
+    Item.findOne({EmailID:email}, function (err, docs)
+    {
+      if(docs === null){  // if fresh aka valid email to sign up
         salt = getSalt();
 
         const temps = new Item({
-          FirstName: req.body.FName,
-          LastName: req.body.LName,
+          FirstName: req.body.FName.trim(),
+          LastName: req.body.LName.trim(),
           EmailID: email,
           Salt: salt,
           Password: hash(req.body.Pass, salt),
@@ -355,13 +366,16 @@ app.post("/aftersignup",function(req, res){
           else
             console.log("Successfully saved default items to DB.");
         });
-        res.render("login", {inputcolor: "black", FirstLine: "", SecondLine:""});
+        res.render("signup", {inputcolor: "black", FirstLine: "", SecondLine:""});
       }
-
-      else res.render("login", {inputcolor: "red", FirstLine: "Email already in use", SecondLine:"Try Again!"});  // if this email already exists in the DB
+      else
+      {
+        // if this email already exists in the DB
+        res.render("signup", {inputcolor: "red", FirstLine: "Email already in use", SecondLine:"Try a Different One!"});
+      }
     });
   }
-  else res.render("login", {inputcolor: "red", FirstLine: "Invalid email format", SecondLine:"Try Again!"}); // wrong email format
+  else res.render("signup", {inputcolor: "red", FirstLine: "Invalid email format", SecondLine:"Try Again!"}); // wrong email format
 });
 
 // Change Password logic
@@ -393,8 +407,8 @@ app.post("/changePass", function(req, res){
   });
 });
 
-app.get("/signup.html", (req, res) => {
-  res.sendFile(__dirname + "/signup.html");
+app.get("/signup.html", function(req, res){
+  res.render("signup", {inputcolor: "black", FirstLine: "", SecondLine:""});
 });
 
 app.get("/Wallet.html", function(req, res){
@@ -571,7 +585,7 @@ app.get("/", function(req, res) {
 });
 
 app.get("/login.html", function(req, res){
-  res.render("login", {inputcolor: "black", FirstLine: "lllll", SecondLine:""});
+  res.render("login", {inputcolor: "black", FirstLine: "", SecondLine:""});
 });
 
 app.get("/mainpage.html", function(req, res){
