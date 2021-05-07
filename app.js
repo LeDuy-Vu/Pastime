@@ -318,7 +318,11 @@ app.post("/serviceSignUp", function(req, res)
         });
         res.redirect("servicel");
       }
-      else res.render("servicesignup", {inputcolor: "red", FirstLine: "Email already in use", SecondLine:"Try a Different One!"});  // if this email already exists in the DB
+      else
+      {
+        // if this email already exists in the DB
+        res.render("servicesignup", {inputcolor: "red", FirstLine: "Email already in use", SecondLine:"Try a Different One!"});
+      }
     });
   }
   else res.render("servicesignup", {inputcolor: "red", FirstLine: "Invalid email format", SecondLine:"Try Again!"}); // wrong email format
