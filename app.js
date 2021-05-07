@@ -186,24 +186,28 @@ app.get("/EditActivities/:id", function(req, res){
 });
 
 // To delete Activities from Wallet by the user
-app.get("/DeleteActivities/:id", function(req, res){
-  Item.findOne({FirstName: currentUser}, function(err, docs){
-    if (docs === null) {
+app.get("/DeleteActivities/:id", function(req, res)
+{
+  Item.findOne({FirstName: currentUser}, function(err, docs)
+  {
+    if (docs === null)
+    {
       console.log(currentUser);
       Activity.find({}, function(err, foundItems){
         res.render("home", {MyName: currentUser, newListItems: foundItems});
       });
     }
-    else {
-      Wallet.findOneAndUpdate({emailID: docs.EmailID},{$pull: {currentActivity: req.params.id}}, function(err, document){
-      // Activity.find({}, function(err, foundItems){
-      //   res.render("home", {MyName: currentUser, newListItems: foundItems});
-      // });
-      res.redirect("../dashboard")
+    else
+    {
+      Wallet.findOneAndUpdate({emailID: docs.EmailID},{$pull: {currentActivity: req.params.id}}, function(err, document)
+      {
+        // Activity.find({}, function(err, foundItems){
+        //   res.render("home", {MyName: currentUser, newListItems: foundItems});
+        // });
+        res.redirect("../dashboard");
+      });
     }
-
   });
-
 });
 
 // Each clickable activity card

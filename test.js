@@ -1,10 +1,3 @@
-// var d = new Date();
-
-// console.log((d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear());
-
-
-
-
 // CODE TO PUSH AN ACTIVITY DOCUMENT TO MONGODB (MAINTAINING PURPOSE)
 // const Activity = mongoose.model("Activity", activitiesSchema);
 // const activity1 = new Activity({
