@@ -51,6 +51,8 @@ const globVars = {
   isLoggedIn: Boolean,
 }
 var isLoggedIn = false;
+var isAdminLoggedIn = false;
+var isServiceLoggedIn = false;
 
 const serviceProvidersSchema = {
   Name: String,
@@ -126,10 +128,15 @@ app.get("/about.html", function(req, res){
 
 //Searching User in AdminView
 app.get("/searchUser", function(req, res){
+  if(isAdminLoggedIn){
   const{ sUser} = req.query;
   Item.find({EmailID: sUser}, function(err, foundItems){
     res.render("adminview", {newListItems: foundItems});
   });
+}
+else{
+  res.redirect("pleaselogin");
+}
 
 });
 
@@ -189,9 +196,6 @@ app.get("/DeleteActivities/:id", function(req, res){
     }
     else {
       Wallet.findOneAndUpdate({emailID: docs.EmailID},{$pull: {currentActivity: req.params.id}}, function(err, document){
-        if(docs === null)
-          console.log("EEEEEEEE");
-      });
       // Activity.find({}, function(err, foundItems){
       //   res.render("home", {MyName: currentUser, newListItems: foundItems});
       // });
@@ -232,7 +236,7 @@ app.post("/afterEditActivity", function(req, res){
 else{
   Activity.findOneAndDelete({Name: req.body.EditedName}, function(err, docs1){
     if(err)
-      console.log("SSSSSSSSSS"+err);
+      console.log(err);
   });
 }
   res.redirect("serviceDashboard");
@@ -261,15 +265,13 @@ app.post("/addActivity", function(req, res){
     else {
       Wallet.findOneAndUpdate({emailID: docs.EmailID}, {$push: {currentActivity: req.body.ActivityToAdd}}, function (error, success) {
         if(error) {
-          console.log("!!!!!!!!!!!!!!!!!!!!!!!!");
             console.log(error);
         } else {
           console.log("Added to DB");
-            console.log(success);
+          console.log(success);
         }
 
       });
-      console.log("Updating " +docs.EmailID + " with " + req.body.ActivityToAdd);
       Activity.find({}, function(err, foundItems){
       res.render("home", {MyName: currentUser, newListItems: foundItems});
       });
@@ -288,7 +290,6 @@ app.get("/servicesp", function(req, res){
 
 
 app.post("/serviceSignUp", function(req, res){
-  console.log(req.body.spName + " " + req.body.spEmail + " " + req.body.spPassword);
   ServiceProvider.findOne({Email: req.body.spEmail}, function(err, docs){
     if(docs === null){
       const temp = new ServiceProvider({
@@ -410,7 +411,7 @@ app.get("/Wallet.html", function(req, res){
           else{
             Activity.find({Name: {$in: document.currentActivity}}, function(err, docs1){
               if(err)
-                console.log("llol");
+                console.log(err);
                 else{
                   var total = 0;
                   docs1.forEach(function(item){
@@ -437,7 +438,7 @@ app.get("/pleaselogin", function(req, res){
 });
 
 app.get("/nextstep.html", function(req, res){
-  console.log("HHHHHH");
+  console.log("In nextstep");
 });
 
 
@@ -500,12 +501,12 @@ app.post("/afterCheckOut", function(req, res){
       else {
         Wallet.findOne({emailID: docs.EmailID}, function(err, document){
           if(docs === null)
-            console.log("EEEEEEEE");
+            console.log("IN NULL");
           else{
             document.currentActivity.forEach(function(item, index, array){
               Wallet.findOneAndUpdate({emailID: docs.EmailID}, {$push: {completedActivity: item}}, function (error, success) {
                 if(error)
-                  console.log("!!!!!!!!!!!!!!!!!!!!!!!!");
+                  console.log(error);
                 else
                   console.log("Added to DB");
                 });
@@ -514,7 +515,7 @@ app.post("/afterCheckOut", function(req, res){
         });
         Wallet.findOneAndUpdate({emailID: docs.EmailID}, {$set: {currentActivity: []}}, function(error, success){
           if(error)
-            console.log("**************");
+            console.log(error);
           else
             console.log("Added to DB");
         });
@@ -542,7 +543,7 @@ app.get("/previousActivities", function(req, res){
         else {
           Wallet.findOne({emailID: docs.EmailID}, function(err, document){
             if(document === null)
-              console.log("EEEEEEEE");
+              console.log("IN NULL");
             else{
               Activity.find({Name: {$in: document.completedActivity}}, function(err, docs1){
                 if(err)
@@ -578,8 +579,9 @@ app.get("/mainpage.html", function(req, res){
 app.get("/index.html", function(req, res){
   res.sendFile(__dirname + "/index.html");
   currentUser = "";
-  isLoggedIn = false ;
+  isLoggedIn = false;
   activityList = [];
+  isAdminLoggedIn = false;
 });
 
 
@@ -600,6 +602,7 @@ app.get("/tryagain.html", function(req, res){
 // });
 
 app.post("/editUser", function(req, res){
+  if(isAdminLoggedIn){
   console.log(req.body.userEditEmail);
   console.log(req.body.vote);
 
@@ -610,9 +613,14 @@ app.post("/editUser", function(req, res){
   else if(req.body.vote === "Lock"){
     res.redirect("LockUser/?uEmail=" + req.body.userEditEmail)
   }
+}
+else{
+  res.redirect("../pleaselogin");
+}
 });
 
 app.get("/LockUser", function(req, res){
+  if(isAdminLoggedIn){
 
   Item.findOne({EmailID: req.query.uEmail}, function(err, docs){
     if(docs.isLocked){
@@ -622,6 +630,10 @@ app.get("/LockUser", function(req, res){
       res.render("userUnlock", {UserName: docs.EmailID, todo: "Unlocked", todo1: "Lock" });
 
   });
+}
+else{
+  res.redirect("../pleaselogin");
+}
 });
 
   app.get("/UserLocking", function(req, res){
@@ -629,11 +641,9 @@ app.get("/LockUser", function(req, res){
     Item.findOne({EmailID: userEmail1}, function(err, docs){
       if(docs.isLocked){
         Item.findOneAndUpdate({EmailID: userEmail1}, {$set: {isLocked: false}}, function(error, success){});
-        console.log(userEmail1 + " set to false");
       }
       else{
         Item.findOneAndUpdate({EmailID: userEmail1}, {$set: {isLocked: true}}, function(error, success){});
-        console.log(userEmail1 + " set to true");
       }
 
     });
@@ -646,6 +656,7 @@ app.get("/LockUser", function(req, res){
 
 
 app.get("/editU", function(req, res){
+  if(isAdminLoggedIn){
   Item.findOne({EmailID: req.query.uEmail}, function (err, docs) {
     if (docs === null) {  // can't find email in the DB
       Item.find({}, function(err, foundItems){
@@ -657,6 +668,10 @@ app.get("/editU", function(req, res){
 
     }
   });
+}
+else{
+  res.redirect("pleaselogin");
+}
 });
 
 app.post("/serviceHome", function(req, res){
@@ -687,9 +702,15 @@ app.post("/serviceHome", function(req, res){
 });
 
 app.get("/adminDashboard", function(req, res){
+  console.log(isAdminLoggedIn);
+  if(isAdminLoggedIn){
   Item.find({}, function(err, foundItems){
     res.render("adminview", {newListItems: foundItems});
   });
+}
+else{
+  res.redirect("pleaselogin");
+}
 });
 
 // Login logic
@@ -697,8 +718,8 @@ app.post("/home", function(req, res){
   var emailAddress = req.body.emailID.trim();
   var password = req.body.passWORD;
 
-  if (emailAddress === "admin@admin.com" && password == "admin") {
-    isLoggedIn = true ;
+  if (emailAddress === "admin@admin.com" && password === "admin") {
+    isAdminLoggedIn = true;
     res.redirect("adminDashboard");
   }
   else if (validator.validate(emailAddress))  {
@@ -748,6 +769,7 @@ app.get("/serviceDashboard1", function(req, res){
 });
 
 app.post("/ActivityAdded", function(req, res){
+
 var searchAct = req.body.ActivityTags.split(", ");
 for (let i = 0; i < searchAct.length; i++) {
     searchAct[i] = searchAct[i].toLowerCase();
@@ -768,8 +790,7 @@ console.log("activiti is " + req.body.ActivityName);
     Tags: searchAct,
   });
   Activity.find({Name: req.body.ActivityName}, function(err, docss1){
-      if(docss1 === null)
-      {
+      // if(docss1 === null){
         Activity.insertMany(temps, function(err){
           if (err)
             console.log(err);
@@ -779,10 +800,11 @@ console.log("activiti is " + req.body.ActivityName);
 
         res.redirect("serviceDashboard1");
 
-      }
-      else {
-        res.redirect("ServiceProviderDash");
-      }
+      // }
+      // else {
+      //   console.log(docss1.Name);
+      //   res.redirect("ServiceProviderDash");
+      // }
   });
 });
 
@@ -812,9 +834,14 @@ app.get("/dashboard", function(req, res){
 });
 
 app.get("/AllUsers", function(req,res){
+  if(isAdminLoggedIn){
   Item.find({}, function(err, foundItems){
     res.render("adminview", {newListItems: foundItems});
   });
+}
+else{
+  res.redirect("pleaselogin");
+}
 });
 
 app.get("/NewActivity", function(req, res){
