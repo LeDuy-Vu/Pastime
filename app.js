@@ -492,7 +492,7 @@ app.get("/checkout.html", function(req, res){
       });
       }
       else{
-        res.render("profile", {FName: docs.FirstName, LName: docs.LastName, EID1: docs.EmailID, FAddress: docs.Street, FCity: docs.City, FState: docs.State, fZIP: docs.ZipCode, CreditNum: docs.CredCardNumb, cvc: docs.CVC, Fpoints: docs.Points});
+        res.render("profile", {FName: docs.FirstName, LName: docs.LastName, EID1: docs.EmailID, FAddress: docs.Street, FCity: docs.City, FState: docs.State, fZIP: docs.ZipCode, CreditNum: docs.Last4Digits, Fpoints: docs.Points});
       }
     });
   }
