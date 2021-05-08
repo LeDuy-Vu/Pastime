@@ -58,7 +58,8 @@ const serviceProvidersSchema = {
   Name: String,
   Email: String,
   Salt: String,
-  Password: String
+  Password: String,
+  isLocked: Boolean
 }
 
 // User schema
@@ -291,7 +292,7 @@ app.get("/servicel", function(req, res){
 });
 
 app.get("/servicesp", function(req, res){
-  res.render("servicesignup",{inputcolor: "black", FirstLine: "Welcome!", SecondLine:""});
+  res.render("servicesignup",{inputcolor: "black", FirstLine: "Welcome, Service Provider!", SecondLine:""});
 });
 
 // Logic to sign up new service provider account
@@ -309,7 +310,9 @@ app.post("/serviceSignUp", function(req, res)
         ({
           Name: req.body.spName.trim(),
           Email: email,
-          Password: hash(req.body.spPassword, salt)
+          Salt: salt,
+          Password: hash(req.body.spPassword, salt),
+          isLocked: false
         });
   
         ServiceProvider.insertMany(temp, function(err){
@@ -696,31 +699,39 @@ else{
 }
 });
 
-app.post("/serviceHome", function(req, res){
+// Login logic for service provider
+app.post("/serviceHome", function(req, res)
+{
   var emailAddress = req.body.serviceEmail.trim();
   var password = req.body.servicePassword;
 
-  if(validator.validate(emailAddress)){
-    ServiceProvider.findOne({Email: emailAddress}, function(err, docs){
-      if(docs === null){
-        res.redirect("servicel");
-      }
-      else {
-        if(emailAddress === docs.Email && password === docs.Password){
-          isLoggedIn = true;
-          currentServiceProvider = emailAddress;
-          res.redirect("serviceDashboard");
+  if (validator.validate(emailAddress))
+  {
+    ServiceProvider.findOne({Email: emailAddress}, function(err, docs)
+    {
+      if (docs === null)  // no account with this email
+        res.render("servicelogin", {inputcolor: "red", FirstLine: "Wrong Credentials", SecondLine:"Try Again!"});
+      else
+      {
+        if (emailAddress === docs.Email && hash(password, docs.Salt) === docs.Password)
+        {
+          if (docs.isLocked)  // if account is locked
+          {
+            res.redirect("AccountLocked");
+          }
+          else  // login successfully
+          {
+            isLoggedIn = true;
+            currentServiceProvider = emailAddress;
+            res.redirect("serviceDashboard");
+          }
         }
-        else {
-          console.log("Incorrect password");
-          res.redirect("servicel");
-        }
+        else  // wrong password
+        res.render("servicelogin", {inputcolor: "red", FirstLine: "Wrong Credentials", SecondLine:"Try Again!"});
       }
     });
   }
-  else{
-    res.redirect("servicel")
-  }
+  else res.render("servicelogin", {inputcolor: "red", FirstLine: "Wrong Credentials", SecondLine:"Try Again!"});
 });
 
 app.get("/adminDashboard", function(req, res){
@@ -735,7 +746,7 @@ else{
 }
 });
 
-// Login logic
+// Login logic for normal user
 app.post("/home", function(req, res){
   var emailAddress = req.body.emailID.trim();
   var password = req.body.passWORD;
@@ -761,17 +772,12 @@ app.post("/home", function(req, res){
           res.redirect("AccountLocked");
         }
         }
-        else {  // user input password doesn't match password in DB
-          console.log("Wrong password");
+        else  // user input password doesn't match password in DB
           res.render("login", {inputcolor: "red", FirstLine: "Wrong Username/Password", SecondLine:"Try Again!"});
-        }
       }
     });
   }
-  else  {
-    console.log("Wrong email format");
-    res.render("login", {inputcolor: "red", FirstLine: "Wrong email format", SecondLine:"Try Again!"});
-  }
+  else res.render("login", {inputcolor: "red", FirstLine: "Wrong email format", SecondLine:"Try Again!"});
 });
 
 app.get("/AccountLocked", function(req, res){
