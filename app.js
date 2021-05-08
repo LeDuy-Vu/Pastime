@@ -99,6 +99,7 @@ const Item = mongoose.model("Item", itemsSchema);
 
 let global = this;
 global.currentUser = "global";
+global.currentEmail = "global" ;
 
 var currentServiceProvider = "";
 
@@ -146,19 +147,28 @@ else{
 // Search bar logic
 app.get("/searchActivity", function(req, res){
   const { activityTag } = req.query;
-  var searchAct = activityTag.split(", ");
-  for (let i = 0; i < searchAct.length; i++) {
-      searchAct[i] = searchAct[i].toLowerCase();
-  }
-  if(isLoggedIn){
-    Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
+  if (activityTag === "")
+  {
+    Activity.find({}, function(err, foundItems){
       res.render("home", {MyName: currentUser, newListItems: foundItems});
     });
   }
-  else{
-    Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
-      res.render("home", {MyName: "guest", newListItems: foundItems});
-    });
+  else
+  {
+    var searchAct = activityTag.split(", ");
+    for (let i = 0; i < searchAct.length; i++) {
+      searchAct[i] = searchAct[i].toLowerCase();
+    }
+    if(isLoggedIn){
+      Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
+        res.render("home", {MyName: currentUser, newListItems: foundItems});
+      });
+    }
+    else{
+      Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
+        res.render("home", {MyName: "guest", newListItems: foundItems});
+      });
+    }
   }
 });
 
@@ -170,12 +180,16 @@ app.get("/searchActivityService", function(req, res){
   }
   if(isLoggedIn){
     Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
-      res.render("servicehome", {color1: "",alert: "",MyName: "Service Provider", newListItems: foundItems});
+      ServiceProvider.findOne({Email: currentServiceProvider}, function(err, docs){
+        res.render("servicehome", {color1: "",alert: "",MyName: docs.Name, newListItems: foundItems});
+      });
     });
   }
   else{
     Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
-      res.render("servicehome", {color1: "",alert: "",MyName: "Service Provider", newListItems: foundItems});
+      ServiceProvider.findOne({Email: currentServiceProvider}, function(err, docs){
+        res.render("servicehome", {color1: "",alert: "",MyName: docs.Name, newListItems: foundItems});
+      });
     });
   }
 });
@@ -191,11 +205,10 @@ app.get("/EditActivities/:id", function(req, res){
 // To delete Activities from Wallet by the user
 app.get("/DeleteActivities/:id", function(req, res)
 {
-  Item.findOne({FirstName: currentUser}, function(err, docs)
+  Item.findOne({EmailID: currentEmail}, function(err, docs)
   {
     if (docs === null)
     {
-      console.log(currentUser);
       Activity.find({}, function(err, foundItems){
         res.render("home", {MyName: currentUser, newListItems: foundItems});
       });
@@ -264,7 +277,7 @@ app.post("/result", function(req, res){
 
 app.post("/addActivity", function(req, res){
 
-  Item.findOne({FirstName: currentUser }, function (err, docs){
+  Item.findOne({EmailID: currentEmail}, function (err, docs){
     if (docs === null) {
       console.log("in null");
       Activity.find({}, function(err, foundItems){
@@ -390,7 +403,7 @@ app.post("/aftersignup",function(req, res){
 // Change Password logic
 app.post("/changePass", function(req, res){
 
-  Item.findOne({FirstName: currentUser }, function (err, docs){
+  Item.findOne({EmailID: currentEmail}, function (err, docs){
     if (docs === null) {
       Activity.find({}, function(err, foundItems){
       res.render("home", {MyName: currentUser, newListItems: foundItems});
@@ -399,7 +412,7 @@ app.post("/changePass", function(req, res){
     else {
       if((docs.Password === hash(req.body.oldPassword, docs.Salt)) && (req.body.newPassword1 === req.body.newPassword2)){
         console.log("some");
-        Item.updateOne({FirstName: currentUser}, {$set:{Password: hash(req.body.newPassword1, docs.Salt)}}, function(err, result){
+        Item.updateOne({EmailID: currentEmail}, {$set:{Password: hash(req.body.newPassword1, docs.Salt)}}, function(err, result){
           if(result === null)
             console.log("can't change password");
           else{
@@ -423,10 +436,9 @@ app.get("/signup.html", function(req, res){
 app.get("/Wallet.html", function(req, res){
   if (isLoggedIn) // if user is logged in
   {
-    Item.findOne({FirstName: currentUser}, function(err, docs){
+    Item.findOne({EmailID: currentEmail}, function(err, docs){
 
       if (docs === null) {
-        console.log(currentUser);
         Activity.find({}, function(err, foundItems){
           res.render("home", {MyName: currentUser, newListItems: foundItems});
         });
@@ -472,10 +484,9 @@ app.get("/nextstep.html", function(req, res){
 app.get("/checkout.html", function(req, res){
   if (isLoggedIn) // if user is logged in
   {
-    Item.findOne({FirstName: currentUser }, function (err, docs)
+    Item.findOne({EmailID: currentEmail}, function (err, docs)
     {
       if (docs === null) {
-        console.log(currentUser);
         Activity.find({}, function(err, foundItems){
         res.render("home", {MyName: currentUser, newListItems: foundItems});
       });
@@ -492,18 +503,18 @@ app.post("/afterCheckOut", function(req, res){
   console.log(req.body.DiscountedPrice);
   console.log(req.body.TotalPrice);
   console.log(req.body.Pointscheckbox);
-  Item.findOne({FirstName: currentUser}, function(err, docs){
+  Item.findOne({EmailID: currentEmail}, function(err, docs){
   if(req.body.Pointscheckbox){
     var newPoints = req.body.TotalPrice * 0.1;
     if(req.body.TotalPrice ===  0.00){
       var newPs = docs.Points + (req.body.TotalPrice * 0.1);
-      Item.findOneAndUpdate({FirstName: currentUser}, {$set: {Points: newPs}}, function(err, dos1){
+      Item.findOneAndUpdate({EmailID: currentEmail}, {$set: {Points: newPs}}, function(err, dos1){
         if(err)
           console.log(err);
       });
     }
     else {
-    Item.findOneAndUpdate({FirstName: currentUser}, {$set: {Points: newPoints}}, function(err, dos1){
+    Item.findOneAndUpdate({EmailID: currentEmail}, {$set: {Points: newPoints}}, function(err, dos1){
       if(err)
         console.log(err);
     });
@@ -513,14 +524,13 @@ app.post("/afterCheckOut", function(req, res){
   }
   else {
     var newPs = docs.Points + (req.body.TotalPrice * 0.1);
-    Item.findOneAndUpdate({FirstName: currentUser}, {$set: {Points: newPs}}, function(err, dos1){
+    Item.findOneAndUpdate({EmailID: currentEmail}, {$set: {Points: newPs}}, function(err, dos1){
       if(err)
         console.log(err);
     });
 
   }
     if (docs === null) {
-        console.log(currentUser);
         Activity.find({}, function(err, foundItems){
           res.render("home", {MyName: currentUser, newListItems: foundItems});
         });
@@ -560,9 +570,8 @@ app.get("/previousActivities", function(req, res){
 
     if (isLoggedIn) // if user is logged in
     {
-      Item.findOne({FirstName: currentUser}, function(err, docs){
+      Item.findOne({EmailID: currentEmail}, function(err, docs){
         if (docs === null) {
-          console.log(currentUser);
           Activity.find({}, function(err, foundItems){
             res.render("home", {MyName: currentUser, newListItems: foundItems});
           });
@@ -606,6 +615,7 @@ app.get("/mainpage.html", function(req, res){
 app.get("/index.html", function(req, res){
   res.sendFile(__dirname + "/index.html");
   currentUser = "";
+  currentEmail = "" ;
   isLoggedIn = false;
   activityList = [];
   isAdminLoggedIn = false;
@@ -766,10 +776,11 @@ app.post("/home", function(req, res){
       else {
         if(emailAddress === docs.EmailID && hash(password, docs.Salt) === docs.Password) {  // login sucessfully
           if(!docs.isLocked){
-          currentUser = docs.FirstName;
-          res.redirect("dashboard");
-          isLoggedIn = true ;
-        }
+            currentUser = docs.FirstName;
+            currentEmail = docs.EmailID ;
+            res.redirect("dashboard");
+            isLoggedIn = true ;
+          }
         else{
           res.redirect("AccountLocked");
         }
@@ -788,13 +799,17 @@ app.get("/AccountLocked", function(req, res){
 
 app.get("/serviceDashboard", function(req, res){
   Activity.find({ServiceProvider: currentServiceProvider}, function(err, foundItems){
-  res.render("servicehome", {color1: "",alert: "",MyName: "Service Provider", newListItems: foundItems});
+    ServiceProvider.findOne({Email: currentServiceProvider}, function(err, docs){
+      res.render("servicehome", {color1: "",alert: "",MyName: docs.Name, newListItems: foundItems});
+    });
   });
 });
 
 app.get("/serviceDashboard1", function(req, res){
   Activity.find({ServiceProvider: currentServiceProvider}, function(err, foundItems){
-  res.render("servicehome", {color1: "",alert: "Activity Added",MyName: "Service Provider", newListItems: foundItems});
+    ServiceProvider.findOne({Email: currentServiceProvider}, function(err, docs){
+      res.render("servicehome", {color1: "",alert: "Activity Added",MyName: docs.Name, newListItems: foundItems});
+    });
   });
 });
 
@@ -840,7 +855,9 @@ console.log("activiti is " + req.body.ActivityName);
 
 app.get("/ServiceProviderDash", function(req, res){
   Activity.find({ServiceProvider: currentServiceProvider}, function(err, foundItems){
-  res.render("servicehome", {color1: "red", alert: "Can't add the activity, Another activity has same name",MyName: "Service Provider", newListItems: foundItems});
+    ServiceProvider.findOne({Email: currentServiceProvider}, function(err, docs){
+      res.render("servicehome", {color1: "red", alert: "Can't add the activity, Another activity has same name",MyName: docs.Name, newListItems: foundItems});
+    });
   });
 });
 
