@@ -1,5 +1,5 @@
-$().ready(function() {
-    $("#RegularUserSignUp").validate({
+jQuery(document).ready(function() {
+    jQuery("#RegularUserSignUp").validate({
         rules: {
             FName: "required",
             LName: "required",
@@ -11,6 +11,7 @@ $().ready(function() {
                 required:true,
                 required:true
             },
+            
             messages: {
                 FName: "Please enter your first name",
                 LName: "Please enter your last name",

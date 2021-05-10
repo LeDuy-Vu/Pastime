@@ -21,7 +21,7 @@
     <link rel="manifest" href="favicon/site.webmanifest">
     <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="js/jquery.validate.js"></script>
-    <script src="js/signup-form.js"></script>
+    <script src="js/signUpFormForRegulars.js"></script>
 </head>
 
 <body class="bg-light">
@@ -41,15 +41,24 @@
                     <div class="col-md-6 top-buffer">
                         <label>First Name</label>
                         <input id="firstname" name="FName" class="form-control" type="text" placeholder="Joshua">
+                        <div class="invalid-feedback">
+                            Valid first name is required.
+                        </div>
                     </div>
                     <div class="col-md-6 top-buffer">
                         <label for="">Last Name</label>
-                        <input id="lastname" name="LName" class="form-control" type="text" placeholder="Appleseed">                       
+                        <input id="lastname" name="LName" class="form-control" type="text" placeholder="Appleseed">       
+                        <div class="invalid-feedback">
+                            Valid last name is required.
+                        </div>
                     </div>
 
                     <div class="col-6 top-buffer">
                         <label for="inputEmail4">Email</label>
-                        <input  type="email" name="Email" class="form-control" id="inputEmail4" placeholder="Email">                      
+                        <input  type="email" name="Email" class="form-control" id="inputEmail4" placeholder="Email">  
+                        <div class="invalid-feedback">
+                            Please enter a valid email address for shipping updates.
+                        </div>             
                     </div>
 
                     <div class="col-6 top-buffer">
