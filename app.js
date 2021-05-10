@@ -173,38 +173,38 @@ app.get("/searchActivity", function(req, res){
 });
 
 // search bar logic for service providers
-// app.get("/searchActivityService", function(req, res){
-//   const { activityTag } = req.query;
-//   if(activityTag === "")
-//   {
-//     Activity.find({ServiceProvider: currentServiceProvider}, function(err, foundItems){
-//       ServiceProvider.findOne({Email: currentServiceProvider}, function(err, docs){
-//         res.render("servicehome", {color1: "red", alert: "No activities are found. Try another activity tag.", MyName: docs.Name, newListItems: foundItems});
-//       });
-//     });
-//   }
-//   else
-//   {
-//     var searchAct = activityTag.split(", ");
-//     for (let i = 0; i < searchAct.length; i++) {
-//       searchAct[i] = searchAct[i].toLowerCase();
-//     }
-//     if(isLoggedIn){
-//       Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
-//         ServiceProvider.findOne({Email: currentServiceProvider}, function(err, docs){
-//           res.render("servicehome", {color1: "",alert: "",MyName: docs.Name, newListItems: foundItems});
-//         });
-//       });
-//     }
-//     else{
-//       Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
-//         ServiceProvider.findOne({Email: currentServiceProvider}, function(err, docs){
-//           res.render("servicehome", {color1: "",alert: "",MyName: docs.Name, newListItems: foundItems});
-//         });
-//       });
-//     }
-//   } 
-// });
+app.get("/searchActivityService", function(req, res){
+  const { activityTag } = req.query;
+  if(activityTag === "")
+  {
+    Activity.find({}, function(err, foundItems){
+      ServiceProvider.findOne({Email: currentServiceProvider}, function(err, docs){
+        res.render("servicehome", {color1: "red", alert: "No activities are found. Try another activity tag.", MyName: docs.Name, newListItems: foundItems});
+      });
+    });
+  }
+  else
+  {
+    var searchAct = activityTag.split(", ");
+    for (let i = 0; i < searchAct.length; i++) {
+      searchAct[i] = searchAct[i].toLowerCase();
+    }
+    if(isLoggedIn){
+      Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
+        ServiceProvider.findOne({Email: currentServiceProvider}, function(err, docs){
+          res.render("servicehome", {color1: "",alert: "",MyName: docs.Name, newListItems: foundItems});
+        });
+      });
+    }
+    else{
+      Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
+        ServiceProvider.findOne({Email: currentServiceProvider}, function(err, docs){
+          res.render("servicehome", {color1: "",alert: "",MyName: docs.Name, newListItems: foundItems});
+        });
+      });
+    }
+  } 
+});
 
 
 // To Edit Activites by the Service Provider
