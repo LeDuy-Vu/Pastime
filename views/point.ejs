@@ -55,66 +55,115 @@
 <div class="container">
 <main>
  <div class="py-5 text-center">
-   <h2>Checkout</h2>
+   <h2>Points</h2>
  </div>
-<form class="" action="/CheckOut" method="post">
+<form class="" action="/AddPoints" method="post">
  <div class="row g-5">
    <div class="col-md-5 col-lg-4 order-md-last">
-     <h4 class="d-flex justify-content-between align-items-center mb-3">
-       <span class="text-primary">Your cart</span>
-       <span style="color:white;"class="badge bg-dark"><%= numActivity%> Items</span>
-     </h4>
-
-       <%  newListItems.forEach(function(item){ %>
          <li class="list-group-item d-flex justify-content-between lh-sm">
            <div>
-             <h6 class="my-0"><%= item.Name%></h6>
-             <small class="text-muted"><%= item.Date%></small>
-             <a style="color: red; padding-left: 4rem;" href="DeleteActivities/<%=item.Name%>">Delete</a>
+             <h6 class="my-0">Total Points</h6>
            </div>
-           <span class="text-muted">$<%= item.Price %></span>
-
-
+           <span class="text-muted"><%= TotalPoints%></span>
          </li>
-        <%  }) %>
+
         <li class="list-group-item d-flex justify-content-between lh-sm">
         <div>
-          <h6 class="my-0">Total Price</h6>
+          <h6 class="my-0">Add Points</h6>
         </div>
-        <span name = ""class="text-muted">$<%= TotalPrice %></span>
-        <input type="hidden" name="TotalPrice" value="<%= TotalPrice %>">
+        <input style="width:25%"class="form-control"type="number" name="PointsToAdd" value="">
+        <!-- <input type="hidden" name="TotalPrice" value="Price"> -->
         </li>
-        <li class="list-group-item d-flex justify-content-between lh-sm">
-        <div>
-          <p class="my-0">Points</p>
-        </div>
-        <span class="text-muted"><%= TotalPoints %> points</span>
-          <input type="hidden" name="TotalPoints" value="<%= TotalPoints %>">
-        <input type="hidden" type="text" name="" value="">
-        </li>
-        <% if (TotalPrice < TotalPoints){ %>
-          <li class="list-group-item">
-          <div style="text-align: center;">
-              <a href="points.html" class="my-0">Add more Points</p>
-          </div>
-          </li>
-          <% } else if (TotalPrice == 0){ %>
-            <li class="list-group-item">
-              <br>
-              <div style="text-align: center;" class="">
-                <p>Cart Empty</p>
-              </div>
-              </li>
-        <% } else{ %>
-          <li class="list-group-item">
-            <br>
-            <div style="text-align: center;" class="">
-            <button class="w-100 btn btn-primary btn-lg" type="submit">CheckOut</button>
-            </div>
-            </li>
-        <%  }%>
-</form>
+
+
    </div>
+ <div class="col-md-7 col-lg-8">
+     <h4 class="mb-3">Billing address</h4>
+       <div class="row g-3">
+         <div class="col-sm-6">
+           <label for="firstName" class="form-label">First name</label>
+           <input type="text" class="form-control" id="firstName" placeholder="" value="<%= FName%>" required>
+           <div class="invalid-feedback">
+             Valid first name is required.
+           </div>
+         </div>
+
+         <div class="col-sm-6">
+           <label for="lastName" class="form-label">Last name</label>
+           <input type="text" class="form-control" id="lastName" placeholder="" value="<%= LName%>" required>
+           <div class="invalid-feedback">
+             Valid last name is required.
+           </div>
+         </div>
+
+         <div class="col-12">
+           <label for="address" class="form-label">Address</label>
+           <input type="text" class="form-control" id="address" placeholder="1234 Main St" value="<%= Address%>"required>
+           <div class="invalid-feedback">
+             Please enter your shipping address.
+           </div>
+         </div>
+
+
+         <div class="col-sm-12">
+
+           <label for="country" class="form-label">City</label>
+           <input type="text" class="form-control" id="address" placeholder="1234 Main St" value="<%= City%>"required>
+
+         </div>
+
+         <div class="col-12">
+
+             <label for="country" class="form-label">State</label>
+        <input type="text" class="form-control" id="address" placeholder="1234 Main St" value="<%= State%>"required>
+
+         </div>
+
+         <div class="col-12">
+           <label for="zip" class="form-label">Zip</label>
+           <input style="width:25%" type="text" class="form-control" id="zip" placeholder="" required value="<%= Zipc%>">
+           <div class="invalid-feedback">
+             Zip code required.
+           </div>
+         </div>
+       </div>
+
+       <hr class="my-4">
+
+       <h4 class="mb-3">Payment</h4>
+
+       <div class="row gy-3">
+         <div class="col-md-6">
+           <label for="cc-number" class="form-label">Credit card number</label>
+           <input type="number" class="form-control" id="cc-number" placeholder="" required>
+           <div class="invalid-feedback">
+             Credit card number is required
+           </div>
+         </div>
+
+         <div class="col-md-3">
+           <label for="cc-expiration" class="form-label">Expiration</label>
+           <input type="number"  type="text" class="form-control" id="cc-expiration" placeholder="" required>
+           <div class="invalid-feedback">
+             Expiration date required
+           </div>
+         </div>
+
+         <div class="col-md-3">
+           <label for="cc-cvv" class="form-label">CVV</label>
+           <input type="number" type="text" class="form-control" id="cc-cvv" placeholder="" required>
+           <div class="invalid-feedback">
+             Security code required
+           </div>
+         </div>
+       </div>
+
+       <hr class="my-4">
+
+       <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+     </form>
+   </div>
+ </div>
 </main>
 
 <footer class="my-5 pt-5 text-muted text-center text-small">

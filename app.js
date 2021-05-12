@@ -1,3 +1,7 @@
+
+
+app.js
+
 const express = require('express');
 const https = require('https');
 const bodyParser = require('body-parser');
@@ -203,14 +207,14 @@ app.get("/searchActivityService", function(req, res){
         });
       });
     }
-  } 
+  }
 });
 
 
 // To Edit Activites by the Service Provider
 app.get("/EditActivities/:id", function(req, res){
   console.log(req.params.id);
-  Activity.findOne({Name: req.params.id}, function(err, docs){
+  Activity.findOne({"Name": req.params.id}, function(err, docs){
     res.render("editActivityTemplate", {item: docs});
   });
 });
@@ -226,6 +230,55 @@ app.get("/DeleteActivities/:id", function(req, res)
         res.render("home", {MyName: currentUser, newListItems: foundItems});
       });
     }
+
+    else {
+      Wallet.findOneAndUpdate({emailID: docs.EmailID},{$pull: {currentActivity: req.params.id}}, function(err, document){
+      // Activity.find({}, function(err, foundItems){
+      //   res.render("home", {MyName: currentUser, newListItems: foundItems});
+      // });
+      res.redirect("../dashboard")
+    });
+    }
+
+});
+});
+
+app.post("/CheckOut", function(req, res){
+  var newPoints = req.body.TotalPoints - req.body.TotalPrice;
+
+  Item.findOneAndUpdate({FirstName: currentUser}, {$set: {Points: newPoints}},function(err, docs){
+    if (docs === null) {
+        console.log(currentUser);
+        Activity.find({}, function(err, foundItems){
+          res.render("home", {MyName: currentUser, newListItems: foundItems});
+        });
+      }
+      else {
+        Wallet.findOne({emailID: docs.EmailID}, function(err, document){
+          if(docs === null)
+            console.log("IN NULL");
+          else{
+            document.currentActivity.forEach(function(item, index, array){
+              Wallet.findOneAndUpdate({emailID: docs.EmailID}, {$push: {completedActivity: item}}, function (error, success) {
+                if(error)
+                  console.log(error);
+                else
+                  console.log("Added to DB");
+                });
+            });
+          }
+        });
+        Wallet.findOneAndUpdate({emailID: docs.EmailID}, {$set: {currentActivity: []}}, function(error, success){
+          if(error)
+            console.log(error);
+          else
+            console.log("Added to DB");
+        });
+        Activity.find({}, function(err, foundItems){
+          res.render("home", {MyName: currentUser, newListItems: foundItems});
+        });
+      }
+
     else
     {
       Wallet.findOneAndUpdate({emailID: docs.EmailID},{$pull: {currentActivity: req.params.id}}, function(err, document)
@@ -236,6 +289,29 @@ app.get("/DeleteActivities/:id", function(req, res)
         res.redirect("../dashboard");
       });
     }
+
+  });
+});
+
+app.get("/points.html", function(req, res){
+  Item.findOne({FirstName: currentUser}, function(err, docs){
+    if(docs == null)
+      console.log(err);
+    else{
+      res.render("point", {TotalPoints: docs.Points, FName: docs.FirstName, LName: docs.LastName, Address: docs.Street, City: docs.City, State: docs.State, Zipc: docs.ZipCode});
+    }
+
+    else
+    {
+      Wallet.findOneAndUpdate({emailID: docs.EmailID},{$pull: {currentActivity: req.params.id}}, function(err, document)
+      {
+        // Activity.find({}, function(err, foundItems){
+        //   res.render("home", {MyName: currentUser, newListItems: foundItems});
+        // });
+        res.redirect("../dashboard");
+      });
+    }
+
   });
 });
 
@@ -342,7 +418,7 @@ app.post("/serviceSignUp", function(req, res)
           Password: hash(req.body.spPassword, salt),
           isLocked: false
         });
-  
+
         ServiceProvider.insertMany(temp, function(err){
           if(err)
             console.log(err);
@@ -650,6 +726,15 @@ app.get("/tryagain.html", function(req, res){
 // app.get("/*", function(req, res){
 //   res.sendFile(__dirname + "/404.html")
 // });
+
+app.post("/AddPoints", function(req, res){
+
+  Item.findOneAndUpdate({FirstName: currentUser}, {$set: {Points: req.body.PointsToAdd}}, function(err, dos1){
+    if(err)
+      console.log(err);
+  });
+  res.redirect("dashboard");
+});
 
 app.post("/editUser", function(req, res){
   if(isAdminLoggedIn){
