@@ -1,7 +1,3 @@
-
-
-app.js
-
 const express = require('express');
 const https = require('https');
 const bodyParser = require('body-parser');
@@ -279,16 +275,16 @@ app.post("/CheckOut", function(req, res){
         });
       }
 
-    else
-    {
-      Wallet.findOneAndUpdate({emailID: docs.EmailID},{$pull: {currentActivity: req.params.id}}, function(err, document)
-      {
-        // Activity.find({}, function(err, foundItems){
-        //   res.render("home", {MyName: currentUser, newListItems: foundItems});
-        // });
-        res.redirect("../dashboard");
-      });
-    }
+    // else
+    // {
+    //   Wallet.findOneAndUpdate({emailID: docs.EmailID},{$pull: {currentActivity: req.params.id}}, function(err, document)
+    //   {
+    //     // Activity.find({}, function(err, foundItems){
+    //     //   res.render("home", {MyName: currentUser, newListItems: foundItems});
+    //     // });
+    //     res.redirect("../dashboard");
+    //   });
+    // }
 
   });
 });
@@ -300,17 +296,17 @@ app.get("/points.html", function(req, res){
     else{
       res.render("point", {TotalPoints: docs.Points, FName: docs.FirstName, LName: docs.LastName, Address: docs.Street, City: docs.City, State: docs.State, Zipc: docs.ZipCode});
     }
-
-    else
-    {
-      Wallet.findOneAndUpdate({emailID: docs.EmailID},{$pull: {currentActivity: req.params.id}}, function(err, document)
-      {
-        // Activity.find({}, function(err, foundItems){
-        //   res.render("home", {MyName: currentUser, newListItems: foundItems});
-        // });
-        res.redirect("../dashboard");
-      });
-    }
+    // 
+    // else
+    // {
+    //   Wallet.findOneAndUpdate({emailID: docs.EmailID},{$pull: {currentActivity: req.params.id}}, function(err, document)
+    //   {
+    //     // Activity.find({}, function(err, foundItems){
+    //     //   res.render("home", {MyName: currentUser, newListItems: foundItems});
+    //     // });
+    //     res.redirect("../dashboard");
+    //   });
+    // }
 
   });
 });
