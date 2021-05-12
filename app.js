@@ -209,9 +209,15 @@ app.get("/searchActivityService", function(req, res){
 
 // To Edit Activites by the Service Provider
 app.get("/EditActivities/:id", function(req, res){
-  console.log(req.params.id);
-  Activity.findOne({"Name": req.params.id}, function(err, docs){
+  var temp = req.params.id.slice(0, req.params.id.length);
+
+  Activity.findOne({Name: temp}, function(err, docs){
+    if(docs === null){
+      console.log(err);
+    }
+      else {
     res.render("editActivityTemplate", {item: docs});
+  }
   });
 });
 
@@ -329,13 +335,13 @@ app.post("/afterEditActivity", function(req, res)
       console.log(err);
   });
 }
-else{
+else {
   Activity.findOneAndDelete({Name: req.body.EditedName}, function(err, docs1){
     if(err)
       console.log(err);
   });
 }
-  res.redirect("serviceDashboard");
+  res.redirect("serviceDashboard2");
 });
 
 app.post("/result", function(req, res){
@@ -866,7 +872,7 @@ app.get("/AccountLocked", function(req, res){
 app.get("/serviceDashboard", function(req, res){
   Activity.find({ServiceProvider: currentServiceProvider}, function(err, foundItems){
     ServiceProvider.findOne({Email: currentServiceProvider}, function(err, docs){
-      res.render("servicehome", {color1: "",alert: "",MyName: docs.Name, newListItems: foundItems});
+      res.render("servicehome", {color1: "",alert: "", MyName: docs.Name, newListItems: foundItems});
     });
   });
 });
@@ -874,7 +880,16 @@ app.get("/serviceDashboard", function(req, res){
 app.get("/serviceDashboard1", function(req, res){
   Activity.find({ServiceProvider: currentServiceProvider}, function(err, foundItems){
     ServiceProvider.findOne({Email: currentServiceProvider}, function(err, docs){
-      res.render("servicehome", {color1: "",alert: "Activity Added",MyName: docs.Name, newListItems: foundItems});
+      res.render("servicehome", {color1: "",alert: "Activity Added", MyName: docs.Name, newListItems: foundItems});
+    });
+  });
+});
+
+app.get("/serviceDashboard2", function(req, res){
+  console.log(currentServiceProvider);
+  Activity.find({ServiceProvider: currentServiceProvider}, function(err, foundItems){
+    ServiceProvider.findOne({Email: currentServiceProvider}, function(err, docs){
+      res.render("servicehome", {color1: "",alert: "Activity Added", MyName: docs.Name, newListItems: foundItems});
     });
   });
 });
