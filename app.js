@@ -275,17 +275,6 @@ app.post("/CheckOut", function(req, res){
         });
       }
 
-    // else
-    // {
-    //   Wallet.findOneAndUpdate({emailID: docs.EmailID},{$pull: {currentActivity: req.params.id}}, function(err, document)
-    //   {
-    //     // Activity.find({}, function(err, foundItems){
-    //     //   res.render("home", {MyName: currentUser, newListItems: foundItems});
-    //     // });
-    //     res.redirect("../dashboard");
-    //   });
-    // }
-
   });
 });
 
@@ -296,7 +285,7 @@ app.get("/points.html", function(req, res){
     else{
       res.render("point", {TotalPoints: docs.Points, FName: docs.FirstName, LName: docs.LastName, Address: docs.Street, City: docs.City, State: docs.State, Zipc: docs.ZipCode});
     }
-    // 
+    //
     // else
     // {
     //   Wallet.findOneAndUpdate({emailID: docs.EmailID},{$pull: {currentActivity: req.params.id}}, function(err, document)
@@ -585,42 +574,19 @@ app.get("/checkout.html", function(req, res){
 });
 
 app.post("/afterCheckOut", function(req, res){
-  console.log(req.body.DiscountedPrice);
-  console.log(req.body.TotalPrice);
-  console.log(req.body.Pointscheckbox);
+
+  var newPoints = req.body.TotalPoints - req.body.TotalPrice;
+
   Item.findOne({EmailID: currentEmail}, function(err, docs){
-  if(req.body.Pointscheckbox){
-    var newPoints = req.body.TotalPrice * 0.1;
-    if(req.body.TotalPrice ===  0.00){
-      var newPs = docs.Points + (req.body.TotalPrice * 0.1);
-      Item.findOneAndUpdate({EmailID: currentEmail}, {$set: {Points: newPs}}, function(err, dos1){
-        if(err)
-          console.log(err);
-      });
-    }
-    else {
-    Item.findOneAndUpdate({EmailID: currentEmail}, {$set: {Points: newPoints}}, function(err, dos1){
-      if(err)
-        console.log(err);
-    });
-      console.log("INNN TRUEEE");
-    }
-
-  }
-  else {
-    var newPs = docs.Points + (req.body.TotalPrice * 0.1);
-    Item.findOneAndUpdate({EmailID: currentEmail}, {$set: {Points: newPs}}, function(err, dos1){
-      if(err)
-        console.log(err);
-    });
-
-  }
     if (docs === null) {
         Activity.find({}, function(err, foundItems){
           res.render("home", {MyName: currentUser, newListItems: foundItems});
         });
       }
       else {
+        Item.findOneAndUpdate({EmailID: currentEmail}, {$set: {Points: newPoints}},function(err, docs2){
+              
+        });
         Wallet.findOne({emailID: docs.EmailID}, function(err, document){
           if(docs === null)
             console.log("IN NULL");
@@ -725,9 +691,15 @@ app.get("/tryagain.html", function(req, res){
 
 app.post("/AddPoints", function(req, res){
 
-  Item.findOneAndUpdate({FirstName: currentUser}, {$set: {Points: req.body.PointsToAdd}}, function(err, dos1){
+  Item.findOne({FirstName: currentUser}, function(err, docs1){
     if(err)
       console.log(err);
+    else{
+      var tp = docs1.Points + parseInt(req.body.PointsToAdd);
+      Item.findOneAndUpdate({FirstName: currentUser}, {$set: {Points: tp}}, function(err, docs1){
+
+      });
+    }
   });
   res.redirect("dashboard");
 });

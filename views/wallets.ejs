@@ -57,7 +57,7 @@
  <div class="py-5 text-center">
    <h2>Checkout</h2>
  </div>
-<form class="" action="/CheckOut" method="post">
+<form class="" action="/afterCheckOut" method="post">
  <div class="row g-5">
    <div class="col-md-5 col-lg-4 order-md-last">
      <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -92,13 +92,13 @@
           <input type="hidden" name="TotalPoints" value="<%= TotalPoints %>">
         <input type="hidden" type="text" name="" value="">
         </li>
-        <% if (TotalPrice < TotalPoints){ %>
+        <% if (TotalPoints < TotalPrice){ %>
           <li class="list-group-item">
           <div style="text-align: center;">
               <a href="points.html" class="my-0">Add more Points</p>
           </div>
           </li>
-          <% } else if (TotalPrice == 0){ %>
+          <% } else if (numActivity == 0){ %>
             <li class="list-group-item">
               <br>
               <div style="text-align: center;" class="">
