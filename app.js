@@ -177,9 +177,9 @@ app.get("/searchActivityService", function(req, res){
   const { activityTag } = req.query;
   if(activityTag === "")
   {
-    Activity.find({}, function(err, foundItems){
+    Activity.find({ServiceProvider: currentServiceProvider}, function(err, foundItems){
       ServiceProvider.findOne({Email: currentServiceProvider}, function(err, docs){
-        res.render("servicehome", {color1: "red", alert: "No activities are found. Try another activity tag.", MyName: docs.Name, newListItems: foundItems});
+        res.render("servicehome", {color1: "red", alert: "No activities are found. Try another activity tag.",MyName: docs.Name, newListItems: foundItems});
       });
     });
   }
@@ -585,7 +585,7 @@ app.post("/afterCheckOut", function(req, res){
       }
       else {
         Item.findOneAndUpdate({EmailID: currentEmail}, {$set: {Points: newPoints}},function(err, docs2){
-              
+
         });
         Wallet.findOne({emailID: docs.EmailID}, function(err, document){
           if(docs === null)
