@@ -641,6 +641,7 @@ app.get("/previousActivities", function(req, res){
           });
         }
         else {
+          console.log(docs.EmailID);
           Wallet.findOne({emailID: docs.EmailID}, function(err, document){
             if(document === null)
               console.log("IN NULL");
