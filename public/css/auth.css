@@ -6,19 +6,23 @@ body {
     background-color: #f5f5f5;
 }
 
-html,
-body {
+html,body {
     height: 100%;
 }
 
-.tent-image {
-    padding: 10px;
-}
-
-.company {
+h1{
     font-weight: bold;
     font-size: 40px;
+
 }
+
+.logo {
+    padding: 10px;
+    width: 90px;
+    height: auto;
+    
+}
+
 
 body {
     margin: 0;
