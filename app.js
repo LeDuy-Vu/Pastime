@@ -149,9 +149,16 @@ app.get("/searchActivity", function(req, res){
   const { activityTag } = req.query;
   if (activityTag === "")
   {
-    Activity.find({}, function(err, foundItems){
-      res.render("home", {MyName: currentUser, newListItems: foundItems});
-    });
+    if(!isLoggedIn){
+      Activity.find({}, function(err, foundItems){
+        res.render("home", {MyName: "guest", newListItems: foundItems});
+      });
+    }else{
+      Activity.find({}, function(err, foundItems){
+        res.render("home", {MyName: currentUser, newListItems: foundItems});
+      });
+    }
+
   }
   else
   {
@@ -285,25 +292,20 @@ app.post("/CheckOut", function(req, res){
 });
 
 app.get("/points.html", function(req, res){
-  Item.findOne({FirstName: currentUser}, function(err, docs){
-    if(docs == null)
-      console.log(err);
-    else{
-      res.render("point", {TotalPoints: docs.Points, FName: docs.FirstName, LName: docs.LastName, Address: docs.Street, City: docs.City, State: docs.State, Zipc: docs.ZipCode, CCNum: docs.CredCardNumb, CCccv: docs.CVC, CCExp:""});
-    }
-    //
-    // else
-    // {
-    //   Wallet.findOneAndUpdate({emailID: docs.EmailID},{$pull: {currentActivity: req.params.id}}, function(err, document)
-    //   {
-    //     // Activity.find({}, function(err, foundItems){
-    //     //   res.render("home", {MyName: currentUser, newListItems: foundItems});
-    //     // });
-    //     res.redirect("../dashboard");
-    //   });
-    // }
+  if(!isLoggedIn){
+      res.redirect("../pleaselogin");
+  }
+  else {
+    Item.findOne({FirstName: currentUser}, function(err, docs){
+      if(docs == null)
+        console.log(err);
+      else{
+        res.render("point", {TotalPoints: docs.Points, FName: docs.FirstName, LName: docs.LastName, Address: docs.Street, City: docs.City, State: docs.State, Zipc: docs.ZipCode, CCNum: docs.CredCardNumb, CCccv: docs.CVC, CCExp:""});
+      }
+
 
   });
+}
 });
 
 // Each clickable activity card
