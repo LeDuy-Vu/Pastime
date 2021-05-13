@@ -568,7 +568,7 @@ app.get("/nextstep.html", function(req, res){
 });
 
 
-app.get("/checkout.html", function(req, res){
+app.get("/profile", function(req, res){
   if (isLoggedIn) // if user is logged in
   {
     Item.findOne({EmailID: currentEmail}, function (err, docs)
