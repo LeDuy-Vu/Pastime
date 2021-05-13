@@ -2,14 +2,20 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Lock/Unlock</title>
+    <title>Lock/Unlock - PastTime</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <!-- <link href="css/auth.css" rel="stylesheet" type="text/css" /> -->
   </head>
-  <body>
+  <body class="text-center">
+    
     <form class="" action="/UserLocking" method="GET">
-    <input style=" border-top-style: hidden;  border-right-style: hidden; border-left-style: hidden;"type="text" name = "userEmail1" class="form-control col-lg-1" placeholder="" readonly value="<%= UserName %>">
-    <h4> account is currently <%= todo %></h4>
+      <input style=" visibility: hidden;"type="text" name = "userEmail1" class="form-control col-lg-1" placeholder="" readonly value="<%= UserName %>">
+    <h3><%= UserName %></h3>
+    <h4> Account is currently <%= todo %></h4>
     <p>Would you like to <%= todo1 %> it?</p>
-    <button type="submit" name="button">Yes</button>
+    <button type="submit" class="btn btn-dark" name="button">Yes</button>
     </form>
 
   </body>
