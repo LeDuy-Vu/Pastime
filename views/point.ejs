@@ -10,6 +10,7 @@
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
    <!--CSS script-->
    <link rel="stylesheet" href="css/styles3.css">
+   <link rel="stylesheet" href="css/styles2.css">
    <!--Font Awesome script -->
    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
    <!--JS script-->
@@ -52,8 +53,17 @@
  <link href="form-validation.css" rel="stylesheet">
 </head>
 <body class="bg-light">
+  <div class="topnav">
+    <a href="../MainDashBoard">Back</a>
+      <!-- <a class="active" href="#top">Home</a>
+      <a href="checkout.html">Profile</a>
+      <a href="previousActivities">PastActivities</a>
+      <a href="wallet.html">Wallet</a>
+      <a href="points.html">Points</a>
+      <a style="float:right;" href="index.html">Logout</a> -->
+  </div>
 
-<div class="container">
+<div style="padding-top:3rem;"class="container">
 <main>
  <div class="py-5 text-center">
    <h2>Points</h2>
@@ -109,20 +119,20 @@
          <div class="col-sm-12">
 
            <label for="country" class="form-label">City</label>
-           <input type="text" class="form-control" id="address" placeholder="1234 Main St" value="<%= City%>"required>
+           <input type="text" class="form-control" id="address" placeholder="San Jose" value="<%= City%>"required>
 
          </div>
 
          <div class="col-12">
 
              <label for="country" class="form-label">State</label>
-        <input type="text" class="form-control" id="address" placeholder="1234 Main St" value="<%= State%>"required>
+        <input type="text" class="form-control" id="address" placeholder="CA" value="<%= State%>"required>
 
          </div>
 
          <div class="col-12">
            <label for="zip" class="form-label">Zip</label>
-           <input style="width:25%" type="text" class="form-control" id="zip" placeholder="" required value="<%= Zipc%>">
+           <input style="width:25%" type="text" class="form-control" id="zip" placeholder="12345" required value="<%= Zipc%>">
            <div class="invalid-feedback">
              Zip code required.
            </div>
@@ -136,7 +146,7 @@
        <div class="row gy-3">
          <div class="col-md-6">
            <label for="cc-number" class="form-label">Credit card number</label>
-           <input type="number" class="form-control" id="cc-number" placeholder="" required>
+           <input type="number" class="form-control" id="cc-number" placeholder="12345678912345678" required value="<%= CCNum%>">
            <div class="invalid-feedback">
              Credit card number is required
            </div>
@@ -144,7 +154,7 @@
 
          <div class="col-md-3">
            <label for="cc-expiration" class="form-label">Expiration</label>
-           <input type="number"  type="text" class="form-control" id="cc-expiration" placeholder="" required>
+           <input type="number"  type="text" class="form-control" id="cc-expiration" placeholder="0622" required value="<%= CCExp%>">
            <div class="invalid-feedback">
              Expiration date required
            </div>
@@ -152,7 +162,7 @@
 
          <div class="col-md-3">
            <label for="cc-cvv" class="form-label">CVV</label>
-           <input type="number" type="text" class="form-control" id="cc-cvv" placeholder="" required>
+           <input type="number" type="text" class="form-control" id="cc-cvv" placeholder="123" required value="<%= CCccv%>">
            <div class="invalid-feedback">
              Security code required
            </div>

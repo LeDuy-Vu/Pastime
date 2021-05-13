@@ -190,14 +190,14 @@ app.get("/searchActivityService", function(req, res){
       searchAct[i] = searchAct[i].toLowerCase();
     }
     if(isLoggedIn){
-      Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
+      Activity.find({$and: [{ServiceProvider: currentServiceProvider}, {"Tags": { $in: searchAct }}]}, function(err, foundItems){
         ServiceProvider.findOne({Email: currentServiceProvider}, function(err, docs){
           res.render("servicehome", {color1: "",alert: "",MyName: docs.Name, newListItems: foundItems});
         });
       });
     }
     else{
-      Activity.find({"Tags": { $in: searchAct }}, function(err, foundItems){
+      Activity.find({$and: [{ServiceProvider: currentServiceProvider}, {"Tags": { $in: searchAct }}]}, function(err, foundItems){
         ServiceProvider.findOne({Email: currentServiceProvider}, function(err, docs){
           res.render("servicehome", {color1: "",alert: "",MyName: docs.Name, newListItems: foundItems});
         });
@@ -289,7 +289,7 @@ app.get("/points.html", function(req, res){
     if(docs == null)
       console.log(err);
     else{
-      res.render("point", {TotalPoints: docs.Points, FName: docs.FirstName, LName: docs.LastName, Address: docs.Street, City: docs.City, State: docs.State, Zipc: docs.ZipCode});
+      res.render("point", {TotalPoints: docs.Points, FName: docs.FirstName, LName: docs.LastName, Address: docs.Street, City: docs.City, State: docs.State, Zipc: docs.ZipCode, CCNum: docs.CredCardNumb, CCccv: docs.CVC, CCExp:""});
     }
     //
     // else
@@ -308,6 +308,7 @@ app.get("/points.html", function(req, res){
 
 // Each clickable activity card
 app.get("/activities/:id", function(req, res){
+
   if (isLoggedIn)
   {
     Activity.findOne({'Name': req.params.id}, 'Name Description ServiceProvider Rating Date Time Image Venue Longitude Latitude Price Tags', function (err, activity) {
@@ -468,7 +469,8 @@ app.post("/aftersignup",function(req, res){
           else
             console.log("Successfully saved default items to DB.");
         });
-        res.render("signup", {inputcolor: "black", FirstLine: "", SecondLine:""});
+        res.redirect("login.html");
+        // res.render("signup", {inputcolor: "black", FirstLine: "", SecondLine:""});
       }
       else
       {
@@ -536,9 +538,12 @@ app.get("/Wallet.html", function(req, res){
                   docs1.forEach(function(item){
                     total += item.Price;
                   })
-                  var totalP = total.toFixed(2);
+                  var totalP = total.toFixed(0);
                   var discount = totalP - (docs.Points * 0.2);
-                  res.render("wallets", {numActivity: document.currentActivity.length, newListItems: docs1, TotalPrice: totalP, TotalPoints: docs.Points.toFixed(2), DiscountedPrice: discount.toFixed(2)})
+                  var totalP1 = parseInt(totalP);
+                  var totalP3 = parseInt(docs.Points.toFixed(0));
+
+                  res.render("wallets", {numActivity: document.currentActivity.length, newListItems: docs1, TotalPrice: totalP1, TotalPoints: totalP3})
                 }
             });
           }
@@ -572,7 +577,7 @@ app.get("/checkout.html", function(req, res){
       });
       }
       else{
-        res.render("profile", {FName: docs.FirstName, LName: docs.LastName, EID1: docs.EmailID, FAddress: docs.Street, FCity: docs.City, FState: docs.State, fZIP: docs.ZipCode, CreditNum: docs.Last4Digits, Fpoints: docs.Points});
+        res.render("profile", {FName: docs.FirstName, LName: docs.LastName, EID1: docs.EmailID, FAddress: docs.Street, FCity: docs.City, FState: docs.State, fZIP: docs.ZipCode, CreditNum: docs.CredCardNumb, CVCNum: docs.CVC, Fpoints: docs.Points});
       }
     });
   }
@@ -662,6 +667,22 @@ app.get("/", function(req, res) {
 app.get("/login.html", function(req, res){
   res.render("login", {inputcolor: "black", FirstLine: "", SecondLine:""});
 });
+
+app.get("../MainDashBoard", function(req, res){
+  Activity.find({}, function(err, foundItems){
+  res.render("home", {MyName: currentUser, newListItems: foundItems});
+});
+});
+
+app.get("/MainDashBoard", function(req, res){
+
+  Activity.find({}, function(err, foundItems){
+  res.render("home", {MyName: currentUser, newListItems: foundItems});
+});
+
+});
+
+
 
 app.get("/mainpage.html", function(req, res){
   Activity.find({}, function(err, foundItems){
@@ -943,7 +964,7 @@ app.get("/ServiceProviderDash", function(req, res){
 });
 
 app.post("/afterUser", function(req, res){
-  Item.findOneAndUpdate({EmailID: req.body.EditedEMD},{$set: {FirstName: req.body.EditedFName, LastName: req.body.EditedLName, Street: req.body.EditedFAdress, City: req.body.EditedCity, ZipCode: req.body.EditedFZIP, CredCardNumb: req.body.EditedCreditNum, CVC: req.body.EditedCVC }}, function(err, docs){
+  Item.findOneAndUpdate({EmailID: req.body.EditedEMD},{$set: {FirstName: req.body.EditedFName, LastName: req.body.EditedLName, Street: req.body.EditedFAdress, City: req.body.EditedCity, State: req.body.EditedFState, ZipCode: req.body.EditedFZIP, CredCardNumb: req.body.EditedCreditNum, CVC: req.body.EditedCVC }}, function(err, docs){
     if(err)
       console.log(err);
   });

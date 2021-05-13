@@ -24,6 +24,15 @@
 </head>
 
 <body>
+  <div class="topnav">
+    <a href="../MainDashBoard">Back</a>
+      <!-- <a class="active" href="#top">Home</a>
+      <a href="checkout.html">Profile</a>
+      <a href="previousActivities">PastActivities</a>
+      <a href="wallet.html">Wallet</a>
+      <a href="points.html">Points</a>
+      <a style="float:right;" href="index.html">Logout</a> -->
+  </div>
 
     <div class="grid-container">
         <div class="content1">
@@ -40,7 +49,7 @@
         <div class="content3">
             <form class="" action="/addActivity" method="post">
                 <h2>Details</h2>
-                <input style="background: transparent; border: none;" id="cityInput" readonly type="text" name="ActivityToAdd" value="<%= name %>">
+                <input style="background: transparent; border: none;" id="cityInput" type="hidden" readonly type="text" name="ActivityToAdd" value="<%= name %>">
 
                 <p>Location:
                     <%= venue %>

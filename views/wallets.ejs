@@ -9,6 +9,7 @@
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
    <!--CSS script-->
    <link rel="stylesheet" href="css/styles3.css">
+   <link rel="stylesheet" href="css/styles2.css">
    <!--Font Awesome script -->
    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
    <!--JS script-->
@@ -51,8 +52,17 @@
  <link href="form-validation.css" rel="stylesheet">
 </head>
 <body class="bg-light">
+  <div class="topnav">
+    <a href="../MainDashBoard">Back</a>
+      <!-- <a class="active" href="#top">Home</a>
+      <a href="checkout.html">Profile</a>
+      <a href="previousActivities">PastActivities</a>
+      <a href="wallet.html">Wallet</a>
+      <a href="points.html">Points</a>
+      <a style="float:right;" href="index.html">Logout</a> -->
+  </div>
 
-<div class="container">
+<div style="padding-top:3rem;" class="container">
 <main>
  <div class="py-5 text-center">
    <h2>Checkout</h2>
@@ -81,7 +91,7 @@
         <div>
           <h6 class="my-0">Total Price</h6>
         </div>
-        <span name = ""class="text-muted">$<%= TotalPrice %></span>
+        <span name = ""class="text-muted"><%= TotalPrice %> points</span>
         <input type="hidden" name="TotalPrice" value="<%= TotalPrice %>">
         </li>
         <li class="list-group-item d-flex justify-content-between lh-sm">
