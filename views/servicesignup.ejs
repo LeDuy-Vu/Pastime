@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <!--CSS script-->
     <link rel="stylesheet" href="css/styles3.css">
+    <link rel="stylesheet" href="css/auth.css">
     <!--Font Awesome script -->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <!--JS script-->
@@ -27,10 +28,12 @@
         <main>
             <form class="" action="/serviceSignUp" method="post">
                 <div class="py-5 text-center">
-                    <img class="d-block mx-auto mb-4" src="assets/images/tent.png" alt="" width="72" height="57">
+                    <div class="form-signin">
+                    <img class="logo" src="assets/images/logo.png">
                     <h4 style="text-align:center; padding-left: 0px" class="company">PASTIME</h4>
                     <h1 style=" padding-left: 0px;" ; class="h3 mb-3 fw-normal "> Sign up</h1>
                     <h4 class="h3 fw-normal" style="color: <%= inputcolor %>"> <%= FirstLine %><br /> <%= SecondLine%> </h4>
+                </div>
                 </div>
                 <div class="row g-5 ">
                     <div class="col-md-6 col-lg-12 ">
@@ -53,11 +56,15 @@
                             <div class="col-6 ">
                                 <label>Password</label>
                                 <input required="required" type="password" name="spPassword" class="form-control" id="inputPassword4" placeholder="Password">
+                                
                             </div>
-                            <br>
-                            <div class="btn1 col-6 ">
-                                <button type="submit" class="btn btn-primary ">Sign Up</button>
+                            <div class ="col-2">
+                                <button type="submit" class="btn btn-primary " style="margin-top: 2em;">Sign Up</button>
                             </div>
+                          
+                            
+                                
+                            
             </form>
             </div>
             </div>
