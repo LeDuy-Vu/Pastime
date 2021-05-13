@@ -3,12 +3,12 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Signup - Pastime</title>
+    <title>Sign up - Pastime</title>
 
     <!-- Bootstrap script -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <!--CSS script-->
-    <link rel="stylesheet" href="css/styles3.css">
+    <link rel="stylesheet" href="css/auth.css">
     <!--Font Awesome script -->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <!--JS script-->
@@ -26,16 +26,18 @@
 
 <body class="bg-light">
 
-    <div class="container">
+    
         <main>
-            <form class="" id="RegularUserSignUp" action="/aftersignup" method="post">
-                <div class="py-5 text-center">
-                    <img class="d-block mx-auto mb-4" src="assets/images/tent.png" alt="" width="72" height="57">
-                    <h4 style="text-align:center; padding-left: 0px;" class="company">PASTIME</h4>
-                    <h1 style="padding-left: 0px;" class="h3 mb-3 fw-normal"> Sign up</h1>
-                    <h4 class="h3 fw-normal" style="color: <%= inputcolor %>"> <%= FirstLine %><br /> <%= SecondLine%> </h4>
-                </div>
+            <div class="form-signin">
+                <img class="text-center" id="logo" src="assets/images/logo.png">
+                <h1 class="text-center">PASTIME</h1>
+                <h2 class="text-center"> Sign up</h2>
+            </div>
 
+            <div id="space">
+            <form class="" id="RegularUserSignUp" action="/aftersignup" method="post">
+               
+                <h4 class="h3 fw-normal" style="color: <%= inputcolor %>"> <%= FirstLine %><br /> <%= SecondLine%> </h4>
                 <!-- <div class="col-md-3 col-lg-12"> -->
                 <div class="row g-3">
                     <div class="col-md-6 top-buffer">
@@ -65,23 +67,30 @@
                         <label>Password</label>
                         <input required="required" type="password" name="Pass" class="form-control" id="inputPassword4" placeholder="Password">
                     </div>
-                    <div class="btn1 top-buffer-2">
-                        <button type="submit" class="btn btn-primary">Sign Up</button>
+                    </div>
+                    <div>
+                        <button class="btn btn-dark" type="submit">Sign Up</button>
                     </div>
             </form>
             </div>
     </div>
-    </main>
 
-    <footer class="my-5 pt-5 text-muted text-center text-small">
+    <!-- <footer class="my-5 pt-5 text-muted text-center text-small">
         <p class="mt-5 mb-3 text-muted maru">© 2021 Pastime</p>
         <ul class="list-inline">
             <li class="list-inline-item"><a href="#">Privacy</a></li>
             <li class="list-inline-item"><a href="#">Terms</a></li>
             <li class="list-inline-item"><a href="#">Support</a></li>
         </ul>
-    </footer>
-    </div>
+    </footer> -->
+
+    
+</div>
+    </main>
+
+    <footer class="text-center"> 
+        <p class="mt-5 mb-3 text-muted">© 2021 Pastime</p>
+      </footer>
 
 
     <script src="/docs/5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
